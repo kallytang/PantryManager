@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">PantryAppVer1</string>
+    <string name="welcome">Welcome!</string>
+    <string name="create_an_account">Create an Account</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="button">Button</string>
 </resources>
