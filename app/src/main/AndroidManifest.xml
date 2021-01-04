@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.pantryappver1">
+    package="dev.kallytang.chompalpha">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,9 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateAccountActivity"></activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name="dev.kallytang.chompalpha.ProfilePageActivity"></activity>
+        <activity android:name="dev.kallytang.chompalpha.CreateAccountActivity" />
+        <activity android:name="dev.kallytang.chompalpha.MainActivity" />
+        <activity android:name="dev.kallytang.chompalpha.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

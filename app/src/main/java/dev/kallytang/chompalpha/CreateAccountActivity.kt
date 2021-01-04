@@ -1,7 +1,8 @@
-package com.example.pantryappver1
+package dev.kallytang.chompalpha
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+
 
 class CreateAccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

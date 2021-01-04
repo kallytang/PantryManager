@@ -1,22 +1,20 @@
-package com.example.pantryappver1
+package dev.kallytang.chompalpha
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.login_activity.*
+import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -25,16 +23,35 @@ class LoginActivity : AppCompatActivity() {
         private const val RC_GOOGLE_SIGN_IN = 1134
     }
     private lateinit var auth: FirebaseAuth
-//
-//    lateinit var etUsername: EditText
-//    lateinit var etPassword: EditText
-//    lateinit var btnLogin: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_activity)
+        setContentView(R.layout.activity_login)
+
+        btn_login.setOnClickListener {
+            btn_login.isEnabled = false
+            var email = et_email.text.toString()
+            val password = et_password.text.toString()
+            if (email.isBlank() || password.isBlank()){
+                Toast.makeText(this, "Email/Password can't be empty", Toast.LENGTH_SHORT)
+                return@setOnClickListener
+            }
+            var authEmail = FirebaseAuth.getInstance()
+            authEmail.signInWithEmailAndPassword(email, password).addOnCompleteListener { task->
+                btn_login.isEnabled = true
+                if(task.isSuccessful){
+                    goToMainActivity()
+                }else{
+                    Log.i(TAG, "signing in failed", task.exception)
+                    Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
         //initialize Firebase Auth
         auth = Firebase.auth
+
+
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -43,13 +60,21 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         val client = GoogleSignIn.getClient(this, gso)
-        sign_in_button.setOnClickListener {
+        btn_sign_in.setOnClickListener {
             val signInIntent: Intent = client.signInIntent
             startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
         }
 
 
     }
+
+    private fun goToMainActivity() {
+        Log.i(TAG, "going to main activity")
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -93,7 +118,6 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, "Authentication Failure", Toast.LENGTH_SHORT).show()
                     updateUI(null)
                 }
-
             }
     }
     private fun updateUI(currentUser: FirebaseUser?) {
@@ -107,21 +131,3 @@ class LoginActivity : AppCompatActivity() {
     }
 }
 
-//private fun loginUser(username: String, password: String) {
-//
-//}
-
-//private fun startMainActivity() {
-//    var intent = Intent(this, MainActivity::class.java)
-//    startActivity(intent)
-//        etUsername = findViewById(R.id.et_username)
-//        etPassword = findViewById(R.id.et_password)
-//        btnLogin = findViewById(R.id.btn_login)
-//        btnLogin.setOnClickListener {
-//            var username: String = etUsername.text.toString()
-//            var password: String = etPassword.text.toString()
-////            loginUser(username, password)
-//            Log.i(TAG, username + password)
-//        }
-
-//}

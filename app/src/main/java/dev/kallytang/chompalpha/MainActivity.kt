@@ -1,12 +1,11 @@
-package com.example.pantryappver1
+package dev.kallytang.chompalpha
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -20,7 +19,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //for logging out
         auth = Firebase.auth
+
+        //todo: make query to firestore to retrieve data
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
