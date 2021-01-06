@@ -1,34 +1,37 @@
 package dev.kallytang.chompalpha
 
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity() {
+class AccountSetUpActivity : AppCompatActivity() {
     private companion object{
-        private const val TAG = "MainActivity"
+        private const val TAG = "AccountSetUpActivity"
     }
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        //for logging out
+        setContentView(R.layout.activity_account_set_up)
+        //initialize Firebase Auth
         auth = Firebase.auth
-        //todo: make query to firestore to retrieve data
+
+        //TODO: allowing users to invite members
+        // TODO: allowing users to join a group
+
+        // set up a user without adding a group or inviting group
+
+
+
     }
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-       menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 

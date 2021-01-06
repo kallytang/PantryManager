@@ -13,8 +13,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.login_activity.*
 
 
@@ -24,36 +24,14 @@ class LoginActivity : AppCompatActivity() {
         private const val RC_GOOGLE_SIGN_IN = 1134
     }
     private lateinit var auth: FirebaseAuth
+    val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
 
-//        TODO set up email sign up another time
-//        btn_login.setOnClickListener {
-//            btn_login.isEnabled = false
-//            var email = et_email.text.toString()
-//            val password = et_password.text.toString()
-//            if (email.isBlank() || password.isBlank()){
-//                Toast.makeText(this, "Email/Password can't be empty", Toast.LENGTH_SHORT)
-//                return@setOnClickListener
-//            }
-//            var authEmail = FirebaseAuth.getInstance()
-//            authEmail.signInWithEmailAndPassword(email, password).addOnCompleteListener { task->
-//                btn_login.isEnabled = true
-//                if(task.isSuccessful){
-//                    goToMainActivity()
-//                }else{
-//                    Log.i(TAG, "signing in failed", task.exception)
-//                    Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-
         //initialize Firebase Auth
         auth = Firebase.auth
-
-
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -70,12 +48,6 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-//    private fun goToMainActivity() {
-//        Log.i(TAG, "going to main activity")
-//        val intent = Intent(this, MainActivity::class.java)
-//        startActivity(intent)
-//        finish()
-//    }
 
     override fun onStart() {
         super.onStart()
@@ -110,19 +82,24 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     var result = task.result
-                    var newUser = result?.getAdditionalUserInfo()?.isNewUser()
-                    if (newUser== true){
-                        //set up database for new user
-
+                    // check if user is a new user
+                    if (result?.additionalUserInfo?.isNewUser == true){
+                        Log.i("newUser", "new user signed in?")
+                        // direct user to a set up page,
+                        // if the user has a code, paste it in
+                        val intent = Intent(this, AccountSetUpActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }else{
+                        val user = auth.currentUser
+                        updateUI(user)
                     }
-                    val user = auth.currentUser
-                    updateUI(user)
+
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                     // ...
-//                    Snackbar.make(view, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-//                    updateUI(null)
                     Toast.makeText(this, "Authentication Failure", Toast.LENGTH_SHORT).show()
                     updateUI(null)
                 }
@@ -139,3 +116,30 @@ class LoginActivity : AppCompatActivity() {
     }
 }
 
+//        TODO set up email sign up another time
+//        btn_login.setOnClickListener {
+//            btn_login.isEnabled = false
+//            var email = et_email.text.toString()
+//            val password = et_password.text.toString()
+//            if (email.isBlank() || password.isBlank()){
+//                Toast.makeText(this, "Email/Password can't be empty", Toast.LENGTH_SHORT)
+//                return@setOnClickListener
+//            }
+//            var authEmail = FirebaseAuth.getInstance()
+//            authEmail.signInWithEmailAndPassword(email, password).addOnCompleteListener { task->
+//                btn_login.isEnabled = true
+//                if(task.isSuccessful){
+//                    goToMainActivity()
+//                }else{
+//                    Log.i(TAG, "signing in failed", task.exception)
+//                    Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
+
+//    private fun goToMainActivity() {
+//        Log.i(TAG, "going to main activity")
+//        val intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent)
+//        finish()
+//    }

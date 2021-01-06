@@ -1,4 +1,4 @@
-package com.example.pantryappver1
+package dev.kallytang.chompalpha
 
 import org.junit.Test
 

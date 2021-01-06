@@ -18,5 +18,6 @@ class CreateAccountActivity : AppCompatActivity() {
 //            var username = et_new_username.text.toString()
 //            var password = et_new_password
 //        }
+
     }
 }

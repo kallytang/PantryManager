@@ -12,10 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="dev.kallytang.chompalpha.ProfilePageActivity"></activity>
-        <activity android:name="dev.kallytang.chompalpha.CreateAccountActivity" />
-        <activity android:name="dev.kallytang.chompalpha.MainActivity" />
-        <activity android:name="dev.kallytang.chompalpha.LoginActivity">
+        <activity android:name=".AccountSetUpActivity"></activity>
+        <activity android:name=".ProfilePageActivity" />
+        <activity android:name=".CreateAccountActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,4 +24,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>
