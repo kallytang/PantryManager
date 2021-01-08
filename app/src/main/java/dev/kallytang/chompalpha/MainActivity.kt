@@ -7,7 +7,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -31,9 +30,10 @@ class MainActivity : AppCompatActivity() {
        menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
+    // TODO animate the menu button
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.logout){
+        if (item.itemId == R.id.logout_tab){
             Log.i(TAG, "Logged out")
             auth.signOut()
             val logoutIntent = Intent(this, LoginActivity::class.java)

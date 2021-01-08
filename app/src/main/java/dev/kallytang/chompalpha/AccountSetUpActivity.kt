@@ -8,13 +8,19 @@ import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_account_set_up.*
 
 class AccountSetUpActivity : AppCompatActivity() {
     private companion object{
         private const val TAG = "AccountSetUpActivity"
+        private const val PANTRIES = "pantries"
     }
     private lateinit var auth: FirebaseAuth
+    val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,23 +32,33 @@ class AccountSetUpActivity : AppCompatActivity() {
         // TODO: allowing users to join a group
 
         // set up a user without adding a group or inviting group
-
-
-
-    }
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+        setUserAccount()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.logout){
-            Log.i(TAG, "Logged out")
-            auth.signOut()
-            val logoutIntent = Intent(this, LoginActivity::class.java)
-            logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(logoutIntent)
+    // function to set user account
+    private fun setUserAccount() {
+        var currUser = auth.currentUser?.uid.toString()
+        skip_group_setup_btn.setOnClickListener {
+            var pantry_ref = db.collection("pantries").document()
+            pantry_ref.set(
+                hashMapOf(
+                    currUser to auth.currentUser?.displayName.toString()
+                )
+            ).addOnSuccessListener { task ->
+                db.collection("users").document(currUser).update(
+                    "my_pantry", pantry_ref
+                ).addOnFailureListener { exception ->
+                    Log.i(TAG, "can't add it to the user? $exception")
+                }
+            }
+            goToMain()
         }
-        return  super.onOptionsItemSelected(item)
+
+    }
+
+    fun goToMain(){
+        var intent: Intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

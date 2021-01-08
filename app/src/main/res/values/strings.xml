@@ -9,4 +9,14 @@
     <string name="button">Button</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="household">Household</string>
+    <string name="welcome_do_you_have_a_group_or_would_like_to_invite_a_group">Welcome, do you have a group or would like to invite a group?</string>
+    <string name="skip">Skip</string>
+    <string name="i_have_a_code">I have a code!</string>
+    <string name="invite">Invite</string>
+    <string name="milk">Milk</string>
+    <string name="more_info">more info</string>
+    <string name="food_item_information">Food item information</string>
 </resources>

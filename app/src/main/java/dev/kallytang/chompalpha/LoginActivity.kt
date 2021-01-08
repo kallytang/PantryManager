@@ -86,10 +86,7 @@ class LoginActivity : AppCompatActivity() {
                     if (result?.additionalUserInfo?.isNewUser == true){
                         Log.i("newUser", "new user signed in?")
                         // direct user to a set up page,
-                        // if the user has a code, paste it in
-                        val intent = Intent(this, AccountSetUpActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        toSetUpAccount()
                     }else{
                         val user = auth.currentUser
                         updateUI(user)
@@ -112,6 +109,11 @@ class LoginActivity : AppCompatActivity() {
             return
         }
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+    private fun toSetUpAccount(){
+        val intent = Intent(this, AccountSetUpActivity::class.java)
+        startActivity(intent)
         finish()
     }
 }

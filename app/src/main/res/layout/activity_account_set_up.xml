@@ -10,32 +10,41 @@
         android:id="@+id/et_welcome_title"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Welcome, do you have a group or would like to invite a group?"
+        android:layout_marginTop="56dp"
+        android:text="@string/welcome_do_you_have_a_group_or_would_like_to_invite_a_group"
         android:textSize="20sp"
-        tools:layout_editor_absoluteX="55dp"
-        tools:layout_editor_absoluteY="131dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/invite_button"
+        android:id="@+id/invite_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Invite"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="415dp" />
+        android:layout_marginTop="280dp"
+        android:text="@string/invite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_welcome_title" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/add_code_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" I have a code!"
-        tools:layout_editor_absoluteX="142dp"
-        tools:layout_editor_absoluteY="495dp" />
+        android:layout_marginTop="30dp"
+        android:text="@string/i_have_a_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/invite_btn" />
 
     <Button
-        android:id="@+id/skip"
+        android:id="@+id/skip_group_setup_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="skip"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="591dp" />
+        android:layout_marginTop="30dp"
+        android:text="@string/skip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_code_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
