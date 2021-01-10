@@ -19,4 +19,6 @@
     <string name="milk">Milk</string>
     <string name="more_info">more info</string>
     <string name="food_item_information">Food item information</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="add_pantry_item">Add Pantry Item</string>
 </resources>

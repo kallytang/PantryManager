@@ -1,16 +1,18 @@
 package dev.kallytang.chompalpha.Fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import dev.kallytang.chompalpha.AddFoodItemActivity
 import dev.kallytang.chompalpha.R
+import kotlinx.android.synthetic.main.fragment_pantry_list.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -32,7 +34,10 @@ class PantryListFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_pantry_list, container, false)
 
-
+        fab_add_pantry_item.setOnClickListener { view ->
+            var intent = Intent(context, AddFoodItemActivity::class.java)
+            startActivity(intent)
+        }
 
         return view
     }

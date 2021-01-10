@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddFoodItemActivity"></activity>
+        <activity android:name=".AddFoodItemActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity android:name=".AccountSetUpActivity" />
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".MainActivity" />
