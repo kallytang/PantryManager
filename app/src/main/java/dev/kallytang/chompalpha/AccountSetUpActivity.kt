@@ -27,7 +27,6 @@ class AccountSetUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_account_set_up)
         //initialize Firebase Auth
         auth = Firebase.auth
-
         //TODO: allowing users to invite members
         // TODO: allowing users to join a group
 
@@ -40,10 +39,17 @@ class AccountSetUpActivity : AppCompatActivity() {
         var currUser = auth.currentUser?.uid.toString()
         skip_group_setup_btn.setOnClickListener {
             var pantry_ref = db.collection("pantries").document()
+            var user_map = hashMapOf(
+                currUser to auth.currentUser?.displayName.toString()
+            )
+            val storageLocationNames = hashMapOf(
+                "freezer" to "freezer",
+                "kitchen" to "kitchen",
+                "cabinet" to "cabinet",
+                "cupboard" to "cupboard"
+            )
             pantry_ref.set(
-                hashMapOf(
-                    currUser to auth.currentUser?.displayName.toString()
-                )
+                hashMapOf("users_list" to user_map)
             ).addOnSuccessListener { task ->
                 db.collection("users").document(currUser).update(
                     "my_pantry", pantry_ref
@@ -51,6 +57,9 @@ class AccountSetUpActivity : AppCompatActivity() {
                     Log.i(TAG, "can't add it to the user? $exception")
                 }
             }
+            pantry_ref.update(
+                "storage_locations", storageLocationNames
+            )
             goToMain()
         }
 

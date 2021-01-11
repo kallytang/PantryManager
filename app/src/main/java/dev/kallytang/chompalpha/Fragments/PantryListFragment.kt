@@ -21,10 +21,8 @@ import kotlinx.android.synthetic.main.fragment_pantry_list.*
  */
 class PantryListFragment : Fragment() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -34,8 +32,10 @@ class PantryListFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_pantry_list, container, false)
 
-        fab_add_pantry_item.setOnClickListener { view ->
-            var intent = Intent(context, AddFoodItemActivity::class.java)
+        val fab: View = view.findViewById(R.id.fab_add_pantry_item)
+
+        fab.setOnClickListener {
+            val intent = Intent(context, AddFoodItemActivity::class.java)
             startActivity(intent)
         }
 

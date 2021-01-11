@@ -1,20 +1,21 @@
 package dev.kallytang.chompalpha.models
 
 import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.PropertyName
 import java.lang.NumberFormatException
 import java.sql.Timestamp
 
 data class Item(
-    @Exclude var item_id: String? =null,
+    @Exclude var itemId: String? =null,
     var name: String = "",
-    var units: String = "",
+    var units: Units? = null,
     var quantity: Number = 1,
-    var expiry_date: Timestamp? = null,
+    @get:PropertyName("expiry_date") @set:PropertyName("expiry_date")var expiryDate: Timestamp? = null,
     var brand: String = "",
-    var image_url: String = "",
+    @get:PropertyName("image_url") @set:PropertyName("image_url") var imageUrl: String = "",
     var location: String = "",
     var notes: String = "",
-    var in_pantry: Boolean = true,
-    var quantity_to_buy: Number = 1,
-    var is_grocery_item: Boolean = false
+    @get:PropertyName("in_pantry") @set:PropertyName("in_pantry")var inPantry: Boolean = true,
+    @get:PropertyName("quantity_to_buy") @set:PropertyName("quantity_to_buy")var quantityToBuy: Number = 1,
+    @get:PropertyName("is_grocery_item") @set:PropertyName("is_grocery_item")var isGroceryItem: Boolean = false
 )
