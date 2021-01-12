@@ -13,9 +13,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_pantry_list.*
 import androidx.fragment.app.FragmentManager
+import com.google.firebase.firestore.ktx.firestore
 import dev.kallytang.chompalpha.Fragments.PantryListFragment
 import dev.kallytang.chompalpha.Fragments.RecipesFragment
 import dev.kallytang.chompalpha.Fragments.ShoppingListFragment
+import dev.kallytang.chompalpha.models.Units
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private companion object{
@@ -25,11 +28,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavBar: BottomNavigationView
     private val fragmentManager: FragmentManager = supportFragmentManager
     private lateinit var fragment: Fragment
+    private val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         //for logging out
         auth = Firebase.auth
         //todo: make query to firestore to retrieve data
@@ -64,10 +67,8 @@ class MainActivity : AppCompatActivity() {
             return@setOnNavigationItemSelectedListener true
 
         }
-
-
-
     }
+
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -86,4 +87,5 @@ class MainActivity : AppCompatActivity() {
         }
         return  super.onOptionsItemSelected(item)
     }
+
 }

@@ -1,7 +1,9 @@
 package dev.kallytang.chompalpha.models
 
+import com.google.firebase.firestore.PropertyName
+
 data class Units(
-    var unit_name: String = "",
+    @get: PropertyName("unit_name") @set: PropertyName("unit_name") var unitName: String = "",
     var abbreviation: String = ""
 )
 

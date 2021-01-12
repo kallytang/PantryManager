@@ -1,12 +1,13 @@
 package dev.kallytang.chompalpha.models
 
+import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.PropertyName
 import java.lang.NumberFormatException
 import java.sql.Timestamp
 
 data class Item(
-    @Exclude var itemId: String? =null,
+    @DocumentId @Exclude var documentId: DocumentId,
     var name: String = "",
     var units: Units? = null,
     var quantity: Number = 1,
@@ -18,4 +19,5 @@ data class Item(
     @get:PropertyName("in_pantry") @set:PropertyName("in_pantry")var inPantry: Boolean = true,
     @get:PropertyName("quantity_to_buy") @set:PropertyName("quantity_to_buy")var quantityToBuy: Number = 1,
     @get:PropertyName("is_grocery_item") @set:PropertyName("is_grocery_item")var isGroceryItem: Boolean = false
+
 )

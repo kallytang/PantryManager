@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dev.kallytang.chompalpha.models.Units
 import kotlinx.android.synthetic.main.activity_account_set_up.*
 
 class AccountSetUpActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class AccountSetUpActivity : AppCompatActivity() {
         private const val PANTRIES = "pantries"
     }
     private lateinit var auth: FirebaseAuth
-    val db = Firebase.firestore
+    private val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,6 @@ class AccountSetUpActivity : AppCompatActivity() {
         auth = Firebase.auth
         //TODO: allowing users to invite members
         // TODO: allowing users to join a group
-
         // set up a user without adding a group or inviting group
         setUserAccount()
     }
@@ -43,20 +43,23 @@ class AccountSetUpActivity : AppCompatActivity() {
                 currUser to auth.currentUser?.displayName.toString()
             )
             val storageLocationNames = hashMapOf(
-                "freezer" to "freezer",
-                "kitchen" to "kitchen",
-                "cabinet" to "cabinet",
-                "cupboard" to "cupboard"
+                "freezer" to "Freezer",
+                "kitchen" to "Kitchen",
+                "cabinet" to "Cabinet",
+                "cupboard" to "Cupboard"
             )
+            // add user list to pantries document
             pantry_ref.set(
                 hashMapOf("users_list" to user_map)
             ).addOnSuccessListener { task ->
+                // when pantries document is created, add it to user as a reference
                 db.collection("users").document(currUser).update(
                     "my_pantry", pantry_ref
                 ).addOnFailureListener { exception ->
                     Log.i(TAG, "can't add it to the user? $exception")
                 }
             }
+            // add storage locations
             pantry_ref.update(
                 "storage_locations", storageLocationNames
             )
@@ -65,9 +68,13 @@ class AccountSetUpActivity : AppCompatActivity() {
 
     }
 
-    fun goToMain(){
+
+    // function to direct user to main activity
+    private fun goToMain(){
         var intent: Intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
+
 }
+

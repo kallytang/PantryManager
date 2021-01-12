@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/iv_exit_add_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -126,7 +126,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/et_brand" />
 
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/add_unit_dropdown"
                 android:layout_width="84dp"
                 android:layout_height="29dp"
                 android:layout_marginStart="8dp"
@@ -139,13 +139,15 @@
                 android:id="@+id/chipGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/id_add_location_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:text="@string/add_new" />
 
             </com.google.android.material.chip.ChipGroup>
@@ -173,7 +175,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 
             <EditText
-                android:id="@+id/editTextTextMultiLine"
+                android:id="@+id/et_food_notes"
                 android:layout_width="match_parent"
                 android:layout_height="116dp"
                 android:autofillHints=""
@@ -239,7 +241,7 @@
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/iv_calendar_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
