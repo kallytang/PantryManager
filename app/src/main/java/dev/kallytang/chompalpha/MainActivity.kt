@@ -6,17 +6,12 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_pantry_list.*
-import androidx.fragment.app.FragmentManager
+
 import com.google.firebase.firestore.ktx.firestore
-import dev.kallytang.chompalpha.Fragments.PantryListFragment
 import dev.kallytang.chompalpha.models.Units
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private companion object{
@@ -29,17 +24,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         getUnits()
-        var myAppData = MyApplication()
-
 
         //for logging out
         auth = Firebase.auth
         //todo: make query to firestore to retrieve data
 
-        // for toolbar
-
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
