@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -25,9 +26,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         getUnits()
 
+        // removing shadow of action bar
+        supportActionBar?.elevation = 0F;
+
+
         //for logging out
         auth = Firebase.auth
         //todo: make query to firestore to retrieve data
+
+        val fab: View = findViewById(R.id.fab_add_pantry_item)
+        fab.setOnClickListener {
+            val intent = Intent(this, AddFoodItemActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 

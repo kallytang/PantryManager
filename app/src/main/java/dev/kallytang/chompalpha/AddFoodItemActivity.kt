@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -25,42 +26,64 @@ class AddFoodItemActivity : AppCompatActivity() {
     private var storageLocationList = mutableListOf<String>()
     private lateinit var spinner: Spinner
     private lateinit var auth: FirebaseAuth
+    private lateinit var calendarBtn:ImageView
+    private lateinit var itemName: EditText
+    private lateinit var brandName: EditText
+    private lateinit var notes: EditText
+    private lateinit var expiryDate: EditText
+    private lateinit var datePicker: MaterialDatePicker.Builder<Long>
+    private lateinit var materialDatePicker: MaterialDatePicker<Long>
+    private lateinit var closeButton: ImageView
+    private lateinit var chipGroup :ChipGroup
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_food_item)
         auth = Firebase.auth
-        getUnitData()
 
-        var spinner:Spinner = findViewById(R.id.add_unit_dropdown)
-        var calendarBtn:ImageView = findViewById(R.id.iv_calendar_btn)
-        var foodName: EditText = findViewById(R.id.et_item_name)
-        var brandName: EditText = findViewById(R.id.et_brand)
-        var notes: EditText = findViewById(R.id.et_food_notes)
-        var closeButton: ImageView = findViewById(R.id.iv_exit_add_task)
-        var expiryDate: Timestamp
+        // get unit data
+        getUnitData()
+        findViews()
 
         // set up calendar dialog
-        var datePicker =  MaterialDatePicker.Builder.datePicker()
+        datePicker =  MaterialDatePicker.Builder.datePicker()
         datePicker.setTitleText("Select an Expiration Date")
-        var materialDatePicker  = datePicker.build()
+        materialDatePicker  = datePicker.build()
+
 
         calendarBtn.setOnClickListener {
             materialDatePicker.show(supportFragmentManager, "DATE_PICKER")
-
         }
+        // for when user confirms date, convert date into a timestamp
         materialDatePicker.addOnPositiveButtonClickListener { date ->
-//            et_date_expiry.setText(materialDatePicker.headerText)
 
         }
 
+        //for closing button
         closeButton.setOnClickListener {
-
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
+
+        // inflate chips into chip group
+        chipGroup = findViewById(R.id.cg_location_tag_container)
+
+
 
     }
 
+    private fun findViews(){
+        // find views in layout
+        spinner = findViewById(R.id.add_unit_dropdown)
+        calendarBtn = findViewById(R.id.iv_calendar_btn)
+        itemName = findViewById(R.id.et_item_name)
+        brandName= findViewById(R.id.et_brand)
+        notes= findViewById(R.id.et_food_notes)
+        expiryDate = findViewById(R.id.et_date_expiry)
+        closeButton = findViewById(R.id.iv_exit_add_task)
+
+    }
     private fun getUnitData(){
         unitsList = (applicationContext as MyApplication).unitsList!!
         unitsStrings = (applicationContext as MyApplication).unitsAsString!!

@@ -15,6 +15,7 @@
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
         android:src="@android:drawable/ic_input_add"
+        android:backgroundTint="@color/black"
         app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -41,6 +42,7 @@
             android:contentDescription="@string/close_window"
             android:padding="20dp"
             app:srcCompat="@drawable/ic_close_white"
+
             tools:layout_editor_absoluteX="302dp"
             tools:layout_editor_absoluteY="13dp" />
 
@@ -151,7 +153,7 @@
                 app:layout_constraintVertical_bias="0.533" />
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
+                android:id="@+id/cg_location_tag_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -187,7 +189,7 @@
                 android:text="@string/notes"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+                app:layout_constraintTop_toBottomOf="@+id/cg_location_tag_container" />
 
             <EditText
                 android:id="@+id/et_food_notes"
