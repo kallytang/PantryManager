@@ -15,8 +15,6 @@ import kotlinx.android.synthetic.main.fragment_pantry_list.*
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.firestore.ktx.firestore
 import dev.kallytang.chompalpha.Fragments.PantryListFragment
-import dev.kallytang.chompalpha.Fragments.RecipesFragment
-import dev.kallytang.chompalpha.Fragments.ShoppingListFragment
 import dev.kallytang.chompalpha.models.Units
 import java.util.*
 
@@ -25,57 +23,28 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
     private lateinit var auth: FirebaseAuth
-    private lateinit var bottomNavBar: BottomNavigationView
-    private val fragmentManager: FragmentManager = supportFragmentManager
-    private lateinit var fragment: Fragment
     private val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        getUnits()
+        var myAppData = MyApplication()
+
+
         //for logging out
         auth = Firebase.auth
         //todo: make query to firestore to retrieve data
 
-        // if the
-        if(savedInstanceState == null){
-            fragmentManager.beginTransaction()
-                .replace(R.id.fl_containter_main, PantryListFragment())
-                .commit()
-        }
+        // for toolbar
 
-        // fragment management
-        bottomNavBar = findViewById(R.id.bottom_navigation)
-
-        bottomNavBar.setOnNavigationItemSelectedListener { item ->
-            fragment = PantryListFragment()
-            when (item.itemId){
-                R.id.my_pantry_fragment -> {
-                    fragment = PantryListFragment()
-                }
-                R.id.my_shopping_list_fragment -> {
-                    fragment = ShoppingListFragment()
-                }
-                R.id.my_recipes_fragment -> {
-                    fragment = RecipesFragment()
-                }
-                else -> {
-                    fragment = PantryListFragment()
-                }
-            }
-            fragmentManager.beginTransaction().replace(R.id.fl_containter_main, fragment).commit()
-            return@setOnNavigationItemSelectedListener true
-
-        }
     }
-
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
        menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
-    // TODO animate the menu button
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.logout_tab){
@@ -87,5 +56,11 @@ class MainActivity : AppCompatActivity() {
         }
         return  super.onOptionsItemSelected(item)
     }
-
+    private fun getUnits(){
+        var myApp = MyApplication()
+        db.collection("units").get().addOnSuccessListener { snapshot ->
+            Log.i("units", snapshot.toObjects(Units::class.java).toString())
+            myApp.unitsList = snapshot.toObjects(Units::class.java)
+        }
+    }
 }
