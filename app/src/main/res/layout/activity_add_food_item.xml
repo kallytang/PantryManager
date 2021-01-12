@@ -86,7 +86,7 @@
                 android:id="@+id/btn_add_new_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="35dp"
                 android:text="@string/add"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -117,8 +117,8 @@
 
             <EditText
                 android:id="@+id/chip_add_storage_location"
-                android:layout_width="59dp"
-                android:layout_height="44dp"
+                android:layout_width="215dp"
+                android:layout_height="42dp"
                 android:ems="10"
                 android:inputType="number"
                 android:text="@string/_1"
@@ -139,13 +139,16 @@
 
             <Spinner
                 android:id="@+id/add_unit_dropdown"
-                android:layout_width="84dp"
-                android:layout_height="29dp"
+                android:layout_width="116dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/chip_add_storage_location"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.982"
                 app:layout_constraintStart_toEndOf="@+id/chip_add_storage_location"
                 app:layout_constraintTop_toTopOf="@+id/chip_add_storage_location"
-                app:layout_constraintVertical_bias="0.555" />
+                app:layout_constraintVertical_bias="0.533" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroup"
@@ -173,7 +176,7 @@
                 android:text="@string/storage_location"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+                app:layout_constraintTop_toBottomOf="@+id/et_date_expiry" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -200,7 +203,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
             <EditText
-                android:id="@+id/editTextDate"
+                android:id="@+id/et_date_expiry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
@@ -258,8 +261,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/editTextDate"
-                app:layout_constraintEnd_toEndOf="@+id/editTextDate"
+                app:layout_constraintBottom_toBottomOf="@+id/et_date_expiry"
+                app:layout_constraintEnd_toEndOf="@+id/et_date_expiry"
                 app:srcCompat="@drawable/ic_calendar_icon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

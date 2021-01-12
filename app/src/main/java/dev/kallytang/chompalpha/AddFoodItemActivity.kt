@@ -4,10 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Spinner
+import android.widget.*
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -41,7 +38,8 @@ class AddFoodItemActivity : AppCompatActivity() {
         var foodName: EditText = findViewById(R.id.et_item_name)
         var brandName: EditText = findViewById(R.id.et_brand)
         var notes: EditText = findViewById(R.id.et_food_notes)
-        var ExpiryDate: Timestamp
+        var closeButton: ImageView = findViewById(R.id.iv_exit_add_task)
+        var expiryDate: Timestamp
 
         // set up calendar dialog
         var datePicker =  MaterialDatePicker.Builder.datePicker()
@@ -49,8 +47,18 @@ class AddFoodItemActivity : AppCompatActivity() {
         var materialDatePicker  = datePicker.build()
 
         calendarBtn.setOnClickListener {
+            materialDatePicker.show(supportFragmentManager, "DATE_PICKER")
 
         }
+        materialDatePicker.addOnPositiveButtonClickListener { date ->
+//            et_date_expiry.setText(materialDatePicker.headerText)
+
+        }
+
+        closeButton.setOnClickListener {
+
+        }
+
     }
 
     private fun getUnitData(){
