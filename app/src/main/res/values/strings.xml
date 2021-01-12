@@ -35,4 +35,5 @@
     <string name="pantry">Pantry</string>
     <string name="shopping_list">Shopping List</string>
     <string name="item">Item</string>
+    <string name="add">Add</string>
 </resources>

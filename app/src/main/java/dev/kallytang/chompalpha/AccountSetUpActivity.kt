@@ -46,7 +46,8 @@ class AccountSetUpActivity : AppCompatActivity() {
                 "freezer" to "Freezer",
                 "kitchen" to "Kitchen",
                 "cabinet" to "Cabinet",
-                "cupboard" to "Cupboard"
+                "cupboard" to "Cupboard",
+                "other" to "Other"
             )
             // add user list to pantries document
             pantry_ref.set(
@@ -65,13 +66,10 @@ class AccountSetUpActivity : AppCompatActivity() {
             )
             goToMain()
         }
-
     }
-
-
     // function to direct user to main activity
     private fun goToMain(){
-        var intent: Intent = Intent(this, MainActivity::class.java)
+        val intent: Intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

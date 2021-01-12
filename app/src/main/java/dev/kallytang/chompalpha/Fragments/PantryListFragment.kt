@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dev.kallytang.chompalpha.AddFoodItemActivity
@@ -64,21 +65,19 @@ class PantryListFragment : Fragment() {
                 .addOnSuccessListener { doc ->
                     (applicationContext as MyApplication).currUser = doc.toObject(User::class.java)
 
-                    (applicationContext as MyApplication).currUser?.myPantry?.get()
+                    val pantryRef: DocumentReference? = (applicationContext as MyApplication).currUser?.myPantry
+                        pantryRef?.get()
                         ?.addOnSuccessListener { pantryDoc ->
-                            var location:Map<String, String> = pantryDoc.get("storage_locations") as Map<String, String>
+                            val location:Map<String, String> = pantryDoc.get("storage_locations") as Map<String, String>
                             val listLocation = ArrayList(location.keys)
                             listLocation.sort()
-                            var locationStrings = mutableListOf<String>()
-                            locationStrings = listLocation.toMutableList()
+                            val locationStrings = listLocation.toMutableList()
                             (applicationContext as MyApplication).storageLocationList= locationStrings
                             storageLocationList = locationStrings
-
-                            Log.i("location", (applicationContext as MyApplication).storageLocationList.toString())
+//                            Log.i("location", (applicationContext as MyApplication).storageLocationList.toString())
+                            (applicationContext as MyApplication).pantryRef = pantryRef
 
                         }
-
-
                 }
             // if the list exists in the application context
         }else{

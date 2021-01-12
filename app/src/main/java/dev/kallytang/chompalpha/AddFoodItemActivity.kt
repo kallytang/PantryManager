@@ -8,14 +8,17 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import dev.kallytang.chompalpha.models.Units
 import dev.kallytang.chompalpha.models.User
 import kotlinx.android.synthetic.main.activity_add_food_item.*
+import java.sql.Timestamp
 
 class AddFoodItemActivity : AppCompatActivity() {
 
@@ -38,12 +41,16 @@ class AddFoodItemActivity : AppCompatActivity() {
         var foodName: EditText = findViewById(R.id.et_item_name)
         var brandName: EditText = findViewById(R.id.et_brand)
         var notes: EditText = findViewById(R.id.et_food_notes)
+        var ExpiryDate: Timestamp
+
+        // set up calendar dialog
+        var datePicker =  MaterialDatePicker.Builder.datePicker()
+        datePicker.setTitleText("Select an Expiration Date")
+        var materialDatePicker  = datePicker.build()
 
         calendarBtn.setOnClickListener {
-            // TODO set up calendar picker dialog
+
         }
-
-
     }
 
     private fun getUnitData(){
@@ -55,22 +62,21 @@ class AddFoodItemActivity : AppCompatActivity() {
             db.collection("users").document(auth.currentUser?.uid.toString()).get()
                 .addOnSuccessListener { doc ->
                 (applicationContext as MyApplication).currUser = doc.toObject(User::class.java)
-
-                (applicationContext as MyApplication).currUser?.myPantry?.get()
+                // get reference to pantry
+                val pantryRef: DocumentReference? =  (applicationContext as MyApplication).currUser?.myPantry
+                    pantryRef?.get()
                     ?.addOnSuccessListener { pantryDoc ->
-                        var location:Map<String, String> = pantryDoc.get("storage_locations") as Map<String, String>
+                        val location:Map<String, String> = pantryDoc.get("storage_locations") as Map<String, String>
                         val listLocation = ArrayList(location.keys)
                         listLocation.sort()
-                        var locationStrings = mutableListOf<String>()
-                        locationStrings = listLocation.toMutableList()
+                        val locationStrings = listLocation.toMutableList()
+                        // set data to lists in application context and on main activity
                         (applicationContext as MyApplication).storageLocationList= locationStrings
                         storageLocationList = locationStrings
+                        (applicationContext as MyApplication).pantryRef = pantryRef
 
-                        Log.i("location", (applicationContext as MyApplication).storageLocationList.toString())
-
+//                        Log.i("location", (applicationContext as MyApplication).storageLocationList.toString())
                     }
-
-
             }
             // if the list exists in the application context
         }else{

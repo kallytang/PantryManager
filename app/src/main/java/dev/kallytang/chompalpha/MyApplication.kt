@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dev.kallytang.chompalpha.models.Units
@@ -16,6 +17,7 @@ class MyApplication : Application() {
     var storageLocationList: MutableList<String>? = null
     var unitsAsString: MutableList<String>? = null
     var currUser: User? = null
+    var pantryRef: DocumentReference? = null
 
 
     override fun onCreate() {

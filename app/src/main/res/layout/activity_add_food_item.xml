@@ -82,6 +82,18 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintVertical_bias="1.0">
 
+            <Button
+                android:id="@+id/btn_add_new_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="35dp"
+                android:text="@string/add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/et_food_notes"
+                app:layout_constraintStart_toStartOf="@+id/et_food_notes"
+                app:layout_constraintTop_toBottomOf="@+id/et_food_notes" />
+
             <EditText
                 android:id="@+id/et_brand"
                 android:layout_width="match_parent"
