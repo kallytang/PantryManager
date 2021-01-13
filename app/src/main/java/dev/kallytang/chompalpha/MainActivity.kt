@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         // removing shadow of action bar
         supportActionBar?.elevation = 0F;
 
-
         //for logging out
         auth = Firebase.auth
         //todo: make query to firestore to retrieve data

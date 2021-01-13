@@ -30,7 +30,7 @@ class AddFoodItemActivity : AppCompatActivity() {
     private lateinit var itemName: EditText
     private lateinit var brandName: EditText
     private lateinit var notes: EditText
-    private lateinit var expiryDate: EditText
+    private lateinit var expiryDate: TextView
     private lateinit var datePicker: MaterialDatePicker.Builder<Long>
     private lateinit var materialDatePicker: MaterialDatePicker<Long>
     private lateinit var closeButton: ImageView
@@ -51,13 +51,21 @@ class AddFoodItemActivity : AppCompatActivity() {
         datePicker.setTitleText("Select an Expiration Date")
         materialDatePicker  = datePicker.build()
 
-
-        calendarBtn.setOnClickListener {
+        expiryDate.setOnClickListener{
             materialDatePicker.show(supportFragmentManager, "DATE_PICKER")
         }
+
+//        calendarBtn.setOnClickListener {
+//            materialDatePicker.show(supportFragmentManager, "DATE_PICKER")
+//        }
+
         // for when user confirms date, convert date into a timestamp
         materialDatePicker.addOnPositiveButtonClickListener { date ->
+            Log.i("date", materialDatePicker.headerText)
+            Log.i("date", date.toString())
+            expiryDate.setText(materialDatePicker.headerText)
 
+            // set up conversion to epoch time
         }
 
         //for closing button
