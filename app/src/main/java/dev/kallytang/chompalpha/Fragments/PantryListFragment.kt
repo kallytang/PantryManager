@@ -56,7 +56,7 @@ class PantryListFragment : Fragment() {
 
     private fun getUnitData(){
         val applicationContext = context
-        unitsList = (applicationContext as MyApplication).unitsList!!
+        unitsList = ((applicationContext as MyApplication).unitsList as MutableList<Units>?)!!
         unitsStrings = (applicationContext as MyApplication).unitsAsString!!
 
         // check if pantry list already initialized, if not, set the data

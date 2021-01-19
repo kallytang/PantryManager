@@ -66,10 +66,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_form"
@@ -89,8 +89,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="@color/black"
                 android:layout_marginBottom="35dp"
+                android:backgroundTint="@color/black"
                 android:text="@string/add"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/et_food_notes"
@@ -154,22 +154,21 @@
                 android:layout_width="116dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:background="@drawable/text_input_layout"
+                android:paddingBottom="5dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/et_quantity"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.982"
-                app:layout_constraintStart_toEndOf="@+id/et_quantity"
-                app:layout_constraintTop_toTopOf="@+id/et_quantity"
-                app:layout_constraintVertical_bias="0.533" />
+                app:layout_constraintStart_toEndOf="@+id/et_quantity" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/cg_location_tag_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5">
+                app:layout_constraintStart_toStartOf="@id/error_storage_location"
+                app:layout_constraintTop_toBottomOf="@+id/error_storage_location"
+                app:selectionRequired="true">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/id_add_location_chip"
@@ -184,7 +183,6 @@
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:paddingStart="0dp"
                 android:text="@string/storage_location"
                 android:textColor="@color/black"
@@ -226,6 +224,7 @@
                 android:background="@drawable/text_input_layout"
                 android:ems="10"
                 android:paddingBottom="5dp"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView8" />
@@ -282,6 +281,35 @@
                 app:layout_constraintBottom_toBottomOf="@+id/et_date_expiry"
                 app:layout_constraintEnd_toEndOf="@+id/et_date_expiry"
                 app:srcCompat="@drawable/ic_calendar_icon" />
+
+            <TextView
+                android:id="@+id/error_expriation_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                app:layout_constraintStart_toEndOf="@+id/textView8"
+                app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+            <TextView
+                android:id="@+id/error_storage_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/textView5"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="Unit"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_quantity"
+                app:layout_constraintStart_toStartOf="@+id/add_unit_dropdown"
+                app:layout_constraintTop_toTopOf="@+id/tv_quantity" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

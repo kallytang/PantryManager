@@ -9,10 +9,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.ktx.Firebase
 
 import com.google.firebase.firestore.ktx.firestore
 import dev.kallytang.chompalpha.models.Units
+import dev.kallytang.chompalpha.models.User
 
 class MainActivity : AppCompatActivity() {
     private companion object{
@@ -25,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         getUnits()
-
         // removing shadow of action bar
         supportActionBar?.elevation = 0F;
 
@@ -63,4 +64,6 @@ class MainActivity : AppCompatActivity() {
             myApp.unitsList = snapshot.toObjects(Units::class.java)
         }
     }
+
+
 }

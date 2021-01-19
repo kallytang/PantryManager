@@ -1,41 +1,50 @@
 package dev.kallytang.chompalpha
 
 import android.content.Intent
+import android.graphics.Color
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.*
+import androidx.core.content.ContextCompat
+import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import dev.kallytang.chompalpha.adapters.UnitsSpinnerAdapter
 import dev.kallytang.chompalpha.models.Units
-import dev.kallytang.chompalpha.models.User
-import kotlinx.android.synthetic.main.activity_add_food_item.*
-import java.sql.Timestamp
+import kotlinx.android.synthetic.main.list_name_tabs_layout.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddFoodItemActivity : AppCompatActivity() {
 
     private val db = Firebase.firestore
-    private var unitsList = mutableListOf<Units>()
-    private var unitsStrings = mutableListOf<String>()
     private var storageLocationList = mutableListOf<String>()
-    private lateinit var spinner: Spinner
+    private lateinit var unitSpinner: Spinner
     private lateinit var auth: FirebaseAuth
     private lateinit var calendarBtn:ImageView
     private lateinit var itemName: EditText
     private lateinit var brandName: EditText
     private lateinit var notes: EditText
+    private lateinit var quantityText: EditText
     private lateinit var expiryDate: TextView
     private lateinit var datePicker: MaterialDatePicker.Builder<Long>
     private lateinit var materialDatePicker: MaterialDatePicker<Long>
     private lateinit var closeButton: ImageView
+    private lateinit var addLocationChip: Chip
     private lateinit var chipGroup :ChipGroup
-
+    private val stringPatternEditText = "MMM d, yyyy"
+    private  lateinit var submitButton: Button
+    private lateinit var errorNoStorageLocation: TextView
+    private lateinit var errorNoExpirationDate: TextView
+    private lateinit var unitsList: ArrayList<Units>
+    private lateinit var unitsSpinnerAdapter: UnitsSpinnerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +52,6 @@ class AddFoodItemActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         // get unit data
-        getUnitData()
         findViews()
 
         // set up calendar dialog
@@ -51,79 +59,171 @@ class AddFoodItemActivity : AppCompatActivity() {
         datePicker.setTitleText("Select an Expiration Date")
         materialDatePicker  = datePicker.build()
 
+
+        val stringPatternFirebase = ""
+//        https://stackoverflow.com/questions/37390080/convert-local-time-to-utc-and-vice-versa
+
+//        var dateFormmatted = DateFormat.format()
+//        expiryDate.set
+
+
         expiryDate.setOnClickListener{
+            expiryDate.isEnabled = false
             materialDatePicker.show(supportFragmentManager, "DATE_PICKER")
         }
-
-//        calendarBtn.setOnClickListener {
-//            materialDatePicker.show(supportFragmentManager, "DATE_PICKER")
-//        }
 
         // for when user confirms date, convert date into a timestamp
         materialDatePicker.addOnPositiveButtonClickListener { date ->
             Log.i("date", materialDatePicker.headerText)
             Log.i("date", date.toString())
             expiryDate.setText(materialDatePicker.headerText)
-
-            // set up conversion to epoch time
+            expiryDate.isEnabled = true
+        }
+        materialDatePicker.addOnDismissListener {
+            expiryDate.isEnabled = true
+        }
+        materialDatePicker.addOnCancelListener {
+            expiryDate.isEnabled = true
         }
 
+        // set up units spinner
+        unitsList = ArrayList()
+
+        (applicationContext as MyApplication).unitsList?.let { unitsList.addAll(it) }
+
+        var indexUnit = 0
+        for (idx in unitsList.indices){
+            if(unitsList[idx].unitName == "none"){
+                indexUnit = idx
+            }
+        }
+
+        unitsSpinnerAdapter = UnitsSpinnerAdapter(this, R.layout.unit_spinner_row, unitsList)
+//        Log.i("unitsList",unitsList.toString())
+        unitSpinner.adapter = unitsSpinnerAdapter
+        unitSpinner.setSelection(indexUnit)
+
+        var unitChoice: Units
+        unitSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                var unitChosen:Units = parent?.getItemAtPosition(position) as Units
+                var clickedUnitName:String = unitChosen.abbreviation
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        }
+
+        
         //for closing button
         closeButton.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
-
+        
         // inflate chips into chip group
         chipGroup = findViewById(R.id.cg_location_tag_container)
+        for (item in (applicationContext as MyApplication).storageLocationList!!){
+            Log.i("chips", item)
+
+            val chip = Chip(chipGroup.context)
+            chip.text = item
+            chipGroup.isSingleSelection = true
+            chip.isCheckable = true
+
+            chipGroup.addView(chip)
+
+        }
+        var chip = chipGroup.getChildAt(1).id
+        var chipSelected: Chip = findViewById(chip)
+        chipSelected.isChecked = true
+
+        chipGroup.setOnCheckedChangeListener { group, checkedId ->
+            errorNoStorageLocation.setText("")
+            errorNoStorageLocation.visibility = View.INVISIBLE
+//            if (checkedId == R.id.id_add_location_chip){
+//                errorNoStorageLocation.setText(R.string.errorStorageSelection)
+//                errorNoStorageLocation.setTextColor(Color.RED)
+//                errorNoStorageLocation.visibility = View.VISIBLE
+//            }
+        }
+        
+        // add location to chip group
+        addLocationChip.setOnClickListener {
+            // create a dialog to allow user to add new location
+            //select new child
+
+        }
+
+
+        // submit button 
+        submitButton.setOnClickListener {
+            var itemNameInput = itemName.text.toString()
+            var itemBrandUnput = brandName.text.toString()
+            val expirationDateString = expiryDate.text
+            val chipId = chipGroup.checkedChipId
+            var quantityInput = quantityText.text
+            var error: Boolean = false
+
+            if (itemNameInput.isEmpty()){
+                itemName.setHint("Enter Item Name")
+                itemName.setHintTextColor(Color.RED)
+                error = true
+            }
+            // check if expiration date is not set
+            if (expirationDateString.isEmpty()) {
+                expiryDate.setHint(R.string.errorExpirySelection)
+                expiryDate.setHintTextColor(Color.RED)
+//                errorNoExpirationDate.visibility = View.VISIBLE
+               error = true
+            }
+
+            // check if storage location is not set
+            if (chipId == R.id.id_add_location_chip) {
+                errorNoStorageLocation.setText(R.string.errorStorageSelection)
+                errorNoStorageLocation.setTextColor(Color.RED)
+                errorNoStorageLocation.visibility = View.VISIBLE
+                error = true
+
+            }
+
+            if( error == true){
+                return@setOnClickListener
+            }
 
 
 
+        }
     }
+
 
     private fun findViews(){
         // find views in layout
-        spinner = findViewById(R.id.add_unit_dropdown)
+        unitSpinner = findViewById(R.id.add_unit_dropdown)
         calendarBtn = findViewById(R.id.iv_calendar_btn)
         itemName = findViewById(R.id.et_item_name)
         brandName= findViewById(R.id.et_brand)
         notes= findViewById(R.id.et_food_notes)
         expiryDate = findViewById(R.id.et_date_expiry)
         closeButton = findViewById(R.id.iv_exit_add_task)
+        submitButton = findViewById(R.id.btn_add_new_item)
+        quantityText = findViewById(R.id.et_quantity)
+        addLocationChip =findViewById(R.id.id_add_location_chip)
+        errorNoStorageLocation = findViewById(R.id.error_storage_location)
+        errorNoExpirationDate = findViewById(R.id.error_expriation_date)
+
 
     }
-    private fun getUnitData(){
-        unitsList = (applicationContext as MyApplication).unitsList!!
-        unitsStrings = (applicationContext as MyApplication).unitsAsString!!
 
-        // check if pantry list already initialized, if not, set the data
-        if ((applicationContext as MyApplication).storageLocationList == null){
-            db.collection("users").document(auth.currentUser?.uid.toString()).get()
-                .addOnSuccessListener { doc ->
-                (applicationContext as MyApplication).currUser = doc.toObject(User::class.java)
-                // get reference to pantry
-                val pantryRef: DocumentReference? =  (applicationContext as MyApplication).currUser?.myPantry
-                    pantryRef?.get()
-                    ?.addOnSuccessListener { pantryDoc ->
-                        val location:Map<String, String> = pantryDoc.get("storage_locations") as Map<String, String>
-                        val listLocation = ArrayList(location.keys)
-                        listLocation.sort()
-                        val locationStrings = listLocation.toMutableList()
-                        // set data to lists in application context and on main activity
-                        (applicationContext as MyApplication).storageLocationList= locationStrings
-                        storageLocationList = locationStrings
-                        (applicationContext as MyApplication).pantryRef = pantryRef
-
-//                        Log.i("location", (applicationContext as MyApplication).storageLocationList.toString())
-                    }
-            }
-            // if the list exists in the application context
-        }else{
-            storageLocationList = (applicationContext as MyApplication).storageLocationList!!
-
-        }
-
-    }
 
 //    https://material.io/components/chips#types
 }
+
+//TODO  check if the global list of storage location is empty, otherwise update
