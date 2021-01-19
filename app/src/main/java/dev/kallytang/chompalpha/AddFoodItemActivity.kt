@@ -2,23 +2,27 @@ package dev.kallytang.chompalpha
 
 import android.content.Intent
 import android.graphics.Color
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.core.content.ContextCompat
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.PropertyName
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dev.kallytang.chompalpha.adapters.UnitsSpinnerAdapter
+import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Units
+import dev.kallytang.chompalpha.models.User
 import kotlinx.android.synthetic.main.list_name_tabs_layout.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -40,11 +44,13 @@ class AddFoodItemActivity : AppCompatActivity() {
     private lateinit var addLocationChip: Chip
     private lateinit var chipGroup :ChipGroup
     private val stringPatternEditText = "MMM d, yyyy"
+    private val timestampPatternFirebase = "yyyy-MM-dd'T'HH:mm:ssXXX"
     private  lateinit var submitButton: Button
     private lateinit var errorNoStorageLocation: TextView
     private lateinit var errorNoExpirationDate: TextView
     private lateinit var unitsList: ArrayList<Units>
     private lateinit var unitsSpinnerAdapter: UnitsSpinnerAdapter
+    private lateinit var unitChosen: Units
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +66,7 @@ class AddFoodItemActivity : AppCompatActivity() {
         materialDatePicker  = datePicker.build()
 
 
-        val stringPatternFirebase = ""
+
 //        https://stackoverflow.com/questions/37390080/convert-local-time-to-utc-and-vice-versa
 
 //        var dateFormmatted = DateFormat.format()
@@ -111,12 +117,13 @@ class AddFoodItemActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                var unitChosen:Units = parent?.getItemAtPosition(position) as Units
-                var clickedUnitName:String = unitChosen.abbreviation
+                unitChosen = parent?.getItemAtPosition(position) as Units
+//                var clickedUnitName:String = unitChosen.abbreviation
 
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
+
             }
 
         }
@@ -167,9 +174,12 @@ class AddFoodItemActivity : AppCompatActivity() {
         submitButton.setOnClickListener {
             var itemNameInput = itemName.text.toString()
             var itemBrandUnput = brandName.text.toString()
-            val expirationDateString = expiryDate.text
+            if (itemBrandUnput.isEmpty()){
+                itemBrandUnput = ""
+            }
+            val expirationDateString = expiryDate.text.toString()
             val chipId = chipGroup.checkedChipId
-            var quantityInput = quantityText.text
+            var quantityInput = quantityText.text.toString().toInt()
             var error: Boolean = false
 
             if (itemNameInput.isEmpty()){
@@ -198,7 +208,44 @@ class AddFoodItemActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // no error
 
+            // get value from chip
+            val chipChosen: Chip = findViewById(chipId)
+            var storageChoice = chipChosen.text.toString()
+
+            // get value from the spinner
+
+            val formatter = SimpleDateFormat(stringPatternEditText, Locale.getDefault() )
+//            val dateParsed = formatter.parse(expirationDateString.toString())
+//
+            val simpleDateFormat = SimpleDateFormat(timestampPatternFirebase, Locale.getDefault())
+//            simpleDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+//            val timestamp = simpleDateFormat.parse(expirationDateString.toString())
+//            val timestampExpiration = Timestamp(timestamp)
+
+            val date: Date = formatter.parse(expirationDateString)
+            val timestampExpiration = Timestamp(date)
+            var currUser: User
+            var item = Item(
+                    itemNameInput,
+                    itemBrandUnput,
+                    quantityInput,
+                    unitChosen,
+                    timestampExpiration,
+                    storageChoice
+                    )
+
+            db.collection("users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener { doc ->
+                currUser = doc.toObject(User::class.java)!!
+                // get reference to pantry
+                val pantryReference: DocumentReference? =  currUser?.myPantry
+
+
+                pantryReference?.collection("my_pantry")?.add(item)
+
+
+            }
 
         }
     }
