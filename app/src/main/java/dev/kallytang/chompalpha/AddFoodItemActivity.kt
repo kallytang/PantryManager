@@ -10,6 +10,7 @@ import android.widget.*
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -21,7 +22,6 @@ import dev.kallytang.chompalpha.adapters.UnitsSpinnerAdapter
 import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Units
 import dev.kallytang.chompalpha.models.User
-import kotlinx.android.synthetic.main.list_name_tabs_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -51,6 +51,7 @@ class AddFoodItemActivity : AppCompatActivity() {
     private lateinit var unitsList: ArrayList<Units>
     private lateinit var unitsSpinnerAdapter: UnitsSpinnerAdapter
     private lateinit var unitChosen: Units
+    private lateinit var fabCamera:FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,8 +65,6 @@ class AddFoodItemActivity : AppCompatActivity() {
         datePicker =  MaterialDatePicker.Builder.datePicker()
         datePicker.setTitleText("Select an Expiration Date")
         materialDatePicker  = datePicker.build()
-
-
 
 //        https://stackoverflow.com/questions/37390080/convert-local-time-to-utc-and-vice-versa
 
@@ -166,10 +165,13 @@ class AddFoodItemActivity : AppCompatActivity() {
         addLocationChip.setOnClickListener {
             // create a dialog to allow user to add new location
             //select new child
+            
 
         }
 
-
+        fabCamera.setOnClickListener {
+            startActivity(Intent(this, CameraActivity::class.java))
+        }
         // submit button 
         submitButton.setOnClickListener {
             var itemNameInput = itemName.text.toString()
@@ -224,6 +226,7 @@ class AddFoodItemActivity : AppCompatActivity() {
 //            val timestamp = simpleDateFormat.parse(expirationDateString.toString())
 //            val timestampExpiration = Timestamp(timestamp)
 
+
             val date: Date = formatter.parse(expirationDateString)
             val timestampExpiration = Timestamp(date)
             var currUser: User
@@ -236,16 +239,21 @@ class AddFoodItemActivity : AppCompatActivity() {
                     storageChoice
                     )
 
-            db.collection("users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener { doc ->
-                currUser = doc.toObject(User::class.java)!!
-                // get reference to pantry
-                val pantryReference: DocumentReference? =  currUser?.myPantry
-
-
+//            db.collection("users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener { doc ->
+//                currUser = doc.toObject(User::class.java)!!
+//                // get reference to pantry
+//                val pantryReference: DocumentReference? =  currUser?.myPantry
+//
+//
+//                pantryReference?.collection("my_pantry")?.add(item)
+//
+//
+//            }
+                var pantryReference = (applicationContext as MyApplication).pantryRef
                 pantryReference?.collection("my_pantry")?.add(item)
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
 
-
-            }
 
         }
     }
@@ -265,6 +273,7 @@ class AddFoodItemActivity : AppCompatActivity() {
         addLocationChip =findViewById(R.id.id_add_location_chip)
         errorNoStorageLocation = findViewById(R.id.error_storage_location)
         errorNoExpirationDate = findViewById(R.id.error_expriation_date)
+        fabCamera = findViewById(R.id.fab_camera)
 
 
     }

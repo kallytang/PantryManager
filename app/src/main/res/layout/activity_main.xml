@@ -12,40 +12,85 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_add_symbol"
         android:backgroundTint="@color/black"
-        app:tint="@color/white"
+        android:src="@drawable/ic_add_symbol"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
-
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
-
-    <RelativeLayout
-        android:id="@+id/pantry_list_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_list_tabs"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="0dp">
+            android:layout_height="wrap_content">
 
-        </androidx.recyclerview.widget.RecyclerView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_pantry_items"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/main_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/menu_main">
+
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/main_toolbar"
+                android:layout_alignParentBottom="false"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="0dp"
+                android:fontFamily="@font/roboto_slab_variable_font_wght"
+                android:text="@string/my_kitchen"
+                android:textColor="@color/black"
+                android:textSize="24sp">
+
+            </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/pantry_list_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/rv_list_tabs"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="1dp">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_toolbar">
 
-        </androidx.recyclerview.widget.RecyclerView>
-    </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_list_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:padding="10dp">
 
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_pantry_items"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rv_list_tabs"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/outlined_rectangle_layout" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

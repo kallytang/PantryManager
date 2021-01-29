@@ -19,19 +19,10 @@ class MyApplication : Application() {
 
 
     var storageLocationList: MutableList<String>? = null
-        get() = field
-        set(value) {
-            field = value
-        }
+
     var unitsAsString: MutableList<String>? = null
     var currUser: User? = null
     var pantryRef: DocumentReference? = null
-        get() = field
-        set(value) {
-            field = value
-        }
-
-
 
 
     override fun onCreate() {
@@ -62,13 +53,13 @@ class MyApplication : Application() {
                 pantryReference?.get()
                     ?.addOnSuccessListener { pantryDoc ->
                         val location:Map<String, String> = pantryDoc.get("storage_locations") as Map<String, String>
-                        val listLocation = ArrayList(location.keys)
+                        val listLocation = ArrayList(location.values)
                         listLocation.sort()
                         val locationStrings = listLocation.toMutableList()
                         // set data to lists in application context and on main activity
                         storageLocationList = locationStrings
                         pantryRef =pantryReference
-//                        Log.i("chips", pantryRef.toString())
+                        Log.i("chips2", pantryRef.toString())
 
 
                     }

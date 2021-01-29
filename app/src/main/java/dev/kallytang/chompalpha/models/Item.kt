@@ -10,7 +10,7 @@ data class Item(
 
     var name: String = "",
     var brand: String = "",
-    var quantity: Number = 1,
+    var quantity: Int = 1,
     var units: Units? = null,
     @get:PropertyName("expiry_date") @set:PropertyName("expiry_date")var expiryDate: com.google.firebase.Timestamp? = null,
     var location: String = "",

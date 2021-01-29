@@ -1,16 +1,25 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+
+        <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionOverflowButtonStyle">@style/OverflowButton</item>
         <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
     </style>
     <style name="OverflowMenu" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
         <item name="android:windowDisablePreview">true</item>
         <item name="overlapAnchor">false</item>
+
         <item name="android:dropDownVerticalOffset">4.0dip</item>
+    </style>
+    <style name="MainActionBarTheme" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
+    <style name="OverflowButton" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_cog_black</item>
     </style>
 
 </resources>
