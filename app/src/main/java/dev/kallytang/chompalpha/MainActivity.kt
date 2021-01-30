@@ -1,24 +1,24 @@
 package dev.kallytang.chompalpha
 
 import android.content.Intent
-import android.icu.lang.UCharacter
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.ktx.Firebase
 
 import com.google.firebase.firestore.ktx.firestore
 import dev.kallytang.chompalpha.adapters.ItemsAdapter
 import dev.kallytang.chompalpha.adapters.StorageLocationAdapter
+import dev.kallytang.chompalpha.databinding.ActivityMainBinding
 import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Units
 import dev.kallytang.chompalpha.models.User
@@ -32,32 +32,30 @@ class MainActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private lateinit var itemsList: MutableList<Item>
     private lateinit var itemsAdapter: ItemsAdapter
-    private lateinit var rvItems: RecyclerView
     private lateinit var storageList:MutableList<String>
     private lateinit var storageAdapter: StorageLocationAdapter
-    private lateinit var rvStorageList: RecyclerView
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         auth = Firebase.auth
-
-        rvItems = findViewById(R.id.rv_pantry_items)
+        
         //instantiate list
         itemsList = mutableListOf()
 
         val decoration = DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
         //create adapter
         itemsAdapter = ItemsAdapter(this, itemsList)
-        rvItems.adapter = itemsAdapter
-        rvItems.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        rvItems.addItemDecoration(decoration)
+        binding.rvPantryItems.adapter = itemsAdapter
+        binding.rvPantryItems.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvPantryItems.addItemDecoration(decoration)
 
         storageList= mutableListOf()
         storageAdapter = StorageLocationAdapter(this, storageList)
-        rvStorageList = findViewById(R.id.rv_list_tabs)
-        rvStorageList.adapter = storageAdapter
-        rvStorageList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        
+        binding.rvListTabs.adapter = storageAdapter
+        binding.rvListTabs.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         getItems()
         getUnits()
         getStorageLocations()
@@ -69,8 +67,8 @@ class MainActivity : AppCompatActivity() {
 
         //todo: make query to firestore to retrieve data
 
-        val fab: View = findViewById(R.id.fab_add_pantry_item)
-        fab.setOnClickListener {
+//        val fab: View = findViewById(R.id.fab_add_pantry_item)
+        binding.fabAddPantryItem.setOnClickListener {
             val intent = Intent(this, AddFoodItemActivity::class.java)
             startActivity(intent)
         }

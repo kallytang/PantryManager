@@ -38,6 +38,7 @@ class CameraActivity : AppCompatActivity() {
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 66
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private var RESULT_OK = 90
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +89,7 @@ class CameraActivity : AppCompatActivity() {
             outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
                     Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                    Toast.makeText(baseContext, "Error, could take the photo, try again.", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
@@ -97,6 +99,8 @@ class CameraActivity : AppCompatActivity() {
                     Log.d(TAG, msg)
                     val intent = Intent(this@CameraActivity, AddFoodItemActivity::class.java)
                     intent.putExtra("photo", photoFile)
+                    setResult(RESULT_OK, intent)
+                    finish()
 
                 }
             })
