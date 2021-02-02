@@ -38,7 +38,7 @@ class CameraActivity : AppCompatActivity() {
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 66
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        private var RESULT_OK = 90
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -15,6 +15,7 @@ class StorageLocationAdapter(val context: Context, val locationList:List<String>
     inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         fun bindView(locationItem: String) {
             itemView.tv_location_item.text = locationItem
+
         }
 
     }
@@ -31,4 +32,5 @@ class StorageLocationAdapter(val context: Context, val locationList:List<String>
     override fun getItemCount(): Int {
         return locationList.size
     }
+
 }

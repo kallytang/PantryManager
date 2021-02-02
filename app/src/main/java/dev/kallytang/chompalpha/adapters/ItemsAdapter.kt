@@ -1,6 +1,5 @@
 package dev.kallytang.chompalpha.adapters
 
-import android.content.ClipData
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,7 @@ import dev.kallytang.chompalpha.R
 import dev.kallytang.chompalpha.models.Item
 import kotlinx.android.synthetic.main.item_food_list.view.*
 
-class ItemsAdapter(val context: Context, val items: List<Item> ) :
+class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
     RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
         fun bindView(item: Item) {
@@ -29,5 +28,13 @@ class ItemsAdapter(val context: Context, val items: List<Item> ) :
 
     override fun getItemCount(): Int {
         return items.size
+    }
+    fun clear(){
+        items.clear()
+
+    }
+    fun addAll(list: ArrayList<Item>) {
+        items.addAll(list)
+        notifyDataSetChanged()
     }
 }

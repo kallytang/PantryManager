@@ -22,7 +22,6 @@ import dev.kallytang.chompalpha.databinding.ActivityMainBinding
 import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Units
 import dev.kallytang.chompalpha.models.User
-import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
     private companion object{
@@ -40,13 +39,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         auth = Firebase.auth
-        
+
+        binding.swipeRefreshMain.setOnRefreshListener {
+
+            getItems()
+        }
+        getItems()
         //instantiate list
         itemsList = mutableListOf()
 
         val decoration = DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
         //create adapter
-        itemsAdapter = ItemsAdapter(this, itemsList)
+        itemsAdapter = ItemsAdapter(this, itemsList as ArrayList<Item>)
         binding.rvPantryItems.adapter = itemsAdapter
         binding.rvPantryItems.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvPantryItems.addItemDecoration(decoration)
@@ -56,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         
         binding.rvListTabs.adapter = storageAdapter
         binding.rvListTabs.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        getItems()
+
         getUnits()
         getStorageLocations()
 
@@ -137,9 +141,9 @@ class MainActivity : AppCompatActivity() {
 
                     val items = snap.toObjects(Item::class.java)
                     Log.i("itemsF", items.toString())
-                    itemsList.clear()
-                    itemsList.addAll(items)
-                    itemsAdapter.notifyDataSetChanged()
+                    itemsAdapter.clear()
+                    itemsAdapter.addAll(items as ArrayList<Item>)
+                    binding.swipeRefreshMain.isRefreshing = false
 
                 }
             }
@@ -147,5 +151,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
 }

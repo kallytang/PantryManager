@@ -25,21 +25,21 @@ class UnitsSpinnerAdapter(var contextSpinner: Context, var resources: Int, val u
 
     private fun setUpView(position: Int, convertView: View?, parent: ViewGroup):View {
         var viewItem: View
-        var unitName: TextView
+        var tvUnitName: TextView
         var unitItem: Units? = getItem(position)
         if (convertView == null){
             viewItem = LayoutInflater.from(context).inflate(
-                R.layout.unit_spinner_row, parent, false
+                R.layout.spinner_row, parent, false
             )
-            unitName = viewItem.findViewById(R.id.tv_unit)
+            tvUnitName = viewItem.findViewById(R.id.tv_spinner_item_name)
             if (unitItem != null) {
-                unitName.setText(unitItem.abbreviation)
+                tvUnitName.setText(unitItem.abbreviation)
             }
             return viewItem
         }else{
-            unitName = convertView.findViewById(R.id.tv_unit)
+            tvUnitName = convertView.findViewById(R.id.tv_spinner_item_name)
             if (unitItem != null) {
-                unitName.setText(unitItem.abbreviation)
+                tvUnitName.setText(unitItem.abbreviation)
             }
             return  convertView
         }

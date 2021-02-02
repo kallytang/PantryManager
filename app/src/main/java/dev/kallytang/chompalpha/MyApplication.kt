@@ -8,6 +8,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Units
 import dev.kallytang.chompalpha.models.User
 import java.util.ArrayList
@@ -17,7 +18,7 @@ class MyApplication : Application() {
 
     var unitsList: List<Units>? = null
 
-
+    var itemsList: MutableList<Item>? = null
     var storageLocationList: MutableList<String>? = null
 
     var unitsAsString: MutableList<String>? = null
@@ -45,6 +46,7 @@ class MyApplication : Application() {
 
 
        }
+        //query document
         db.collection("users").document(auth.currentUser?.uid.toString()).get()
             .addOnSuccessListener { doc ->
                 currUser = doc.toObject(User::class.java)

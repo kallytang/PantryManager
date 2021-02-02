@@ -24,13 +24,13 @@
     <string name="close_window">close window</string>
     <string name="apples">Apples</string>
     <string name="_1">1</string>
-    <string name="quantity">Quantity</string>
+    <string name="quantity">QUANTITY</string>
     <string name="add_new">Add New</string>
-    <string name="storage_location">Storage Location</string>
-    <string name="notes">Notes</string>
-    <string name="expiration_date">Expiration Date:</string>
-    <string name="item_name">Item Name</string>
-    <string name="brand">Brand</string>
+    <string name="storage_location">STORAGE LOCATION</string>
+    <string name="notes">NOTES</string>
+    <string name="expiration_date">EXPIRATION DATE:</string>
+    <string name="item_name">ITEM NAME</string>
+    <string name="brand">BRAND</string>
     <string name="image_of_food_item">image of food item</string>
     <string name="pantry">Pantry</string>
     <string name="shopping_list">Shopping List</string>
@@ -39,4 +39,7 @@
     <string name="errorStorageSelection">Please Choose a Location</string>
     <string name="errorExpirySelection">Please Choose an Expiration Date</string>
     <string name="my_kitchen">My Kitchen</string>
+    <string name="name">Name</string>
+    <string name="update">Update</string>
+    <string name="unit">UNIT</string>
 </resources>
