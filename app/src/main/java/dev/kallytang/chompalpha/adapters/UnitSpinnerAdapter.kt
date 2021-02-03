@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import dev.kallytang.chompalpha.R
-import dev.kallytang.chompalpha.models.Units
+import dev.kallytang.chompalpha.models.Unit
 
-class UnitsSpinnerAdapter(var contextSpinner: Context, var resources: Int, val unitsList: ArrayList<Units>): ArrayAdapter<Units>(contextSpinner, resources, unitsList){
+class UnitSpinnerAdapter(var contextSpinner: Context, var resources: Int, val unitList: ArrayList<Unit>): ArrayAdapter<Unit>(contextSpinner, resources, unitList){
 
 
     override fun getItemId(position: Int): Long {
@@ -26,7 +26,7 @@ class UnitsSpinnerAdapter(var contextSpinner: Context, var resources: Int, val u
     private fun setUpView(position: Int, convertView: View?, parent: ViewGroup):View {
         var viewItem: View
         var tvUnitName: TextView
-        var unitItem: Units? = getItem(position)
+        var unitItem: Unit? = getItem(position)
         if (convertView == null){
             viewItem = LayoutInflater.from(context).inflate(
                 R.layout.spinner_row, parent, false

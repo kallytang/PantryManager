@@ -98,7 +98,7 @@ class CameraActivity : AppCompatActivity() {
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
                     val intent = Intent(this@CameraActivity, AddFoodItemActivity::class.java)
-                    intent.putExtra("photo", photoFile)
+                    intent.putExtra("photo", savedUri)
                     setResult(RESULT_OK, intent)
                     finish()
 

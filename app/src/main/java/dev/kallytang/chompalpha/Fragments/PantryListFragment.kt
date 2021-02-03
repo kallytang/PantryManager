@@ -2,7 +2,6 @@ package dev.kallytang.chompalpha.Fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,7 @@ import com.google.firebase.ktx.Firebase
 import dev.kallytang.chompalpha.AddFoodItemActivity
 import dev.kallytang.chompalpha.MyApplication
 import dev.kallytang.chompalpha.R
-import dev.kallytang.chompalpha.models.Units
+import dev.kallytang.chompalpha.models.Unit
 import dev.kallytang.chompalpha.models.User
 import kotlinx.android.synthetic.main.fragment_pantry_list.*
 
@@ -29,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_pantry_list.*
  */
 class PantryListFragment : Fragment() {
     private val db = Firebase.firestore
-    private var unitsList = mutableListOf<Units>()
+    private var unitsList = mutableListOf<Unit>()
     private var unitsStrings = mutableListOf<String>()
     private var storageLocationList = mutableListOf<String>()
     private lateinit var auth: FirebaseAuth
@@ -56,7 +55,7 @@ class PantryListFragment : Fragment() {
 
     private fun getUnitData(){
         val applicationContext = context
-        unitsList = ((applicationContext as MyApplication).unitsList as MutableList<Units>?)!!
+        unitsList = ((applicationContext as MyApplication).unitList as MutableList<Unit>?)!!
         unitsStrings = (applicationContext as MyApplication).unitsAsString!!
 
         // check if pantry list already initialized, if not, set the data

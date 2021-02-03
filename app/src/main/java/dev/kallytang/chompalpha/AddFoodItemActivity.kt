@@ -1,15 +1,15 @@
 package dev.kallytang.chompalpha
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -18,17 +18,18 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import dev.kallytang.chompalpha.adapters.StorageSpinnerAdapter
-import dev.kallytang.chompalpha.adapters.UnitsSpinnerAdapter
+import dev.kallytang.chompalpha.adapters.UnitSpinnerAdapter
 import dev.kallytang.chompalpha.databinding.ActivityAddFoodItemBinding
 import dev.kallytang.chompalpha.models.Item
-import dev.kallytang.chompalpha.models.Units
+import dev.kallytang.chompalpha.models.Unit
 import dev.kallytang.chompalpha.models.User
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.jar.Manifest
 import kotlin.collections.ArrayList
+
 
 class AddFoodItemActivity : AppCompatActivity() {
     private final val TAG = "AddFoodItemActivity"
@@ -38,17 +39,19 @@ class AddFoodItemActivity : AppCompatActivity() {
     private lateinit var materialDatePicker: MaterialDatePicker<Long>
     private val stringPatternEditText = "MMM d, yyyy"
     private val timestampPatternFirebase = "yyyy-MM-dd'T'HH:mm:ssXXX"
-    private lateinit var unitsList: ArrayList<Units>
-    private lateinit var unitsSpinnerAdapter: UnitsSpinnerAdapter
-    private lateinit var unitChosen: Units
+    private lateinit var unitList: ArrayList<Unit>
+    private lateinit var unitSpinnerAdapter: UnitSpinnerAdapter
+    private lateinit var unitChosen: Unit
     private lateinit var storageNames: ArrayList<String>
     private lateinit var storageSpinnerAdapter: StorageSpinnerAdapter
-    private lateinit var photoFile: File
+    private var photoFile: Uri? = null
     private lateinit var binding: ActivityAddFoodItemBinding
+    private lateinit var storageRef: StorageReference
 
     companion object {
         private final var REQUEST_CODE = 86
-//        private final var RESULT_OK = 90
+
+        //        private final var RESULT_OK = 90
         private final var PHOTO_CODE = 311
         private val PERMISSION_CODE_GALLERY = 46;
     }
@@ -56,8 +59,8 @@ class AddFoodItemActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_add_food_item)
-
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_food_item)
+        storageRef = FirebaseStorage.getInstance().getReference();
         auth = Firebase.auth
 
 
@@ -88,61 +91,63 @@ class AddFoodItemActivity : AppCompatActivity() {
 
         //set up storage location
         storageNames = ArrayList()
-        (applicationContext as MyApplication).storageLocationList?.let { storageNames.addAll(it)}
+        (applicationContext as MyApplication).storageLocationList?.let { storageNames.addAll(it) }
         storageSpinnerAdapter = StorageSpinnerAdapter(this, R.layout.spinner_row, storageNames)
         binding.addLocationSpinner.adapter = storageSpinnerAdapter
 
         // set up units spinner
-        unitsList = ArrayList()
+        unitList = ArrayList()
 
-        (applicationContext as MyApplication).unitsList?.let { unitsList.addAll(it) }
+        (applicationContext as MyApplication).unitList?.let { unitList.addAll(it) }
 
         var indexUnit = 0
-        for (idx in unitsList.indices) {
-            if (unitsList[idx].unitName == "none") {
+        for (idx in unitList.indices) {
+            if (unitList[idx].unitName == "none") {
                 indexUnit = idx
             }
         }
 
 
-        unitsSpinnerAdapter = UnitsSpinnerAdapter(this, R.layout.spinner_row, unitsList)
+        unitSpinnerAdapter = UnitSpinnerAdapter(this, R.layout.spinner_row, unitList)
 //        Log.i("unitsList",unitsList.toString())
-        binding.addUnitSpinner.adapter = unitsSpinnerAdapter
+        binding.addUnitSpinner.adapter = unitSpinnerAdapter
         binding.addUnitSpinner.setSelection(indexUnit)
 
 
-        var unitChoice: Units
-        binding.addUnitSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                unitChosen = parent?.getItemAtPosition(position) as Units
+        var unitChoice: Unit
+        binding.addUnitSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long,
+                ) {
+                    unitChosen = parent?.getItemAtPosition(position) as Unit
 //                var clickedUnitName:String = unitChosen.abbreviation
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-        }
         var locationChosen = "Other"
-        binding.addLocationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                locationChosen = parent?.getItemAtPosition(position) as String
-            }
+        binding.addLocationSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long,
+                ) {
+                    locationChosen = parent?.getItemAtPosition(position) as String
+                }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
 
+                }
             }
-        }
 
         //for closing button
         binding.ivExitAddTask.setOnClickListener {
@@ -167,14 +172,14 @@ class AddFoodItemActivity : AppCompatActivity() {
 
         binding.fabGetFromGallery.setOnClickListener {
 
-            if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                if(checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                     val permission = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
                     requestPermissions(permission, PERMISSION_CODE_GALLERY)
-                }else{
+                } else {
                     openPhotos()
                 }
-            }else{
+            } else {
                 openPhotos()
             }
 
@@ -188,6 +193,10 @@ class AddFoodItemActivity : AppCompatActivity() {
             var itemBrandUnput = binding.etBrand.text.toString()
             if (itemBrandUnput.isEmpty()) {
                 itemBrandUnput = ""
+            }
+            var itemNotesInput = binding.etFoodNotes.text.toString()
+            if (itemNotesInput.isEmpty()) {
+                itemNotesInput = ""
             }
             val expirationDateString = binding.etDateExpiry.text.toString()
             val quantityInput = binding.etQuantity.text.toString().toInt()
@@ -213,63 +222,107 @@ class AddFoodItemActivity : AppCompatActivity() {
 
             if (error == true) {
                 return@setOnClickListener
+            } else {
+                binding.btnAddNewItem.isEnabled = false
+                // get value from the spinner
+                val formatter = SimpleDateFormat(stringPatternEditText, Locale.getDefault())
+                val simpleDateFormat =
+                    SimpleDateFormat(timestampPatternFirebase, Locale.getDefault())
+
+                var item: Item
+
+                if (photoFile != null) {
+                    val userID = auth.currentUser?.uid.toString()
+                    val photoRef =
+                        storageRef.child("images/$userID/${System.currentTimeMillis()}_photo.jpg")
+                    photoRef.putFile(photoFile!!)
+                        .continueWithTask { photoUploadTask ->
+                            photoRef.downloadUrl
+                        }.continueWith { downloadUrl ->
+                            val date: Date = formatter.parse(expirationDateString)
+                            val timestampExpiration = Timestamp(date)
+                            var currUser: User
+                            item = Item(
+                                itemNameInput,
+                                itemBrandUnput,
+                                quantityInput,
+                                unitChosen,
+                                timestampExpiration,
+                                locationChosen,
+                                itemNotesInput,
+                                downloadUrl.result.toString(),
+                                ""
+                            )
+                            val pantryReference = (applicationContext as MyApplication).pantryRef
+                            pantryReference?.collection("my_pantry")?.add(item)
+                        }.addOnCompleteListener{
+
+                            binding.btnAddNewItem.isEnabled = false
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        }
+
+                } else {
+                    val imageUrl = ""
+                    val date: Date = formatter.parse(expirationDateString)
+                    val timestampExpiration = Timestamp(date)
+                    var currUser: User
+                    item = Item(
+                        itemNameInput,
+                        itemBrandUnput,
+                        quantityInput,
+                        unitChosen,
+                        timestampExpiration,
+                        locationChosen,
+                        itemNotesInput,
+                        imageUrl,
+                        ""
+
+                    )
+                    val pantryReference = (applicationContext as MyApplication).pantryRef
+                    pantryReference?.collection("my_pantry")?.add(item)
+                    binding.btnAddNewItem.isEnabled = false
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
+
             }
-
-            // get value from the spinner
-            val formatter = SimpleDateFormat(stringPatternEditText, Locale.getDefault())
-            val simpleDateFormat = SimpleDateFormat(timestampPatternFirebase, Locale.getDefault())
-
-
-            val date: Date = formatter.parse(expirationDateString)
-            val timestampExpiration = Timestamp(date)
-            var currUser: User
-            var item = Item(
-                itemNameInput,
-                itemBrandUnput,
-                quantityInput,
-                unitChosen,
-                timestampExpiration,
-                locationChosen
-            )
-
-            var pantryReference = (applicationContext as MyApplication).pantryRef
-            pantryReference?.collection("my_pantry")?.add(item)
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
 
         }
     }
 
     private fun openPhotos() {
-        val imageSelectionIntent =  Intent(Intent.ACTION_GET_CONTENT)
+        val imageSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
         imageSelectionIntent.type = "image/*"
-        if (imageSelectionIntent.resolveActivity(packageManager) != null){
+        if (imageSelectionIntent.resolveActivity(packageManager) != null) {
             startActivityForResult(imageSelectionIntent, PHOTO_CODE)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null) {
-                photoFile = data.extras?.get("photo") as File
-                if (photoFile.exists()) {
+                photoFile = data.extras?.get("photo") as Uri
+                if (photoFile != null) {
                     binding.ivNewFoodImage.visibility = View.VISIBLE
                     Glide.with(this).load(photoFile).into(binding.ivNewFoodImage)
                 }
             }
         }
-        if(requestCode == PHOTO_CODE && resultCode == RESULT_OK){
-            var photo = data?.data
-            Log.i("photoData","photouri, $photo")
-            if (photo !=null){
+        if (requestCode == PHOTO_CODE && resultCode == RESULT_OK) {
+            photoFile = data?.data!!
+
+            if (photoFile != null) {
+                Log.i("photoData", "photouri, ${photoFile!!.javaClass.name}")
+            }
+            if (photoFile != null) {
                 binding.ivNewFoodImage.visibility = View.VISIBLE
-                Glide.with(this).load(photo).into(binding.ivNewFoodImage)
+                Glide.with(this).load(photoFile).into(binding.ivNewFoodImage)
             }
 
         }
     }
-
 
 
 }

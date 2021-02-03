@@ -23,7 +23,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditItemActivity"></activity>
+        <activity android:name=".ManageHouseholdActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".EditItemActivity" />
         <activity android:name=".CameraActivity" />
         <activity
             android:name=".AddFoodItemActivity"

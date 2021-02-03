@@ -9,14 +9,14 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dev.kallytang.chompalpha.models.Item
-import dev.kallytang.chompalpha.models.Units
+import dev.kallytang.chompalpha.models.Unit
 import dev.kallytang.chompalpha.models.User
 import java.util.ArrayList
 
 class MyApplication : Application() {
     private lateinit var auth: FirebaseAuth
 
-    var unitsList: List<Units>? = null
+    var unitList: List<Unit>? = null
 
     var itemsList: MutableList<Item>? = null
     var storageLocationList: MutableList<String>? = null
@@ -35,12 +35,12 @@ class MyApplication : Application() {
 
 
         db.collection("units").get().addOnSuccessListener { snapshot ->
-            val dataList = snapshot.toObjects(Units::class.java)
+            val dataList = snapshot.toObjects(Unit::class.java)
             unitsAsString = mutableListOf<String>()
-            unitsList = dataList
-            Log.i("units", unitsList.toString())
-            for (items in unitsList!!) {
-                unitsAsString?.add(items.abbreviation)
+            unitList = dataList
+            Log.i("units", unitList.toString())
+            for (items in unitList!!) {
+                items.abbreviation?.let { unitsAsString?.add(it) }
             }
             Log.i("units", unitsAsString.toString())
 

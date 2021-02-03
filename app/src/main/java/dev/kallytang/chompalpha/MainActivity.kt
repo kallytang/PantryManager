@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -20,7 +18,7 @@ import dev.kallytang.chompalpha.adapters.ItemsAdapter
 import dev.kallytang.chompalpha.adapters.StorageLocationAdapter
 import dev.kallytang.chompalpha.databinding.ActivityMainBinding
 import dev.kallytang.chompalpha.models.Item
-import dev.kallytang.chompalpha.models.Units
+import dev.kallytang.chompalpha.models.Unit
 import dev.kallytang.chompalpha.models.User
 
 class MainActivity : AppCompatActivity() {
@@ -91,6 +89,7 @@ class MainActivity : AppCompatActivity() {
                         val listLocation = ArrayList(location.values)
                         listLocation.sort()
                         listLocation.add(0, "All")
+
                         storageList.clear()
                         storageList.addAll(listLocation)
                         storageAdapter.notifyDataSetChanged()
@@ -124,10 +123,10 @@ class MainActivity : AppCompatActivity() {
     private fun getUnits(){
 //        var myApp = MyApplication()
         db.collection("units").get().addOnSuccessListener { snapshot ->
-            Log.i("units", snapshot.toObjects(Units::class.java).toString())
-            (applicationContext as MyApplication).unitsList = snapshot.toObjects(Units::class.java)
+            Log.i("units", snapshot.toObjects(Unit::class.java).toString())
+            (applicationContext as MyApplication).unitList = snapshot.toObjects(Unit::class.java)
 
-            Log.i("unitsList2", (applicationContext as MyApplication).unitsList.toString())
+            Log.i("unitsList2", (applicationContext as MyApplication).unitList.toString())
         }
     }
 
@@ -139,7 +138,8 @@ class MainActivity : AppCompatActivity() {
             if (user != null) {
                 user.myPantry?.collection("my_pantry")?.get()?.addOnSuccessListener { snap ->
 
-                    val items = snap.toObjects(Item::class.java)
+                    val items:MutableList<Item> = snap.toObjects(Item::class.java)
+                    items[1].documentId?.let { Log.i("itemID1", it) }
                     Log.i("itemsF", items.toString())
                     itemsAdapter.clear()
                     itemsAdapter.addAll(items as ArrayList<Item>)
