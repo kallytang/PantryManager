@@ -25,20 +25,24 @@ class EditItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_edit_item)
         val intent: Intent = intent
-        var item: Item? = intent.getParcelableExtra("item")
+        val item: Item? = intent.getParcelableExtra("item")
+//        val unit: Unit? = intent.getParcelableExtra("unit")
 
         //set up unitlist adapter
         unitList = ArrayList()
         (applicationContext as MyApplication).unitList?.let { unitList.addAll(it) }
 
+//        Log.i("editItem", item.toString())
         Log.i("editItem", item.toString())
 
         var indexUnit = 0
         for (idx in unitList.indices) {
 
-            if (item?.unit?.unitName == unitList[idx].unitName) {
-                indexUnit = idx
+            if (item != null) {
+                if (item.units?.unitName == unitList[idx].unitName) {
+                    indexUnit = idx
 
+                }
             }
         }
 

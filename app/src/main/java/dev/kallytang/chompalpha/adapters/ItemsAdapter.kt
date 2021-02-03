@@ -2,6 +2,7 @@ package dev.kallytang.chompalpha.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.kallytang.chompalpha.EditItemActivity
 import dev.kallytang.chompalpha.R
 import dev.kallytang.chompalpha.models.Item
+import dev.kallytang.chompalpha.models.Unit
 import kotlinx.android.synthetic.main.item_food_list.view.*
 
 class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
@@ -20,6 +22,7 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
             itemView.setOnClickListener{
                 val intent = Intent(context, EditItemActivity::class.java)
                 intent.putExtra("item", item)
+                var unit: Unit? = item.units
                 context.startActivity(intent)
             }
         }

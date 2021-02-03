@@ -9,6 +9,17 @@
         android:layout_height="match_parent"
         tools:context=".EditItemActivity">
 
+        <Button
+            android:id="@+id/btn_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/black"
+            android:text="@string/update"
+            app:layout_constraintBottom_toBottomOf="@+id/nestedScrollView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_edit_Item"
             android:layout_width="match_parent"
@@ -32,6 +43,7 @@
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -96,19 +108,6 @@
                         app:layout_constraintStart_toEndOf="@+id/tv_info_item_name"
                         app:srcCompat="@drawable/ic_pencil_icon" />
 
-
-                    <Button
-                        android:id="@+id/btn_update"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="35dp"
-                        android:backgroundTint="@color/black"
-                        android:text="@string/update"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/et_food_notes"
-                        app:layout_constraintStart_toStartOf="@+id/et_food_notes"
-                        app:layout_constraintTop_toBottomOf="@+id/et_food_notes" />
 
                     <EditText
                         android:id="@+id/et_brand"
