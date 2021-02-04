@@ -1,17 +1,26 @@
 package dev.kallytang.chompalpha
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.Timestamp
 import dev.kallytang.chompalpha.adapters.StorageSpinnerAdapter
 import dev.kallytang.chompalpha.adapters.UnitSpinnerAdapter
 import dev.kallytang.chompalpha.databinding.ActivityEditItemBinding
 import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Unit
+import kotlinx.android.synthetic.main.activity_edit_item.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class EditItemActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditItemBinding
@@ -20,20 +29,27 @@ class EditItemActivity : AppCompatActivity() {
     private lateinit var storageList: ArrayList<String>
     private lateinit var spinnerStorageAdapter: StorageSpinnerAdapter
     private lateinit var spinnerUnitAdapter: UnitSpinnerAdapter
+    private lateinit var datePicker: MaterialDatePicker.Builder<Long>
+    private lateinit var materialDatePicker: MaterialDatePicker<Long>
+    private lateinit var timeStampOld: Timestamp
+    private val stringPatternEditText = "MMM d, yyyy"
+    private val timestampPatternFirebase = "yyyy-MM-dd'T'HH:mm:ssXXX"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_edit_item)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_item)
         val intent: Intent = intent
         val item: Item? = intent.getParcelableExtra("item")
-//        val unit: Unit? = intent.getParcelableExtra("unit")
-
         //set up unitlist adapter
         unitList = ArrayList()
         (applicationContext as MyApplication).unitList?.let { unitList.addAll(it) }
-
-//        Log.i("editItem", item.toString())
         Log.i("editItem", item.toString())
+
+        // set up the date on the form and a dialog to open calendar
+        datePicker = MaterialDatePicker.Builder.datePicker()
+        datePicker.setTitleText("Select an Expiration Date")
+        materialDatePicker = datePicker.build()
+
 
         var indexUnit = 0
         for (idx in unitList.indices) {
@@ -70,7 +86,89 @@ class EditItemActivity : AppCompatActivity() {
         binding.addLocationSpinner.setSelection(indexStorage)
 
 
-        binding.ivExitEditTask.setOnClickListener{
+        // add timestamp to document
+        if (item != null) {
+            timeStampOld = item.expiryDate!!
+            val simpleDateFormatter = SimpleDateFormat(stringPatternEditText, Locale.getDefault())
+            val dateForForm = simpleDateFormatter.format(timeStampOld.toDate())
+            binding.etDateExpiry.text = dateForForm
+        }
+
+        binding.etDateExpiry.setOnClickListener {
+            binding.etDateExpiry.isEnabled = false
+            materialDatePicker.show(supportFragmentManager, "DATE_PICKER")
+        }
+        // create date picker
+        // TODO add date to calendar picker
+        materialDatePicker.addOnPositiveButtonClickListener { date ->
+            Log.i("date", materialDatePicker.headerText)
+            Log.i("date", date.toString())
+            binding.etDateExpiry.setText(materialDatePicker.headerText)
+            binding.etDateExpiry.isEnabled = true
+        }
+        materialDatePicker.addOnDismissListener {
+            binding.etDateExpiry.isEnabled = true
+        }
+        materialDatePicker.addOnCancelListener {
+            binding.etDateExpiry.isEnabled = true
+        }
+
+        binding.editNamePencil.setOnClickListener {
+            binding.editNamePencil.isEnabled = false
+            binding.tvItemTitle.visibility = View.VISIBLE
+            binding.etItemName.setText(binding.tvInfoItemName.text.toString())
+            binding.etItemName.visibility = View.VISIBLE
+            binding.tvInfoItemName.visibility = View.INVISIBLE
+            binding.editNamePencil.visibility = View.INVISIBLE
+            binding.editNamePencil.isEnabled = true
+        }
+        binding.etItemName.setOnKeyListener { v, keyCode, event ->
+
+            when {
+                ((keyCode == KeyEvent.KEYCODE_ENTER) && (event.action == KeyEvent.ACTION_DOWN)) ->{
+
+                    binding.tvItemTitle.visibility = View.INVISIBLE
+                    binding.etItemName.visibility = View.INVISIBLE
+                    binding.tvInfoItemName.setText(binding.etItemName.text.toString())
+                    binding.tvInfoItemName.visibility = View.VISIBLE
+                    binding.editNamePencil.visibility = View.VISIBLE
+
+                    return@setOnKeyListener true
+                }
+                else -> false
+            }
+        }
+        binding.btnUpdate.setOnClickListener {
+
+            binding.btnUpdate.isEnabled = false
+            val itemNameInput = binding.tvInfoItemName.text.toString()
+            var itemBrandUnput = binding.etBrand.text.toString()
+            if (itemBrandUnput.isEmpty()) {
+                itemBrandUnput = ""
+            }
+            var itemNotesInput = binding.etFoodNotes.text.toString()
+            if (itemNotesInput.isEmpty()) {
+                itemNotesInput = ""
+            }
+            val expirationDateString = binding.etDateExpiry.text.toString()
+            val quantityInput = binding.etQuantity.text.toString().toInt()
+            var error: Boolean = false
+
+            if (itemNameInput.isEmpty()) {
+                binding.etItemName.setHint("Enter Item Name")
+                binding.etItemName.setHintTextColor(Color.RED)
+                binding.itemNameDot.visibility = View.VISIBLE
+                binding.etItemName.setBackgroundResource(R.drawable.text_input_layout_red)
+                error = true
+            }
+            if (error) {
+
+                binding.btnUpdate.isEnabled = true
+                return@setOnClickListener
+            }
+
+        }
+        binding.ivExitEditTask.setOnClickListener {
             val intentMain = Intent(this, MainActivity::class.java)
             startActivity(intentMain)
             finish()
@@ -78,7 +176,7 @@ class EditItemActivity : AppCompatActivity() {
 
 
         if (item != null) {
-            if (item.imageUrl?.isNotEmpty() == true){
+            if (item.imageUrl?.isNotEmpty() == true) {
                 Glide.with(this).load(item.imageUrl).into(binding.ivFoodPhoto)
                 binding.ivFoodPhoto.visibility = View.VISIBLE
             }
@@ -87,7 +185,6 @@ class EditItemActivity : AppCompatActivity() {
             // convert the date to local time
 //            binding.etDateExpiry.setText()
         }
-
 
 
     }

@@ -21,9 +21,9 @@ class StorageSpinnerAdapter(var contextSpinner: Context, var resources: Int, val
         return createView(position, convertView, parent)
     }
     private fun createView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var viewItem: View
-        var tvStorageName: TextView
-        var storageName: String? = getItem(position)
+        val viewItem: View
+        val tvStorageName: TextView
+        val storageName: String? = getItem(position)
         if(convertView == null){
             viewItem = LayoutInflater.from(context).inflate(
                 R.layout.spinner_row, parent,false

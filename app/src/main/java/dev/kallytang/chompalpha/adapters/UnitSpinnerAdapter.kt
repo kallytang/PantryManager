@@ -24,9 +24,9 @@ class UnitSpinnerAdapter(var contextSpinner: Context, var resources: Int, val un
     }
 
     private fun setUpView(position: Int, convertView: View?, parent: ViewGroup):View {
-        var viewItem: View
-        var tvUnitName: TextView
-        var unitItem: Unit? = getItem(position)
+        val viewItem: View
+        val tvUnitName: TextView
+        val unitItem: Unit? = getItem(position)
         if (convertView == null){
             viewItem = LayoutInflater.from(context).inflate(
                 R.layout.spinner_row, parent, false

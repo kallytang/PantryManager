@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,8 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import dev.kallytang.chompalpha.databinding.ActivityCameraBinding
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.File
 import java.text.SimpleDateFormat
@@ -30,8 +33,7 @@ class CameraActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
     private lateinit var outPutDirectory: File
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var cameraButton: Button
-    private lateinit var ivClose: ImageView
+    private lateinit var binding : ActivityCameraBinding
 
     companion object {
         private const val TAG = "CameraXInfo"
@@ -43,11 +45,10 @@ class CameraActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera)
-        cameraButton = findViewById(R.id.camera_capture_button)
-        ivClose = findViewById(R.id.iv_exit_camera)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_camera)
 
-        ivClose.setOnClickListener {
+
+        binding.ivExitCamera.setOnClickListener {
             startActivity(Intent(this, AddFoodItemActivity::class.java))
             finish()
         }
@@ -60,7 +61,7 @@ class CameraActivity : AppCompatActivity() {
 
         }
 
-        cameraButton.setOnClickListener {
+        binding.cameraCaptureButton.setOnClickListener {
             takePhoto()
         }
 
