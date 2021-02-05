@@ -32,11 +32,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var storageList:MutableList<String>
     private lateinit var storageAdapter: StorageLocationAdapter
     private lateinit var binding: ActivityMainBinding
+    private lateinit var filterItemsInterface: FilterItems
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         auth = Firebase.auth
+
+
 
         binding.swipeRefreshMain.setOnRefreshListener {
 
@@ -53,6 +56,25 @@ class MainActivity : AppCompatActivity() {
         binding.rvPantryItems.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvPantryItems.addItemDecoration(decoration)
 
+        filterItemsInterface = object:FilterItems{
+            override fun filterItems(locationName: String){
+                when{
+                    (locationName == "All") ->{
+                        itemsAdapter.clear()
+                        itemsAdapter.addAll((applicationContext as MyApplication).itemsList as ArrayList<Item>)
+                    }
+                    else->{
+                        // create a new list
+                        var newList =  ArrayList<Item>()
+                        //filter items by storage name
+                        newList.addAll((applicationContext as MyApplication).itemsList?.filter { item ->
+                            item.location == locationName
+                        } as ArrayList<Item>)
+
+                    }
+                }
+            }
+        }
         storageList= mutableListOf()
         storageAdapter = StorageLocationAdapter(this, storageList)
         
@@ -105,21 +127,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.logout_tab){
-            Log.i(TAG, "Logged out")
-            auth.signOut()
-            val logoutIntent = Intent(this, LoginActivity::class.java)
-            logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(logoutIntent)
-        }
-        return  super.onOptionsItemSelected(item)
-    }
+
     private fun getUnits(){
 //        var myApp = MyApplication()
         db.collection("units").get().addOnSuccessListener { snapshot ->
@@ -144,6 +153,7 @@ class MainActivity : AppCompatActivity() {
                     itemsAdapter.clear()
                     itemsAdapter.addAll(items as ArrayList<Item>)
                     binding.swipeRefreshMain.isRefreshing = false
+                    (applicationContext as MyApplication).itemsList?.addAll(items)
 
                 }
             }
@@ -151,6 +161,9 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
+
 
 
 }

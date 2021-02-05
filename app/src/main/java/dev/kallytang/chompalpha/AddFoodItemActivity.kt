@@ -182,9 +182,6 @@ class AddFoodItemActivity : AppCompatActivity() {
             } else {
                 openPhotos()
             }
-
-
-//
         }
 
         // submit button 

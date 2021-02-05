@@ -182,8 +182,7 @@ class EditItemActivity : AppCompatActivity() {
             }
             binding.tvInfoItemName.setText(item.name.toString())
             binding.etFoodNotes.setText(item.notes.toString())
-            // convert the date to local time
-//            binding.etDateExpiry.setText()
+
         }
 
 

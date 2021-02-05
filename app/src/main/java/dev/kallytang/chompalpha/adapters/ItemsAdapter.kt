@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 import dev.kallytang.chompalpha.EditItemActivity
+import dev.kallytang.chompalpha.FilterItems
 import dev.kallytang.chompalpha.R
 import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Unit
@@ -16,6 +17,8 @@ import kotlinx.android.synthetic.main.item_food_list.view.*
 
 class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
     RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
+
+
     inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
         fun bindView(item: Item) {
             itemView.tv_title_item.text =  item.name

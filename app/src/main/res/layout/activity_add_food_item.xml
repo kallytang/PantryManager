@@ -96,13 +96,45 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+        <RelativeLayout
+            android:id="@+id/image_containter"
+            android:layout_width="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_new_food_image"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/image_of_food_item"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="56dp"
+                tools:layout_editor_absoluteY="90dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageView
+                android:id="@+id/remove_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/iv_new_food_image"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_close" />
+        </RelativeLayout>
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/ns_scroll_add_item"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintTop_toBottomOf="@id/image_containter"
             app:layout_constraintVertical_bias="0.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -283,12 +315,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="15dp"
                     android:fontFamily="@font/roboto_regular"
                     android:text="@string/item_name"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_new_food_image" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_brand_title"
@@ -301,18 +332,6 @@
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_item_name" />
-
-                <ImageView
-                    android:id="@+id/iv_new_food_image"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
-                    android:contentDescription="@string/image_of_food_item"
-                    android:scaleType="centerCrop"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars" />
 
                 <ImageView
                     android:id="@+id/iv_calendar_btn"
