@@ -21,18 +21,18 @@ import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Unit
 import dev.kallytang.chompalpha.models.User
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , FilterItems{
     private companion object{
         private const val TAG = "MainActivity"
     }
     private lateinit var auth: FirebaseAuth
     private val db = Firebase.firestore
     private lateinit var itemsList: MutableList<Item>
+    private lateinit var itemsListCopy: MutableList<Item>
     private lateinit var itemsAdapter: ItemsAdapter
     private lateinit var storageList:MutableList<String>
     private lateinit var storageAdapter: StorageLocationAdapter
     private lateinit var binding: ActivityMainBinding
-    private lateinit var filterItemsInterface: FilterItems
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         getItems()
         //instantiate list
         itemsList = mutableListOf()
+        itemsListCopy = mutableListOf()
 
         val decoration = DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
         //create adapter
@@ -56,27 +57,10 @@ class MainActivity : AppCompatActivity() {
         binding.rvPantryItems.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvPantryItems.addItemDecoration(decoration)
 
-        filterItemsInterface = object:FilterItems{
-            override fun filterItems(locationName: String){
-                when{
-                    (locationName == "All") ->{
-                        itemsAdapter.clear()
-                        itemsAdapter.addAll((applicationContext as MyApplication).itemsList as ArrayList<Item>)
-                    }
-                    else->{
-                        // create a new list
-                        var newList =  ArrayList<Item>()
-                        //filter items by storage name
-                        newList.addAll((applicationContext as MyApplication).itemsList?.filter { item ->
-                            item.location == locationName
-                        } as ArrayList<Item>)
 
-                    }
-                }
-            }
-        }
+
         storageList= mutableListOf()
-        storageAdapter = StorageLocationAdapter(this, storageList)
+        storageAdapter = StorageLocationAdapter(this, storageList, this)
         
         binding.rvListTabs.adapter = storageAdapter
         binding.rvListTabs.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -99,7 +83,21 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.logout_tab){
+            Log.i(TAG, "Logged out")
+            auth.signOut()
+            val logoutIntent = Intent(this, LoginActivity::class.java)
+            logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(logoutIntent)
+        }
+        return  super.onOptionsItemSelected(item)
+    }
     private fun getStorageLocations() {
         if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
             // query from database
@@ -152,8 +150,9 @@ class MainActivity : AppCompatActivity() {
                     Log.i("itemsF", items.toString())
                     itemsAdapter.clear()
                     itemsAdapter.addAll(items as ArrayList<Item>)
+                    itemsListCopy.clear()
+                    itemsListCopy.addAll(items)
                     binding.swipeRefreshMain.isRefreshing = false
-                    (applicationContext as MyApplication).itemsList?.addAll(items)
 
                 }
             }
@@ -162,8 +161,24 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
-
-
+    override fun filterItems(locationName: String){
+        Log.i("itemsClicked", locationName)
+        if(locationName == "All"){
+            getItems()
+        }else{
+            var listCopy = mutableListOf<Item>()
+            itemsList.clear()
+            itemsList.addAll(itemsListCopy)
+            for(items in itemsList){
+                if(items.location == locationName){
+                    listCopy.add(items)
+                }
+            }
+            itemsAdapter.clear()
+            itemsAdapter.addAll(listCopy as ArrayList<Item>)
+        }
+    }
 }
+
+
+

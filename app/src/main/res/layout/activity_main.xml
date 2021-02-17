@@ -41,9 +41,14 @@
                     android:id="@+id/pantry_list_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/relativeLayout2"
-
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="0dp"
                     android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -91,67 +96,68 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/relativeLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="0dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.appbar.AppBarLayout
-                        android:id="@+id/app_bar"
-                        android:layout_width="match_parent"
-                        android:background="@color/white"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginEnd="0dp">
-
-                        <com.google.android.material.appbar.MaterialToolbar
-                            android:id="@+id/main_toolbar"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginStart="0dp"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginEnd="0dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:menu="@menu/menu_main">
-
-
-                        </com.google.android.material.appbar.MaterialToolbar>
-                    </com.google.android.material.appbar.AppBarLayout>
-
-
-
-                    <TextView
-                        android:id="@+id/toolbar_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/app_bar"
-                        android:layout_alignParentBottom="false"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="0dp"
-                        android:fontFamily="@font/roboto_slab_variable_font_wght"
-                        android:text="@string/my_kitchen"
-                        android:textColor="@color/black"
-                        android:textSize="24sp">
-
-                    </TextView>
-                </RelativeLayout>
 
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
+
+<!--<RelativeLayout-->
+<!--android:id="@+id/relativeLayout2"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_alignParentStart="true"-->
+<!--android:layout_alignParentTop="true"-->
+<!--android:layout_alignParentEnd="true"-->
+<!--android:layout_marginStart="0dp"-->
+<!--android:layout_marginTop="0dp"-->
+<!--android:layout_marginEnd="0dp"-->
+<!--app:layout_constraintStart_toStartOf="parent"-->
+<!--app:layout_constraintTop_toTopOf="parent">-->
+
+<!--<com.google.android.material.appbar.AppBarLayout-->
+<!--    android:id="@+id/app_bar"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:background="@color/white"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_alignParentStart="true"-->
+<!--    android:layout_alignParentEnd="true"-->
+<!--    android:layout_marginStart="0dp"-->
+<!--    android:layout_marginEnd="0dp">-->
+
+<!--    <com.google.android.material.appbar.MaterialToolbar-->
+<!--        android:id="@+id/main_toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_marginStart="0dp"-->
+<!--        android:layout_marginTop="0dp"-->
+<!--        android:layout_marginEnd="0dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:menu="@menu/menu_main">-->
+
+
+<!--    </com.google.android.material.appbar.MaterialToolbar>-->
+<!--</com.google.android.material.appbar.AppBarLayout>-->
+
+
+
+<!--<TextView-->
+<!--    android:id="@+id/toolbar_title"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_alignBottom="@id/app_bar"-->
+<!--    android:layout_alignParentBottom="false"-->
+<!--    android:layout_centerHorizontal="true"-->
+<!--    android:layout_marginBottom="0dp"-->
+<!--    android:fontFamily="@font/roboto_slab_variable_font_wght"-->
+<!--    android:text="@string/my_kitchen"-->
+<!--    android:textColor="@color/black"-->
+<!--    android:textSize="24sp">-->
+
+<!--</TextView>-->
+<!--</RelativeLayout>-->

@@ -5,9 +5,10 @@ import android.os.Parcelable
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import kotlinx.android.parcel.Parcelize
-
+@IgnoreExtraProperties
 @Parcelize
 data class Item(
     var name: String? = "",
@@ -19,7 +20,21 @@ data class Item(
     var notes: String? = "",
     @get:PropertyName("image_url") @set:PropertyName("image_url") var imageUrl: String? = "",
     @Exclude @DocumentId val documentId: String? = "")
-:Parcelable
+:Parcelable{
+    @Exclude
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "name" to name,
+            "brand" to brand,
+            "units" to (units?.toMap() ?: units),
+            "location" to location,
+            "expiry_date" to expiryDate,
+            "notes" to notes,
+            "image_url" to imageUrl
+        )
+    }
+
+}
 
 
 

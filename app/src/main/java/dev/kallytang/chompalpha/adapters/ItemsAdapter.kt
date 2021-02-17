@@ -2,14 +2,12 @@ package dev.kallytang.chompalpha.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 import dev.kallytang.chompalpha.EditItemActivity
-import dev.kallytang.chompalpha.FilterItems
 import dev.kallytang.chompalpha.R
 import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Unit
@@ -51,4 +49,5 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
         items.addAll(list)
         notifyDataSetChanged()
     }
+
 }

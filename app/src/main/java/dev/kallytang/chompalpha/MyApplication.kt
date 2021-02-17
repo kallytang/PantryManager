@@ -15,10 +15,9 @@ import java.util.ArrayList
 
 class MyApplication : Application() {
     private lateinit var auth: FirebaseAuth
-
     var unitList: List<Unit>? = null
 
-    var itemsList: MutableList<Item>? = null
+    var itemsList: ArrayList<Item>? = null
     var storageLocationList: MutableList<String>? = null
 
     var unitsAsString: MutableList<String>? = null
@@ -70,7 +69,4 @@ class MyApplication : Application() {
 
 
     }
-    fun queryStorageLocation(){
 
-
-}

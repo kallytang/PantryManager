@@ -10,13 +10,15 @@ import dev.kallytang.chompalpha.R
 import kotlinx.android.synthetic.main.item_storage_name.view.*
 
 
-class StorageLocationAdapter(val context: Context, val locationList:List<String>) :
+class StorageLocationAdapter(val context: Context, val locationList:List<String>, private val filter: FilterItems) :
     RecyclerView.Adapter<StorageLocationAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         fun bindView(locationItem: String) {
             itemView.tv_location_item.text = locationItem
-
+            itemView.setOnClickListener {
+                filter.filterItems(locationItem)
+            }
 
         }
     }
@@ -34,5 +36,6 @@ class StorageLocationAdapter(val context: Context, val locationList:List<String>
     override fun getItemCount(): Int {
         return locationList.size
     }
+
 
 }

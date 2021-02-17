@@ -2,6 +2,7 @@ package dev.kallytang.chompalpha
 
 import android.content.Intent
 import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -12,17 +13,24 @@ import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dev.kallytang.chompalpha.adapters.StorageSpinnerAdapter
 import dev.kallytang.chompalpha.adapters.UnitSpinnerAdapter
 import dev.kallytang.chompalpha.databinding.ActivityEditItemBinding
 import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Unit
+import dev.kallytang.chompalpha.models.User
 import kotlinx.android.synthetic.main.activity_edit_item.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class EditItemActivity : AppCompatActivity() {
+class EditItemActivity : AppCompatActivity()  {
+    private val db = Firebase.firestore
+    private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityEditItemBinding
     private final val TAG = "EditItemActivity"
     private lateinit var unitList: ArrayList<Unit>
@@ -32,11 +40,15 @@ class EditItemActivity : AppCompatActivity() {
     private lateinit var datePicker: MaterialDatePicker.Builder<Long>
     private lateinit var materialDatePicker: MaterialDatePicker<Long>
     private lateinit var timeStampOld: Timestamp
+    private var imageDeleted = false
     private val stringPatternEditText = "MMM d, yyyy"
     private val timestampPatternFirebase = "yyyy-MM-dd'T'HH:mm:ssXXX"
 
+
+    //todo use concurrency alternative to threading https://kotlinlang.org/docs/native-concurrency.html
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth = Firebase.auth
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_item)
         val intent: Intent = intent
         val item: Item? = intent.getParcelableExtra("item")
@@ -49,6 +61,7 @@ class EditItemActivity : AppCompatActivity() {
         datePicker = MaterialDatePicker.Builder.datePicker()
         datePicker.setTitleText("Select an Expiration Date")
         materialDatePicker = datePicker.build()
+
 
 
         var indexUnit = 0
@@ -86,14 +99,22 @@ class EditItemActivity : AppCompatActivity() {
         binding.addLocationSpinner.setSelection(indexStorage)
 
 
-        // add timestamp to document
+        // add timestamp to document and an x to image if there's an image
         if (item != null) {
             timeStampOld = item.expiryDate!!
             val simpleDateFormatter = SimpleDateFormat(stringPatternEditText, Locale.getDefault())
             val dateForForm = simpleDateFormatter.format(timeStampOld.toDate())
             binding.etDateExpiry.text = dateForForm
+            if(item.imageUrl.isNullOrEmpty()){
+                binding.ivRemoveImage.visibility = View.VISIBLE
+            }
+        }
+        binding.ivRemoveImage.setOnClickListener {
+            binding.ivRemoveImage.visibility = View.INVISIBLE
+            imageDeleted = true
         }
 
+        //expiration date picking
         binding.etDateExpiry.setOnClickListener {
             binding.etDateExpiry.isEnabled = false
             materialDatePicker.show(supportFragmentManager, "DATE_PICKER")
@@ -113,6 +134,7 @@ class EditItemActivity : AppCompatActivity() {
             binding.etDateExpiry.isEnabled = true
         }
 
+        //edit item name
         binding.editNamePencil.setOnClickListener {
             binding.editNamePencil.isEnabled = false
             binding.tvItemTitle.visibility = View.VISIBLE
@@ -138,6 +160,8 @@ class EditItemActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        // for handling updates to task item
         binding.btnUpdate.setOnClickListener {
 
             binding.btnUpdate.isEnabled = false
@@ -151,6 +175,7 @@ class EditItemActivity : AppCompatActivity() {
                 itemNotesInput = ""
             }
             val expirationDateString = binding.etDateExpiry.text.toString()
+            val formatter = SimpleDateFormat(stringPatternEditText, Locale.getDefault())
             val quantityInput = binding.etQuantity.text.toString().toInt()
             var error: Boolean = false
 
@@ -162,9 +187,73 @@ class EditItemActivity : AppCompatActivity() {
                 error = true
             }
             if (error) {
-
                 binding.btnUpdate.isEnabled = true
                 return@setOnClickListener
+            }else{
+                var changesMade = false
+                val date: Date = formatter.parse(expirationDateString)
+
+                if (item != null) {
+                    if(item.expiryDate.toString() != Timestamp(date).toString()){
+                        item.expiryDate = Timestamp(date)
+                        changesMade = true
+                    }
+                    if(item.name != itemNameInput){
+                        item.name = itemNameInput
+                        changesMade = true
+                    }
+                    if (item.quantity !=quantityInput){
+                        item.quantity = quantityInput
+                        changesMade = true
+                    }
+                    if (item.notes != itemNotesInput){
+                        item.notes = itemNotesInput
+                        changesMade = true
+                    }
+                    if(item.brand != itemBrandUnput){
+                        item.brand = itemBrandUnput
+                        changesMade = true
+                    }
+                    if (item.location != storageList[indexStorage] ){
+                        item.location = storageList[indexStorage]
+                        changesMade = true
+                    }
+                    if(item.units?.unitName != unitList[indexUnit].unitName){
+                        item.units = unitList[indexUnit]
+                        changesMade = true
+                    }
+                    if(imageDeleted){
+                        item.imageUrl = ""
+                        changesMade = true
+                    }
+
+                    if(changesMade == true){
+                        var updatedItem = item.toMap()
+                        if((applicationContext as MyApplication).pantryRef == null){
+                            db.collection("users").document().get().addOnSuccessListener { snapshot ->
+                                var user = snapshot.toObject(User::class.java)
+                                var pantryRef = user?.myPantry
+                                pantryRef?.collection("my_pantry")?.document(item.documentId.toString())
+                                    ?.update(item.toMap())?.addOnFailureListener { e->
+                                        Log.i(TAG, e.toString())
+
+                                    }
+                            }
+
+                        }else{
+                            var pantryRef = (applicationContext as MyApplication).pantryRef
+                            pantryRef?.collection("my_pantry")?.document(item.documentId.toString())
+                                ?.update(item.toMap())?.addOnFailureListener { e ->
+                                    Log.i(TAG, "reg " + e.toString())
+                                }
+
+                        }
+
+                    }
+                }
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+
             }
 
         }
