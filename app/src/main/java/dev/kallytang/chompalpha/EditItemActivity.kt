@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -40,6 +41,8 @@ class EditItemActivity : AppCompatActivity()  {
     private lateinit var datePicker: MaterialDatePicker.Builder<Long>
     private lateinit var materialDatePicker: MaterialDatePicker<Long>
     private lateinit var timeStampOld: Timestamp
+    private lateinit var locationChosen: String
+    private lateinit var unitChosen:Unit
     private var imageDeleted = false
     private val stringPatternEditText = "MMM d, yyyy"
     private val timestampPatternFirebase = "yyyy-MM-dd'T'HH:mm:ssXXX"
@@ -69,6 +72,7 @@ class EditItemActivity : AppCompatActivity()  {
 
             if (item != null) {
                 if (item.units?.unitName == unitList[idx].unitName) {
+                    unitChosen = item.units!!
                     indexUnit = idx
 
                 }
@@ -81,6 +85,25 @@ class EditItemActivity : AppCompatActivity()  {
         binding.addUnitSpinner.adapter = spinnerUnitAdapter
         binding.addUnitSpinner.setSelection(indexUnit)
 
+        binding.addUnitSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long,
+                ) {
+                    unitChosen = parent?.getItemAtPosition(position) as Unit
+//                var clickedUnitName:String = unitChosen.abbreviation
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+            }
+
+
         // Storage list
         storageList = ArrayList()
         (applicationContext as MyApplication).storageLocationList?.let { storageList.addAll(it) }
@@ -90,6 +113,7 @@ class EditItemActivity : AppCompatActivity()  {
 
             if (item?.location == storageList[idx]) {
                 indexStorage = idx
+                locationChosen = item.location!!
 
             }
         }
@@ -99,6 +123,22 @@ class EditItemActivity : AppCompatActivity()  {
         binding.addLocationSpinner.setSelection(indexStorage)
 
 
+        binding.addLocationSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long,
+                ) {
+                    locationChosen = parent?.getItemAtPosition(position) as String
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+            }
+
         // add timestamp to document and an x to image if there's an image
         if (item != null) {
             timeStampOld = item.expiryDate!!
@@ -106,11 +146,12 @@ class EditItemActivity : AppCompatActivity()  {
             val dateForForm = simpleDateFormatter.format(timeStampOld.toDate())
             binding.etDateExpiry.text = dateForForm
             if(item.imageUrl.isNullOrEmpty()){
-                binding.ivRemoveImage.visibility = View.VISIBLE
+                binding.ivRemoveImage.visibility = View.INVISIBLE
             }
         }
         binding.ivRemoveImage.setOnClickListener {
             binding.ivRemoveImage.visibility = View.INVISIBLE
+            binding.ivFoodPhoto.visibility = View.INVISIBLE
             imageDeleted = true
         }
 
@@ -214,12 +255,13 @@ class EditItemActivity : AppCompatActivity()  {
                         item.brand = itemBrandUnput
                         changesMade = true
                     }
-                    if (item.location != storageList[indexStorage] ){
-                        item.location = storageList[indexStorage]
+                    if (item.location != locationChosen ){
+                        item.location = locationChosen
                         changesMade = true
                     }
-                    if(item.units?.unitName != unitList[indexUnit].unitName){
-                        item.units = unitList[indexUnit]
+                    if(item.units?.unitName != unitChosen.unitName){
+                        item.units = unitChosen
+                        Log.i(TAG, item.units.toString())
                         changesMade = true
                     }
                     if(imageDeleted){
@@ -230,7 +272,7 @@ class EditItemActivity : AppCompatActivity()  {
                     if(changesMade == true){
                         var updatedItem = item.toMap()
                         if((applicationContext as MyApplication).pantryRef == null){
-                            db.collection("users").document().get().addOnSuccessListener { snapshot ->
+                            db.collection("users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener { snapshot ->
                                 var user = snapshot.toObject(User::class.java)
                                 var pantryRef = user?.myPantry
                                 pantryRef?.collection("my_pantry")?.document(item.documentId.toString())
@@ -246,14 +288,11 @@ class EditItemActivity : AppCompatActivity()  {
                                 ?.update(item.toMap())?.addOnFailureListener { e ->
                                     Log.i(TAG, "reg " + e.toString())
                                 }
-
                         }
-
                     }
                 }
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
-
             }
 
         }
@@ -268,14 +307,11 @@ class EditItemActivity : AppCompatActivity()  {
             if (item.imageUrl?.isNotEmpty() == true) {
                 Glide.with(this).load(item.imageUrl).into(binding.ivFoodPhoto)
                 binding.ivFoodPhoto.visibility = View.VISIBLE
+                binding.ivRemoveImage.visibility = View.VISIBLE
             }
             binding.tvInfoItemName.setText(item.name.toString())
             binding.etFoodNotes.setText(item.notes.toString())
 
         }
-
-
     }
-
-
 }

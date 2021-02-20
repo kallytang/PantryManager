@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -20,6 +22,7 @@ import dev.kallytang.chompalpha.databinding.ActivityMainBinding
 import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Unit
 import dev.kallytang.chompalpha.models.User
+import kotlinx.android.synthetic.main.dialog_text_input.*
 
 class MainActivity : AppCompatActivity() , FilterItems{
     private companion object{
@@ -89,13 +92,20 @@ class MainActivity : AppCompatActivity() , FilterItems{
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.logout_tab){
-            Log.i(TAG, "Logged out")
-            auth.signOut()
-            val logoutIntent = Intent(this, LoginActivity::class.java)
-            logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(logoutIntent)
+        when(item.itemId){
+            R.id.logout_tab->{
+                Log.i(TAG, "Logged out")
+                auth.signOut()
+                val logoutIntent = Intent(this, LoginActivity::class.java)
+                logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(logoutIntent)
+
+            }
+            R.id.add_storage_location ->{
+                
+            }
         }
+
         return  super.onOptionsItemSelected(item)
     }
     private fun getStorageLocations() {

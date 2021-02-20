@@ -42,4 +42,6 @@
     <string name="name">Name</string>
     <string name="update">Update</string>
     <string name="unit">UNIT</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_new_storage_location">Add New Storage Location</string>
 </resources>
