@@ -1,20 +1,19 @@
-package com.example.pantryappver1
+package dev.kallytang.chompalpha
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.login_activity.*
 
@@ -25,10 +24,8 @@ class LoginActivity : AppCompatActivity() {
         private const val RC_GOOGLE_SIGN_IN = 1134
     }
     private lateinit var auth: FirebaseAuth
-//
-//    lateinit var etUsername: EditText
-//    lateinit var etPassword: EditText
-//    lateinit var btnLogin: Button
+    val db = Firebase.firestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
@@ -43,13 +40,15 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         val client = GoogleSignIn.getClient(this, gso)
-        sign_in_button.setOnClickListener {
+        btn_sign_in2.setOnClickListener {
             val signInIntent: Intent = client.signInIntent
             startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
         }
 
 
     }
+
+
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -82,18 +81,25 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    updateUI(user)
+                    var result = task.result
+                    // check if user is a new user
+                    if (result?.additionalUserInfo?.isNewUser == true){
+                        Log.i("newUser", "new user signed in?")
+                        // direct user to a set up page,
+                        toSetUpAccount()
+                    }else{
+                        val user = auth.currentUser
+                        updateUI(user)
+                    }
+
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                     // ...
-//                    Snackbar.make(view, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-//                    updateUI(null)
                     Toast.makeText(this, "Authentication Failure", Toast.LENGTH_SHORT).show()
                     updateUI(null)
                 }
-
             }
     }
     private fun updateUI(currentUser: FirebaseUser?) {
@@ -105,23 +111,37 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
+    private fun toSetUpAccount(){
+        val intent = Intent(this, AccountSetUpActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 }
 
-//private fun loginUser(username: String, password: String) {
-//
-//}
-
-//private fun startMainActivity() {
-//    var intent = Intent(this, MainActivity::class.java)
-//    startActivity(intent)
-//        etUsername = findViewById(R.id.et_username)
-//        etPassword = findViewById(R.id.et_password)
-//        btnLogin = findViewById(R.id.btn_login)
-//        btnLogin.setOnClickListener {
-//            var username: String = etUsername.text.toString()
-//            var password: String = etPassword.text.toString()
-////            loginUser(username, password)
-//            Log.i(TAG, username + password)
+//        TODO set up email sign up another time
+//        btn_login.setOnClickListener {
+//            btn_login.isEnabled = false
+//            var email = et_email.text.toString()
+//            val password = et_password.text.toString()
+//            if (email.isBlank() || password.isBlank()){
+//                Toast.makeText(this, "Email/Password can't be empty", Toast.LENGTH_SHORT)
+//                return@setOnClickListener
+//            }
+//            var authEmail = FirebaseAuth.getInstance()
+//            authEmail.signInWithEmailAndPassword(email, password).addOnCompleteListener { task->
+//                btn_login.isEnabled = true
+//                if(task.isSuccessful){
+//                    goToMainActivity()
+//                }else{
+//                    Log.i(TAG, "signing in failed", task.exception)
+//                    Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
+//                }
+//            }
 //        }
 
-//}
+//    private fun goToMainActivity() {
+//        Log.i(TAG, "going to main activity")
+//        val intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent)
+//        finish()
+//    }
