@@ -4,6 +4,7 @@ Pantry App Manager Application
 ## Gif Walkthrough 
 
 <img src="https://github.com/kallytang/PantryManager/blob/version1/general_gif.gif" width=250><br>
+<img src="https://github.com/kallytang/PantryManager/blob/version1/updateItem.gif" width=250><br>
 
 ## Description 
 Prototype of Android App, a pantry manager app that allows users to keep track of perishable food items and their expiration date. Project is still in progress. 
