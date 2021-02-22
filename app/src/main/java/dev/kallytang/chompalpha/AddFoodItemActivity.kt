@@ -236,7 +236,9 @@ class AddFoodItemActivity : AppCompatActivity() {
                     photoRef.putFile(photoFile!!)
                         .continueWithTask { photoUploadTask ->
                             photoRef.downloadUrl
+
                         }.continueWith { downloadUrl ->
+
                             val date: Date = formatter.parse(expirationDateString)
                             val timestampExpiration = Timestamp(date)
                             var currUser: User
@@ -258,6 +260,10 @@ class AddFoodItemActivity : AppCompatActivity() {
                             binding.btnAddNewItem.isEnabled = false
                             startActivity(Intent(this, MainActivity::class.java))
                             finish()
+                        }.addOnFailureListener{ e->
+                            Log.i("addItem", e.toString())
+                        }.addOnSuccessListener {
+                            Log.i("addItem", it.toString())
                         }
 
                 } else {

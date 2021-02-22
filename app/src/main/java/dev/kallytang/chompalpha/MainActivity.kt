@@ -81,10 +81,10 @@ class MainActivity : AppCompatActivity() , FilterItems{
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        itemsAdapter.notifyDataSetChanged()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        itemsAdapter.notifyDataSetChanged()
+//    }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
