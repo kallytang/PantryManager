@@ -79,12 +79,14 @@ class EditItemActivity : AppCompatActivity()  {
             }
         }
 
+        // set up drop down unit options
         spinnerUnitAdapter = UnitSpinnerAdapter(this, R.layout.spinner_row,
             unitList)
 
         binding.addUnitSpinner.adapter = spinnerUnitAdapter
         binding.addUnitSpinner.setSelection(indexUnit)
 
+        // keep track of what user has chosen as unit
         binding.addUnitSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -104,7 +106,7 @@ class EditItemActivity : AppCompatActivity()  {
             }
 
 
-        // Storage list
+        // Storage list drop down
         storageList = ArrayList()
         (applicationContext as MyApplication).storageLocationList?.let { storageList.addAll(it) }
 
@@ -122,7 +124,7 @@ class EditItemActivity : AppCompatActivity()  {
         binding.addLocationSpinner.adapter = spinnerStorageAdapter
         binding.addLocationSpinner.setSelection(indexStorage)
 
-
+        // keep track of what user has chosen as storage location
         binding.addLocationSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -185,6 +187,7 @@ class EditItemActivity : AppCompatActivity()  {
             binding.editNamePencil.visibility = View.INVISIBLE
             binding.editNamePencil.isEnabled = true
         }
+        // for editing name of item
         binding.etItemName.setOnKeyListener { v, keyCode, event ->
 
             when {
@@ -278,7 +281,6 @@ class EditItemActivity : AppCompatActivity()  {
                                 pantryRef?.collection("my_pantry")?.document(item.documentId.toString())
                                     ?.update(item.toMap())?.addOnFailureListener { e->
                                         Log.i(TAG, e.toString())
-
                                     }
                             }
 
@@ -302,7 +304,7 @@ class EditItemActivity : AppCompatActivity()  {
             finish()
         }
 
-
+        // embedding image to the activity
         if (item != null) {
             if (item.imageUrl?.isNotEmpty() == true) {
                 Glide.with(this).load(item.imageUrl).into(binding.ivFoodPhoto)

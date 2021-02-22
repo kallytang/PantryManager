@@ -42,8 +42,6 @@ class MainActivity : AppCompatActivity() , FilterItems{
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         auth = Firebase.auth
 
-
-
         binding.swipeRefreshMain.setOnRefreshListener {
 
             getItems()
@@ -60,8 +58,7 @@ class MainActivity : AppCompatActivity() , FilterItems{
         binding.rvPantryItems.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvPantryItems.addItemDecoration(decoration)
 
-
-
+        // for the storage list tabs
         storageList= mutableListOf()
         storageAdapter = StorageLocationAdapter(this, storageList, this)
         
@@ -75,8 +72,6 @@ class MainActivity : AppCompatActivity() , FilterItems{
         supportActionBar?.elevation = 0F;
 
         //for logging out
-
-        //todo: make query to firestore to retrieve data
 
 //        val fab: View = findViewById(R.id.fab_add_pantry_item)
         binding.fabAddPantryItem.setOnClickListener {

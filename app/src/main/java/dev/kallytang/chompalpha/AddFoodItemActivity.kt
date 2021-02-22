@@ -69,7 +69,7 @@ class AddFoodItemActivity : AppCompatActivity() {
         datePicker.setTitleText("Select an Expiration Date")
         materialDatePicker = datePicker.build()
 
-
+        // for opening calendar dialog
         binding.etDateExpiry.setOnClickListener {
             binding.etDateExpiry.isEnabled = false
             materialDatePicker.show(supportFragmentManager, "DATE_PICKER")
@@ -130,8 +130,9 @@ class AddFoodItemActivity : AppCompatActivity() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
 
                 }
-
             }
+
+        // for keeping track of what user chose as storage location
         var locationChosen = "Other"
         binding.addLocationSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
