@@ -1,5 +1,5 @@
 # PantryManager
-Pantry App Manager Application 
+
 
 ## Gif Walkthrough 
 
