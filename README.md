@@ -2,7 +2,8 @@
 Pantry App Manager Application 
 
 ## Description 
-Prototype of Android App, teaching self how to build an application with Kotlin, as well as learned how to build and design a NoSQL database in Firestore.
+Prototype of Android App, a pantry manager app that allows users to keep track of perishable food items and their expiration date. Project is still in progress. 
+Teaching self how to build an application with Kotlin, as well as learned how to build and design a NoSQL database in Firestore.
 
 Collaborating with a designer, Monica Cunich to create application. 
 
