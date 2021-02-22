@@ -27,7 +27,8 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".EditItemActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
-        <activity android:name=".CameraActivity" />
+        <activity android:name=".CameraActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
         <activity
             android:name=".AddFoodItemActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
