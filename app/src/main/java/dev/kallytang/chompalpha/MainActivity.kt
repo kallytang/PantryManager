@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() , FilterItems{
         auth = Firebase.auth
 
         binding.swipeRefreshMain.setOnRefreshListener {
-
             getItems()
         }
         getItems()
@@ -81,6 +80,13 @@ class MainActivity : AppCompatActivity() , FilterItems{
 
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        itemsAdapter.notifyDataSetChanged()
+    }
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -143,26 +149,41 @@ class MainActivity : AppCompatActivity() , FilterItems{
     }
 
     private fun getItems() {
+        if ((applicationContext as MyApplication).pantryRef != null){
+            (applicationContext as MyApplication).pantryRef?.collection("my_pantry")
+                ?.get()?.addOnSuccessListener { snap ->
+                val items:MutableList<Item> = snap.toObjects(Item::class.java)
+                items[1].documentId?.let { Log.i("itemID1", it) }
+                Log.i("itemsF", items.toString())
+                itemsAdapter.clear()
+                itemsAdapter.addAll(items as ArrayList<Item>)
+                itemsListCopy.clear()
+                itemsListCopy.addAll(items)
+                binding.swipeRefreshMain.isRefreshing = false
 
-        db.collection("users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener{ doc ->
-            val user = doc.toObject(User::class.java)
-            Log.i("itemsF", user.toString())
-            if (user != null) {
-                user.myPantry?.collection("my_pantry")?.get()?.addOnSuccessListener { snap ->
-
-                    val items:MutableList<Item> = snap.toObjects(Item::class.java)
-                    items[1].documentId?.let { Log.i("itemID1", it) }
-                    Log.i("itemsF", items.toString())
-                    itemsAdapter.clear()
-                    itemsAdapter.addAll(items as ArrayList<Item>)
-                    itemsListCopy.clear()
-                    itemsListCopy.addAll(items)
-                    binding.swipeRefreshMain.isRefreshing = false
-
-                }
             }
+        }else{
+            db.collection("users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener{ doc ->
+                val user = doc.toObject(User::class.java)
+                Log.i("itemsF", user.toString())
+                if (user != null) {
+                    user.myPantry?.collection("my_pantry")?.get()?.addOnSuccessListener { snap ->
+                        val items:MutableList<Item> = snap.toObjects(Item::class.java)
+                        items[1].documentId?.let { Log.i("itemID1", it) }
+                        Log.i("itemsF", items.toString())
+                        itemsAdapter.clear()
+                        itemsAdapter.addAll(items as ArrayList<Item>)
+                        itemsListCopy.clear()
+                        itemsListCopy.addAll(items)
+                        binding.swipeRefreshMain.isRefreshing = false
 
+                    }
+                }
+
+            }
         }
+
+
 
     }
 
