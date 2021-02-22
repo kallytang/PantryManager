@@ -174,7 +174,8 @@ class MainActivity : AppCompatActivity() , FilterItems{
     override fun filterItems(locationName: String){
         Log.i("itemsClicked", locationName)
         if(locationName == "All"){
-            getItems()
+            itemsAdapter.clear()
+            itemsAdapter.addAll(itemsListCopy as ArrayList<Item>)
         }else{
             var listCopy = mutableListOf<Item>()
             itemsList.clear()

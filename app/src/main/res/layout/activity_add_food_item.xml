@@ -96,60 +96,61 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-        <RelativeLayout
-            android:id="@+id/image_containter"
-            android:layout_width="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/iv_new_food_image"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:layout_centerHorizontal="true"
-                android:contentDescription="@string/image_of_food_item"
-                android:scaleType="centerCrop"
-                android:visibility="gone"
-                tools:layout_editor_absoluteX="56dp"
-                tools:layout_editor_absoluteY="90dp"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageView
-                android:id="@+id/remove_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/iv_new_food_image"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_close" />
-        </RelativeLayout>
-
         <androidx.core.widget.NestedScrollView
             android:id="@+id/ns_scroll_add_item"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_containter"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintVertical_bias="0.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_form"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="150dp"
+                android:layout_height="wrap_content"
                 android:fillViewport="true"
                 android:padding="20dp"
+                android:paddingBottom="150dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"
                 app:layout_constraintVertical_bias="1.0">
+
+                <RelativeLayout
+                    android:id="@+id/image_containter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/iv_new_food_image"
+                        android:layout_width="300dp"
+                        android:layout_height="300dp"
+                        android:layout_centerHorizontal="true"
+                        android:contentDescription="@string/image_of_food_item"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        tools:layout_editor_absoluteX="56dp"
+                        tools:layout_editor_absoluteY="90dp"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                    <ImageView
+                        android:id="@+id/remove_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/iv_new_food_image"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_close" />
+                </RelativeLayout>
 
                 <EditText
                     android:id="@+id/et_brand"
@@ -268,6 +269,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="150dp"
                     android:autofillHints=""
                     android:background="@drawable/text_input_layout"
                     android:ems="10"
@@ -277,6 +279,7 @@
                     android:inputType="textMultiLine"
                     android:paddingTop="2dp"
                     android:paddingBottom="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.64"
                     app:layout_constraintStart_toStartOf="parent"
@@ -315,11 +318,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
                     android:fontFamily="@font/roboto_regular"
                     android:text="@string/item_name"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/image_containter" />
 
                 <TextView
                     android:id="@+id/tv_brand_title"
@@ -413,6 +417,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

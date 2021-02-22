@@ -23,9 +23,11 @@ class StorageLocationAdapter(val context: Context, val locationList:List<String>
                 notifyDataSetChanged()
             }
             if(curr_position == layoutPosition){
-                itemView.setBackgroundResource(R.drawable.storage_tab_selected_layout)
-            }else{
+                // set a dark background
                 itemView.setBackgroundResource(R.drawable.storage_tab_not_selected)
+            }else{
+                // set a light background
+                itemView.setBackgroundResource(R.drawable.storage_tab_selected_layout)
             }
         }
     }
