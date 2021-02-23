@@ -20,6 +20,6 @@ Collaborating with a designer, Monica Cunich to create application.
 - allows user to sign up with google sign-in 
 
 ## Technology Used 
-- Glide, Firestore/Firebase, CameraX, Firestore Cloud function
+- Glide, Firestore/Firebase, CameraX, Firestore Cloud function, DataBinding(depreciated will update to viewbinding in future) 
 
 ## 
