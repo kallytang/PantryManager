@@ -13,6 +13,7 @@ import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Unit
 import dev.kallytang.chompalpha.models.User
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MyApplication : Application() {
     private lateinit var auth: FirebaseAuth
@@ -74,6 +75,25 @@ class MyApplication : Application() {
 
                     }
             }
+    }
+    fun getQueryStorageLocations(): ArrayList<String>{
+        lateinit var listLocation: ArrayList<String>
+        db.collection("users").document(auth.currentUser?.uid.toString()).get()
+            .addOnSuccessListener { doc ->
+                currUser = doc.toObject(User::class.java)
+                // get reference to pantry
+                val pantryReference: DocumentReference? = currUser?.myPantry
+                pantryReference?.get()
+                    ?.addOnSuccessListener { pantryDoc ->
+                        val location: Map<String, String> =
+                            pantryDoc.get("storage_locations") as Map<String, String>
+                        listLocation = ArrayList(location.values)
+                        listLocation.sort()
+
+
+                    }
+            }
+        return listLocation
     }
 
 }
