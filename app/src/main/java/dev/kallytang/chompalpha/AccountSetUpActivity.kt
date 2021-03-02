@@ -54,11 +54,14 @@ class AccountSetUpActivity : AppCompatActivity() {
                 ).addOnFailureListener { exception ->
                     Log.i(TAG, "can't add it to the user? $exception")
                 }
+
             }
             // add storage locations
             pantry_ref.update(
                 "storage_locations", storageLocationNames
-            )
+            ).addOnSuccessListener {
+                (applicationContext as MyApplication).queryStorageLocations()
+            }
             goToMain()
         }
     }

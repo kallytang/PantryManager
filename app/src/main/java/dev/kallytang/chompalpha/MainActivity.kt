@@ -42,6 +42,10 @@ class MainActivity : AppCompatActivity() , FilterItems{
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         auth = Firebase.auth
 
+        if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
+            (applicationContext as MyApplication).queryStorageLocations()
+        }
+
         binding.swipeRefreshMain.setOnRefreshListener {
             getItems()
         }
@@ -79,6 +83,7 @@ class MainActivity : AppCompatActivity() , FilterItems{
         }
 
 
+
     }
 
 //    override fun onResume() {
@@ -103,7 +108,7 @@ class MainActivity : AppCompatActivity() , FilterItems{
 
             }
             R.id.add_storage_location ->{
-                
+                // show a dialog
             }
         }
 
@@ -150,6 +155,7 @@ class MainActivity : AppCompatActivity() , FilterItems{
 
     private fun getItems() {
         if ((applicationContext as MyApplication).pantryRef != null){
+            (applicationContext as MyApplication).queryStorageLocations()
             (applicationContext as MyApplication).pantryRef?.collection("my_pantry")
                 ?.get()?.addOnSuccessListener { snap ->
                 val items:MutableList<Item> = snap.toObjects(Item::class.java)
