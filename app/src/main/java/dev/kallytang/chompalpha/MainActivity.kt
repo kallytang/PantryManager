@@ -108,7 +108,8 @@ class MainActivity : AppCompatActivity() , FilterItems{
 
             }
             R.id.add_storage_location ->{
-                // show a dialog
+                var dialogue = AddStorageLocationDialogue()
+                dialogue.show(supportFragmentManager, "Add storageLocation")
             }
         }
 

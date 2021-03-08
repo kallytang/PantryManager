@@ -44,4 +44,7 @@
     <string name="unit">UNIT</string>
     <string name="cancel">Cancel</string>
     <string name="add_new_storage_location">Add New Storage Location</string>
+    <string name="add_storage_location">Add Storage Location</string>
+    <string name="e_g_cupboard">e.g. Cupboard</string>
+    <string name="going_bad_soon">Going Bad Soon</string>
 </resources>

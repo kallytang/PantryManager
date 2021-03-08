@@ -91,9 +91,9 @@ class AddFoodItemActivity : AppCompatActivity() {
 
         //set up storage location
         storageNames = ArrayList()
-        if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
-            storageNames.addAll((applicationContext as MyApplication).getQueryStorageLocations())
-        }
+//        if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
+//            storageNames.addAll((applicationContext as MyApplication).getQueryStorageLocations())
+//        }
 
         (applicationContext as MyApplication).storageLocationList?.let { storageNames.addAll(it) }
         storageSpinnerAdapter = StorageSpinnerAdapter(this, R.layout.spinner_row, storageNames)

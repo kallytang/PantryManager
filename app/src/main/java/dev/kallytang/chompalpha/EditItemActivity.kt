@@ -108,9 +108,9 @@ class EditItemActivity : AppCompatActivity()  {
 
         // Storage list drop down
         storageList = ArrayList()
-        if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
-            storageList.addAll((applicationContext as MyApplication).getQueryStorageLocations())
-        }
+//        if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
+//            storageList.addAll((applicationContext as MyApplication).getQueryStorageLocations())
+//        }
         (applicationContext as MyApplication).storageLocationList?.let { storageList.addAll(it) }
 
         var indexStorage = 0

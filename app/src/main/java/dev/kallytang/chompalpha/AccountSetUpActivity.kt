@@ -39,7 +39,7 @@ class AccountSetUpActivity : AppCompatActivity() {
             )
             val storageLocationNames = hashMapOf(
                 "freezer" to "Freezer",
-                "kitchen" to "Kitchen",
+                "fridge" to "Fridge",
                 "cabinet" to "Cabinet",
                 "cupboard" to "Cupboard",
                 "other" to "Other"
