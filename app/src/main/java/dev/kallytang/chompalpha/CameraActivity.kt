@@ -18,7 +18,6 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import dev.kallytang.chompalpha.databinding.ActivityCameraBinding
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.File
@@ -45,7 +44,9 @@ class CameraActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_camera)
+        binding = ActivityCameraBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
 
         binding.ivExitCamera.setOnClickListener {

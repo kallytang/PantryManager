@@ -7,7 +7,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -39,17 +38,19 @@ class MainActivity : AppCompatActivity() , FilterItems{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        var view = binding.root
+        setContentView(view)
         auth = Firebase.auth
 
         if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
             (applicationContext as MyApplication).queryStorageLocations()
         }
 
-        binding.swipeRefreshMain.setOnRefreshListener {
-            getItems()
-        }
-        getItems()
+//        binding.swipeRefreshMain.setOnRefreshListener {
+//            getItems()
+//        }
+//        getItems()
         //instantiate list
         itemsList = mutableListOf()
         itemsListCopy = mutableListOf()
@@ -156,11 +157,9 @@ class MainActivity : AppCompatActivity() , FilterItems{
 
     private fun getItems() {
         if ((applicationContext as MyApplication).pantryRef != null){
-            (applicationContext as MyApplication).queryStorageLocations()
             (applicationContext as MyApplication).pantryRef?.collection("my_pantry")
                 ?.get()?.addOnSuccessListener { snap ->
                 val items:MutableList<Item> = snap.toObjects(Item::class.java)
-                items[1].documentId?.let { Log.i("itemID1", it) }
                 Log.i("itemsF", items.toString())
                 itemsAdapter.clear()
                 itemsAdapter.addAll(items as ArrayList<Item>)
@@ -176,7 +175,6 @@ class MainActivity : AppCompatActivity() , FilterItems{
                 if (user != null) {
                     user.myPantry?.collection("my_pantry")?.get()?.addOnSuccessListener { snap ->
                         val items:MutableList<Item> = snap.toObjects(Item::class.java)
-                        items[1].documentId?.let { Log.i("itemID1", it) }
                         Log.i("itemsF", items.toString())
                         itemsAdapter.clear()
                         itemsAdapter.addAll(items as ArrayList<Item>)

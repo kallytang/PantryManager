@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="dev.kallytang.chompalpha.AddFoodItemActivity">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_add_item_page"
         android:layout_width="match_parent"
@@ -59,42 +59,42 @@
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
         <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        android:padding="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/iv_exit_add_task"
-            android:layout_width="wrap_content"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end"
-            android:contentDescription="@string/close_window"
-            android:padding="20dp"
-            app:srcCompat="@drawable/ic_close_white"
+            android:background="@color/black"
+            android:padding="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            tools:layout_editor_absoluteX="302dp"
-            tools:layout_editor_absoluteY="13dp" />
+            <ImageView
+                android:id="@+id/iv_exit_add_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:contentDescription="@string/close_window"
+                android:padding="20dp"
+                app:srcCompat="@drawable/ic_close_white"
 
-        <TextView
-            android:id="@+id/tv_add_item_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/add_pantry_item"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="206dp"
-            tools:layout_editor_absoluteY="18dp" />
+                tools:layout_editor_absoluteX="302dp"
+                tools:layout_editor_absoluteY="13dp" />
 
-    </androidx.appcompat.widget.Toolbar>
+            <TextView
+                android:id="@+id/tv_add_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/add_pantry_item"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="206dp"
+                tools:layout_editor_absoluteY="18dp" />
+
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/ns_scroll_add_item"
@@ -422,5 +422,4 @@
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-<!--    https://material.io/components/chips/android#theming-chips-->
-</layout>
+    <!--    https://material.io/components/chips/android#theming-chips-->

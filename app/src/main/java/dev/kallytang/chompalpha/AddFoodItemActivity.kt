@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.Timestamp
@@ -59,7 +58,9 @@ class AddFoodItemActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_food_item)
+        binding = ActivityAddFoodItemBinding.inflate(layoutInflater)
+        var view = binding.root
+        setContentView(view)
         storageRef = FirebaseStorage.getInstance().getReference();
         auth = Firebase.auth
 

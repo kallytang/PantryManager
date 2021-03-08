@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.Timestamp
@@ -52,7 +51,9 @@ class EditItemActivity : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_item)
+        binding = ActivityEditItemBinding.inflate(layoutInflater)
+        var view = binding.root
+        setContentView(view)
         val intent: Intent = intent
         val item: Item? = intent.getParcelableExtra("item")
         //set up unitlist adapter
