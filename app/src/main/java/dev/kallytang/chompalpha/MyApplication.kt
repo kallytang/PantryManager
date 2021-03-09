@@ -20,7 +20,7 @@ class MyApplication : Application() {
     var unitList: List<Unit>? = null
     private lateinit var db: FirebaseFirestore
     var itemsList: ArrayList<Item>? = null
-    var storageLocationList: MutableList<String>? = null
+    var storageLocationList: ArrayList<String>? = null
 
     var unitsAsString: MutableList<String>? = null
     var currUser: User? = null
@@ -64,11 +64,10 @@ class MyApplication : Application() {
                     ?.addOnSuccessListener { pantryDoc ->
                         val location: Map<String, String> =
                             pantryDoc.get("storage_locations") as Map<String, String>
-                        val listLocation = ArrayList(location.values)
-                        listLocation.sort()
-                        val locationStrings = listLocation.toMutableList()
+
                         // set data to lists in application context and on main activity
-                        storageLocationList = locationStrings
+                        storageLocationList = ArrayList(location.values)
+                        storageLocationList!!.sort()
                         pantryRef = pantryReference
                         Log.i("chips2", pantryRef.toString())
 
@@ -97,7 +96,6 @@ class MyApplication : Application() {
 //            }
 //        return listLocation
 //    }
-
+//
 }
-
 

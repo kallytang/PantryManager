@@ -30,7 +30,7 @@ class PantryListFragment : Fragment() {
     private val db = Firebase.firestore
     private var unitsList = mutableListOf<Unit>()
     private var unitsStrings = mutableListOf<String>()
-    private var storageLocationList = mutableListOf<String>()
+    private var storageLocationList = ArrayList<String>()
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +70,9 @@ class PantryListFragment : Fragment() {
                             val location:Map<String, String> = pantryDoc.get("storage_locations") as Map<String, String>
                             val listLocation = ArrayList(location.keys)
                             listLocation.sort()
-                            val locationStrings = listLocation.toMutableList()
-                            (applicationContext as MyApplication).storageLocationList= locationStrings
-                            storageLocationList = locationStrings
+                            (applicationContext as MyApplication).storageLocationList?.clear()
+                            (applicationContext as MyApplication).storageLocationList?.addAll(listLocation)
+                            storageLocationList = listLocation
 //                            Log.i("location", (applicationContext as MyApplication).storageLocationList.toString())
                             (applicationContext as MyApplication).pantryRef = pantryRef
 

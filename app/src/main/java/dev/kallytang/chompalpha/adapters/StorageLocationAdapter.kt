@@ -10,7 +10,7 @@ import dev.kallytang.chompalpha.R
 import kotlinx.android.synthetic.main.item_storage_name.view.*
 
 
-class StorageLocationAdapter(val context: Context, val locationList:List<String>, private val filter: FilterItems) :
+class StorageLocationAdapter(val context: Context, var locationList:ArrayList<String>, private val filter: FilterItems) :
     RecyclerView.Adapter<StorageLocationAdapter.ViewHolder>() {
 
     private var curr_position = 0
@@ -43,6 +43,11 @@ class StorageLocationAdapter(val context: Context, val locationList:List<String>
 
     override fun getItemCount(): Int {
         return locationList.size
+    }
+
+    fun add(newStorageName: String) {
+        locationList.add(newStorageName)
+
     }
 
 

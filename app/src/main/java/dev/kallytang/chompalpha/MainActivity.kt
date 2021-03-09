@@ -23,7 +23,7 @@ import dev.kallytang.chompalpha.models.Unit
 import dev.kallytang.chompalpha.models.User
 import kotlinx.android.synthetic.main.dialog_text_input.*
 
-class MainActivity : AppCompatActivity() , FilterItems{
+class MainActivity : AppCompatActivity() , FilterItems, AddNewStorageName{
     private companion object{
         private const val TAG = "MainActivity"
     }
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() , FilterItems{
     private lateinit var itemsList: MutableList<Item>
     private lateinit var itemsListCopy: MutableList<Item>
     private lateinit var itemsAdapter: ItemsAdapter
-    private lateinit var storageList:MutableList<String>
+    private lateinit var storageList:ArrayList<String>
     private lateinit var storageAdapter: StorageLocationAdapter
     private lateinit var binding: ActivityMainBinding
 
@@ -47,10 +47,10 @@ class MainActivity : AppCompatActivity() , FilterItems{
             (applicationContext as MyApplication).queryStorageLocations()
         }
 
-//        binding.swipeRefreshMain.setOnRefreshListener {
-//            getItems()
-//        }
-//        getItems()
+        binding.swipeRefreshMain.setOnRefreshListener {
+            getItems()
+        }
+        getItems()
         //instantiate list
         itemsList = mutableListOf()
         itemsListCopy = mutableListOf()
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() , FilterItems{
         binding.rvPantryItems.addItemDecoration(decoration)
 
         // for the storage list tabs
-        storageList= mutableListOf()
+        storageList= arrayListOf()
         storageAdapter = StorageLocationAdapter(this, storageList, this)
         
         binding.rvListTabs.adapter = storageAdapter
@@ -87,11 +87,6 @@ class MainActivity : AppCompatActivity() , FilterItems{
 
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        itemsAdapter.notifyDataSetChanged()
-//    }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -109,7 +104,7 @@ class MainActivity : AppCompatActivity() , FilterItems{
 
             }
             R.id.add_storage_location ->{
-                var dialogue = AddStorageLocationDialogue()
+                var dialogue = AddStorageLocationDialogue(this)
                 dialogue.show(supportFragmentManager, "Add storageLocation")
             }
         }
@@ -126,8 +121,9 @@ class MainActivity : AppCompatActivity() , FilterItems{
                         val location:Map<String, String> = pantryDoc.get("storage_locations") as Map<String, String>
                         val listLocation = ArrayList(location.values)
                         listLocation.sort()
+                        (applicationContext as MyApplication).storageLocationList?.clear()
+                        (applicationContext as MyApplication).storageLocationList?.addAll(listLocation)
                         listLocation.add(0, "All")
-
                         storageList.clear()
                         storageList.addAll(listLocation)
                         storageAdapter.notifyDataSetChanged()
@@ -209,6 +205,11 @@ class MainActivity : AppCompatActivity() , FilterItems{
             itemsAdapter.clear()
             itemsAdapter.addAll(listCopy as ArrayList<Item>)
         }
+    }
+
+    override fun addNewStorageName(name: String) {
+        storageAdapter.add(name)
+        (applicationContext as MyApplication).storageLocationList?.add(name)
     }
 }
 

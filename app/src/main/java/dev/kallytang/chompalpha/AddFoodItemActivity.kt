@@ -53,6 +53,7 @@ class AddFoodItemActivity : AppCompatActivity() {
         //        private final var RESULT_OK = 90
         private final var PHOTO_CODE = 311
         private val PERMISSION_CODE_GALLERY = 46;
+        private val IDENTIFIER_CODE = 2000
     }
 
 
@@ -165,6 +166,7 @@ class AddFoodItemActivity : AppCompatActivity() {
 
         binding.fabCamera.setOnClickListener {
             var intent = Intent(this, CameraActivity::class.java)
+            intent.putExtra("identifier", IDENTIFIER_CODE)
             startActivityForResult(intent, REQUEST_CODE)
         }
 //        TODO animate the mini fab

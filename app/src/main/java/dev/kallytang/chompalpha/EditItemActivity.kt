@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import dev.kallytang.chompalpha.adapters.StorageSpinnerAdapter
 import dev.kallytang.chompalpha.adapters.UnitSpinnerAdapter
 import dev.kallytang.chompalpha.databinding.ActivityEditItemBinding
@@ -45,6 +47,14 @@ class EditItemActivity : AppCompatActivity()  {
     private var imageDeleted = false
     private val stringPatternEditText = "MMM d, yyyy"
     private val timestampPatternFirebase = "yyyy-MM-dd'T'HH:mm:ssXXX"
+    companion object {
+        private final var REQUEST_CODE = 86
+
+        //        private final var RESULT_OK = 90
+        private final var PHOTO_CODE = 311
+        private val PERMISSION_CODE_GALLERY = 46;
+        private val IDENTIFIER_EDIT_ACTIVITY = 8000
+    }
 
 
     //todo use concurrency alternative to threading https://kotlinlang.org/docs/native-concurrency.html
@@ -65,8 +75,6 @@ class EditItemActivity : AppCompatActivity()  {
         datePicker = MaterialDatePicker.Builder.datePicker()
         datePicker.setTitleText("Select an Expiration Date")
         materialDatePicker = datePicker.build()
-
-
 
         var indexUnit = 0
         for (idx in unitList.indices) {
@@ -159,6 +167,7 @@ class EditItemActivity : AppCompatActivity()  {
             binding.ivRemoveImage.visibility = View.INVISIBLE
             binding.ivFoodPhoto.visibility = View.INVISIBLE
             imageDeleted = true
+
         }
 
         //expiration date picking
@@ -272,8 +281,18 @@ class EditItemActivity : AppCompatActivity()  {
                         changesMade = true
                     }
                     if(imageDeleted){
+                        lateinit var photoRef: StorageReference
+                        var storage = Firebase.storage
+                        // delete image if it exists
+                        if(!item?.imageUrl.isNullOrEmpty()){
+                            photoRef = storage.getReferenceFromUrl(item?.imageUrl.toString())
+                            photoRef.delete().addOnSuccessListener {
+                                Log.i("deleteITem","image delete")
+                            }
+                        }
                         item.imageUrl = ""
                         changesMade = true
+
                     }
 
                     if(changesMade == true){

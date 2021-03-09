@@ -48,4 +48,6 @@
     <string name="e_g_cupboard">e.g. Cupboard</string>
     <string name="going_bad_soon">Going Bad Soon</string>
     <string name="next">Next</string>
+    <string name="take_photo_of_food_item">take photo of food item</string>
+    <string name="get_image_from_gallery">get image from gallery</string>
 </resources>

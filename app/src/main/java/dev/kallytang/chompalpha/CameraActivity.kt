@@ -33,12 +33,14 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var outPutDirectory: File
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var binding : ActivityCameraBinding
+    private var destination: Int? = null
 
     companion object {
         private const val TAG = "CameraXInfo"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 66
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private val FROM_ADD_FOOD_CODE = 2000
 
     }
 
@@ -47,11 +49,21 @@ class CameraActivity : AppCompatActivity() {
         binding = ActivityCameraBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        destination = intent.getIntExtra("identifier", 23)
+
+
+
 
 
         binding.ivExitCamera.setOnClickListener {
-            startActivity(Intent(this, AddFoodItemActivity::class.java))
-            finish()
+            if(destination == FROM_ADD_FOOD_CODE){
+                startActivity(Intent(this, AddFoodItemActivity::class.java))
+                finish()
+            }else{
+                startActivity(Intent(this, EditItemActivity::class.java))
+                finish()
+            }
+
         }
 
         if (allPermissionsGranted()) {
@@ -99,6 +111,12 @@ class CameraActivity : AppCompatActivity() {
                     val msg = "Photo capture succeeded: $savedUri"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
+                    if(destination != FROM_ADD_FOOD_CODE){
+                        val intent = Intent(this@CameraActivity, EditItemActivity::class.java)
+                        intent.putExtra("photo", savedUri)
+                        setResult(RESULT_OK, intent)
+                        finish()
+                    }
                     val intent = Intent(this@CameraActivity, AddFoodItemActivity::class.java)
                     intent.putExtra("photo", savedUri)
                     setResult(RESULT_OK, intent)
