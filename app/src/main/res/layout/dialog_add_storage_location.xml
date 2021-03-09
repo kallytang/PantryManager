@@ -25,20 +25,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_error_message"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textColor="@color/error_red"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_add_storage_location_title"
+        tools:text="error message" />
+
     <EditText
         android:id="@+id/et_add_new_storage_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/text_input_layout"
         android:ems="10"
+        android:hint="@string/e_g_cupboard"
+        android:inputType="textPersonName"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:textAlignment="center"
-        android:hint="@string/e_g_cupboard"
-        android:inputType="textPersonName"
-        android:background="@drawable/text_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_add_storage_location_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />
 
     <TextView
         android:id="@+id/btn_cancel"

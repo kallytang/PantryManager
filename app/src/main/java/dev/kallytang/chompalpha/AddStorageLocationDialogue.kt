@@ -14,7 +14,9 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dev.kallytang.chompalpha.models.User
@@ -22,14 +24,17 @@ import kotlinx.android.synthetic.main.dialog_add_storage_location.view.*
 
 class AddStorageLocationDialogue : DialogFragment() {
 //    private lateinit var storageNames: ArrayList<String>
+    private final var STORAGE_STRING = "storage_locations"
     private val db = Firebase.firestore
     private lateinit var auth: FirebaseAuth
     lateinit var pantryRef:DocumentReference
+    lateinit var locationList: ArrayList<String>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        auth = Firebase.auth
         val rootView: View = inflater.inflate(R.layout.dialog_add_storage_location, container, false)
         db.collection("users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener { snapshot ->
             var user = snapshot.toObject(User::class.java)
@@ -39,6 +44,8 @@ class AddStorageLocationDialogue : DialogFragment() {
                 ?.addOnSuccessListener { pantryDoc ->
                     val location: Map<String, String> =
                         pantryDoc.get("storage_locations") as Map<String, String>
+                        locationList = arrayListOf()
+                        locationList.addAll(location.keys)
 
                 }
         }
@@ -56,10 +63,21 @@ class AddStorageLocationDialogue : DialogFragment() {
                 rootView.et_add_new_storage_name.setText("Please Enter a Storage Name")
             }else{
 //                pantryRef.collection("my_pantry").document().update()
+                //check if pantry list is available
+                var stringInput = rootView.et_add_new_storage_name.text.toString().trim()
+                if(stringInput in locationList){
+                    rootView.et_add_new_storage_name.setBackgroundResource(R.drawable.text_input_layout_red)
+                    rootView.et_add_new_storage_name.setHintTextColor(Color.RED)
+                    rootView.tv_error_message.setText("${stringInput} already exists, try again")
+
+                }else{
+                    // add new storage location to the database
+                    var map = mapOf(STORAGE_STRING to mapOf(stringInput.toLowerCase() to stringInput))
+                    pantryRef.set(map, SetOptions.merge())
+
+
+                }
             }
-
-
-
         }
 
         return rootView

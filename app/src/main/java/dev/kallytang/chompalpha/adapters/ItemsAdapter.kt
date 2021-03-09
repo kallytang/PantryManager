@@ -12,6 +12,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import dev.kallytang.chompalpha.EditItemActivity
 import dev.kallytang.chompalpha.R
 import dev.kallytang.chompalpha.models.Item
@@ -28,6 +30,10 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
         fun bindView(item: Item) {
             auth = Firebase.auth
             itemView.tv_title_item.text =  item.name
+
+            //check if item is going bad in a week
+
+            //check if item is expired
             itemView.setOnClickListener{
                 val intent = Intent(context, EditItemActivity::class.java)
                 intent.putExtra("item", item)
@@ -77,6 +83,15 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
 
     }
     fun deleteFromDatabase(item: Item){
+        lateinit var photoRef: StorageReference
+        var storage = Firebase.storage
+        // delete image if it exists
+        if(!item.imageUrl.isNullOrEmpty()){
+            photoRef = storage.getReferenceFromUrl(item.imageUrl.toString())
+            photoRef.delete().addOnSuccessListener {
+                Log.i("deleteITem","image delete")
+            }
+        }
 
         db.collection("users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener { snapshot ->
             var user = snapshot.toObject(User::class.java)
