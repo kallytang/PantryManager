@@ -65,6 +65,7 @@
             android:id="@+id/toolbar_edit_Item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -77,7 +78,9 @@
                 android:layout_gravity="end"
                 android:contentDescription="@string/close_window"
                 android:padding="20dp"
-                app:srcCompat="@drawable/ic_close">
+                app:srcCompat="@drawable/ic_close"
+                tools:layout_editor_absoluteX="342dp"
+                app:tint="@color/white">
 
             </ImageView>
 
@@ -117,6 +120,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="0dp"
                         android:layout_marginBottom="10dp"
+                        android:scaleType="centerCrop"
                         android:visibility="gone"
                         tools:srcCompat="@tools:sample/avatars" />
 
