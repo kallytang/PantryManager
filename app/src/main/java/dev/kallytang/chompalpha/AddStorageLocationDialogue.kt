@@ -74,7 +74,7 @@ class AddStorageLocationDialogue : DialogFragment() {
                     // add new storage location to the database
                     var map = mapOf(STORAGE_STRING to mapOf(stringInput.toLowerCase() to stringInput))
                     pantryRef.set(map, SetOptions.merge())
-
+                    dismiss()
 
                 }
             }
