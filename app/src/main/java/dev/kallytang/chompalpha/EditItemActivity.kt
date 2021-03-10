@@ -47,6 +47,7 @@ class EditItemActivity : AppCompatActivity()  {
     private lateinit var materialDatePicker: MaterialDatePicker<Long>
     private lateinit var timeStampOld: Timestamp
     private lateinit var locationChosen: String
+
     private var newPhoto = false
     private lateinit var unitChosen:Unit
     private var photoFile: Uri? = null
@@ -56,7 +57,7 @@ class EditItemActivity : AppCompatActivity()  {
     private val timestampPatternFirebase = "yyyy-MM-dd'T'HH:mm:ssXXX"
     companion object {
         private final var REQUEST_CODE = 86
-
+        private var changesMade = false
         //        private final var RESULT_OK = 90
         private final var PHOTO_CODE = 311
         private val PERMISSION_CODE_GALLERY = 46;
@@ -77,7 +78,6 @@ class EditItemActivity : AppCompatActivity()  {
         //set up unitlist adapter
         unitList = ArrayList()
         (applicationContext as MyApplication).unitList?.let { unitList.addAll(it) }
-        Log.i("editItem", item.toString())
 
         // set up the date on the form and a dialog to open calendar
         datePicker = MaterialDatePicker.Builder.datePicker()
@@ -282,7 +282,7 @@ class EditItemActivity : AppCompatActivity()  {
                 binding.btnUpdate.isEnabled = true
                 return@setOnClickListener
             }else{
-                var changesMade = false
+
                 val date: Date = formatter.parse(expirationDateString)
 
                 if (item != null) {
@@ -333,52 +333,12 @@ class EditItemActivity : AppCompatActivity()  {
                     if(changesMade == true){
 
                         var userID = auth.currentUser?.uid.toString()
+                        if(photoFile != null){
+                            Log.i("editItem2", photoFile!!.javaClass.name)
+                            var pantryRef = (applicationContext as MyApplication).pantryRef
 
-                        if(newPhoto == true){
-                            Log.i("editItem", photoFile.toString())
-                            if ((applicationContext as MyApplication).pantryRef == null) {
-                                db.collection("users").document(userID)
-                                    .get().addOnSuccessListener { snapshot ->
-                                        var user = snapshot.toObject(User::class.java)
-                                        var pantryRef = user?.myPantry
 
-                                        val photoRef = storageRef.child("images/$userID/${System.currentTimeMillis()}_photo.jpg")
-                                        photoRef.putFile(photoFile!!).continueWithTask { photoUploadTask ->
-                                            photoRef.downloadUrl
-                                        }.continueWith { downloadUrl->
-                                            item.imageUrl = downloadUrl.result.toString()
-                                            Log.i("editItem", item.imageUrl.toString() + "appcont")
-                                            pantryRef?.collection("my_pantry")
-                                                ?.document(item.documentId.toString())
-                                                ?.update(item.toMap())?.addOnFailureListener { e ->
-                                                    Log.i(TAG, e.toString())
-                                                }
-                                        }
 
-                                    }
-
-                            } else {
-                                var pantryRef = (applicationContext as MyApplication).pantryRef
-
-                                val photoRef = storageRef.child("images/$userID/${System.currentTimeMillis()}_photo.jpg")
-                                photoRef.putFile(photoFile!!).continueWithTask { photoUploadTask ->
-                                    photoRef.downloadUrl
-                                }.continueWith { downloadUrl->
-                                    item.imageUrl = downloadUrl.result.toString()
-                                    Log.i("editItem", item.imageUrl.toString() + "here")
-                                    pantryRef?.collection("my_pantry")
-                                        ?.document(item.documentId.toString())
-                                        ?.update(item.toMap())?.addOnFailureListener { e ->
-                                            Log.i(TAG, e.toString())
-                                        }
-                                }
-
-//                                pantryRef?.collection("my_pantry")
-//                                    ?.document(item.documentId.toString())
-//                                    ?.update(item.toMap())?.addOnFailureListener { e ->
-//                                        Log.i(TAG, "reg " + e.toString())
-//                                    }
-                            }
                         }else {
                             // if there's no photofile uploaded
                             if ((applicationContext as MyApplication).pantryRef == null) {
@@ -434,6 +394,7 @@ class EditItemActivity : AppCompatActivity()  {
                 photoFile = data.extras?.get("photo") as Uri
                 if (photoFile != null) {
                     newPhoto = true
+                     EditItemActivity.changesMade = true
                     binding.ivFoodPhoto.visibility = View.VISIBLE
                     Glide.with(this).load(photoFile).into(binding.ivFoodPhoto)
 
@@ -445,6 +406,7 @@ class EditItemActivity : AppCompatActivity()  {
 
             if (photoFile != null) {
                 newPhoto = true
+                EditItemActivity.changesMade = true
                 Log.i("photoData", "photouri, ${photoFile!!.javaClass.name}")
                 binding.ivFoodPhoto.visibility = View.VISIBLE
                 Glide.with(this).load(photoFile).into(binding.ivFoodPhoto)
@@ -459,5 +421,6 @@ class EditItemActivity : AppCompatActivity()  {
             startActivityForResult(imageSelectionIntent, EditItemActivity.PHOTO_CODE)
         }
     }
+
 
 }
