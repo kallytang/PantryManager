@@ -4,14 +4,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -34,7 +31,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class EditItemActivity : AppCompatActivity()  {
+class EditItemActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityEditItemBinding
@@ -49,15 +46,17 @@ class EditItemActivity : AppCompatActivity()  {
     private lateinit var locationChosen: String
 
     private var newPhoto = false
-    private lateinit var unitChosen:Unit
+    private lateinit var unitChosen: Unit
     private var photoFile: Uri? = null
     private var imageDeleted = false
     private val stringPatternEditText = "MMM d, yyyy"
     private lateinit var storageRef: StorageReference
     private val timestampPatternFirebase = "yyyy-MM-dd'T'HH:mm:ssXXX"
+
     companion object {
         private final var REQUEST_CODE = 86
         private var changesMade = false
+
         //        private final var RESULT_OK = 90
         private final var PHOTO_CODE = 311
         private val PERMISSION_CODE_GALLERY = 46;
@@ -113,7 +112,6 @@ class EditItemActivity : AppCompatActivity()  {
                     id: Long,
                 ) {
                     unitChosen = parent?.getItemAtPosition(position) as Unit
-//                var clickedUnitName:String = unitChosen.abbreviation
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -125,9 +123,6 @@ class EditItemActivity : AppCompatActivity()  {
 
         // Storage list drop down
         storageList = ArrayList()
-//        if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
-//            storageList.addAll((applicationContext as MyApplication).getQueryStorageLocations())
-//        }
         (applicationContext as MyApplication).storageLocationList?.let { storageList.addAll(it) }
 
         var indexStorage = 0
@@ -208,7 +203,7 @@ class EditItemActivity : AppCompatActivity()  {
         }
         // for editing name of item
         binding.etItemName.setOnFocusChangeListener { v, hasFocus ->
-            if(!hasFocus){
+            if (!hasFocus) {
                 binding.tvItemTitle.visibility = View.INVISIBLE
                 binding.etItemName.visibility = View.INVISIBLE
                 binding.tvInfoItemName.setText(binding.etItemName.text.toString())
@@ -220,7 +215,7 @@ class EditItemActivity : AppCompatActivity()  {
         binding.etItemName.setOnKeyListener { v, keyCode, event ->
 
             when {
-                ((keyCode == KeyEvent.KEYCODE_ENTER) && (event.action == KeyEvent.ACTION_DOWN)) ->{
+                ((keyCode == KeyEvent.KEYCODE_ENTER) && (event.action == KeyEvent.ACTION_DOWN)) -> {
 
                     binding.tvItemTitle.visibility = View.INVISIBLE
                     binding.etItemName.visibility = View.INVISIBLE
@@ -282,44 +277,44 @@ class EditItemActivity : AppCompatActivity()  {
             if (error) {
                 binding.btnUpdate.isEnabled = true
                 return@setOnClickListener
-            }else{
+            } else {
 
                 val date: Date = formatter.parse(expirationDateString)
 
                 if (item != null) {
-                    if(item.expiryDate.toString() != Timestamp(date).toString()){
+                    if (item.expiryDate.toString() != Timestamp(date).toString()) {
                         item.expiryDate = Timestamp(date)
                         changesMade = true
                     }
-                    if(item.name != itemNameInput){
+                    if (item.name != itemNameInput) {
                         item.name = itemNameInput
                         changesMade = true
                     }
-                    if (item.quantity !=quantityInput){
+                    if (item.quantity != quantityInput) {
                         item.quantity = quantityInput
                         changesMade = true
                     }
-                    if (item.notes != itemNotesInput){
+                    if (item.notes != itemNotesInput) {
                         item.notes = itemNotesInput
                         changesMade = true
                     }
-                    if(item.brand != itemBrandUnput){
+                    if (item.brand != itemBrandUnput) {
                         item.brand = itemBrandUnput
                         changesMade = true
                     }
-                    if (item.location != locationChosen ){
+                    if (item.location != locationChosen) {
                         item.location = locationChosen
                         changesMade = true
                     }
-                    if(item.units?.unitName != unitChosen.unitName){
+                    if (item.units?.unitName != unitChosen.unitName) {
                         item.units = unitChosen
                         changesMade = true
                     }
-                    if(imageDeleted){
+                    if (imageDeleted) {
                         lateinit var photoRef: StorageReference
                         var storage = Firebase.storage
                         // delete image if it exists
-                        if(!item?.imageUrl.isNullOrEmpty()){
+                        if (!item?.imageUrl.isNullOrEmpty()) {
                             photoRef = storage.getReferenceFromUrl(item?.imageUrl.toString())
                             photoRef.delete().addOnSuccessListener {
                             }
@@ -329,12 +324,12 @@ class EditItemActivity : AppCompatActivity()  {
 
                     }
 
-                    if(changesMade == true){
+                    if (changesMade == true) {
                         binding.progressBar.visibility = View.VISIBLE
                         var userID = auth.currentUser?.uid.toString()
-                        if(photoFile != null){
+                        if (photoFile != null) {
                             updateItemWithPhoto(userID, item)
-                        }else {
+                        } else {
                             // if there's no photofile uploaded
                             updateItem(userID, item)
                         }
@@ -362,6 +357,7 @@ class EditItemActivity : AppCompatActivity()  {
 
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == EditItemActivity.REQUEST_CODE && resultCode == RESULT_OK) {
@@ -369,7 +365,7 @@ class EditItemActivity : AppCompatActivity()  {
                 photoFile = data.extras?.get("photo") as Uri
                 if (photoFile != null) {
                     newPhoto = true
-                     EditItemActivity.changesMade = true
+                    EditItemActivity.changesMade = true
                     binding.ivFoodPhoto.visibility = View.VISIBLE
                     Glide.with(this).load(photoFile).into(binding.ivFoodPhoto)
 
@@ -388,6 +384,7 @@ class EditItemActivity : AppCompatActivity()  {
             }
         }
     }
+
     private fun openPhotos() {
         val imageSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
         imageSelectionIntent.type = "image/*"
@@ -396,7 +393,7 @@ class EditItemActivity : AppCompatActivity()  {
         }
     }
 
-    private fun updateItemWithPhoto(userID:String, item: Item){
+    private fun updateItemWithPhoto(userID: String, item: Item) {
         val photoRef =
             storageRef.child("images/$userID/${System.currentTimeMillis()}_photo.jpg")
         photoRef.putFile(photoFile!!)
@@ -409,7 +406,8 @@ class EditItemActivity : AppCompatActivity()  {
 
             }
     }
-    private  fun updateItem(userID:String, item: Item){
+
+    private fun updateItem(userID: String, item: Item) {
         // if reference is stored in application context
         if ((applicationContext as MyApplication).pantryRef == null) {
             db.collection("users").document(userID)
