@@ -207,6 +207,16 @@ class EditItemActivity : AppCompatActivity()  {
             binding.editNamePencil.isEnabled = true
         }
         // for editing name of item
+        binding.etItemName.setOnFocusChangeListener { v, hasFocus ->
+            if(!hasFocus){
+                binding.tvItemTitle.visibility = View.INVISIBLE
+                binding.etItemName.visibility = View.INVISIBLE
+                binding.tvInfoItemName.setText(binding.etItemName.text.toString())
+                binding.tvInfoItemName.visibility = View.VISIBLE
+                binding.editNamePencil.visibility = View.VISIBLE
+            }
+
+        }
         binding.etItemName.setOnKeyListener { v, keyCode, event ->
 
             when {
