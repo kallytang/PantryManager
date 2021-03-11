@@ -44,11 +44,9 @@ class MyApplication : Application() {
             val dataList = snapshot.toObjects(Unit::class.java)
             unitsAsString = mutableListOf<String>()
             unitList = dataList
-            Log.i("units", unitList.toString())
             for (items in unitList!!) {
                 items.abbreviation?.let { unitsAsString?.add(it) }
             }
-            Log.i("units", unitsAsString.toString())
 
 
         }
@@ -69,33 +67,32 @@ class MyApplication : Application() {
                         storageLocationList = ArrayList(location.values)
                         storageLocationList!!.sort()
                         pantryRef = pantryReference
-                        Log.i("chips2", pantryRef.toString())
 
 
                     }
             }
     }
     //TODO create an async call
-//    fun getQueryStorageLocations(): ArrayList<String>{
-//        lateinit var listLocation: ArrayList<String>
-//
-//        db.collection("users").document(auth.currentUser?.uid.toString()).get()
-//            .addOnSuccessListener { doc ->
-//                currUser = doc.toObject(User::class.java)
-//                // get reference to pantry
-//                val pantryReference: DocumentReference? = currUser?.myPantry
-//                pantryReference?.get()
-//                    ?.addOnSuccessListener { pantryDoc ->
-//                        val location: Map<String, String> =
-//                            pantryDoc.get("storage_locations") as Map<String, String>
-//                        listLocation = ArrayList(location.values)
-//                        listLocation.sort()
-//
-//
-//                    }
-//            }
-//        return listLocation
-//    }
-//
+    fun getQueryStorageLocations(){
+        lateinit var listLocation: ArrayList<String>
+
+        db.collection("users").document(auth.currentUser?.uid.toString()).get()
+            .addOnSuccessListener { doc ->
+                currUser = doc.toObject(User::class.java)
+                // get reference to pantry
+                val pantryReference: DocumentReference? = currUser?.myPantry
+                pantryReference?.get()
+                    ?.addOnSuccessListener { pantryDoc ->
+                        val location: Map<String, String> =
+                            pantryDoc.get("storage_locations") as Map<String, String>
+                        listLocation = ArrayList(location.values)
+                        storageLocationList?.clear()
+                        storageLocationList?.addAll(listLocation)
+
+                    }
+            }
+
+    }
+
 }
 

@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -65,11 +66,9 @@ class LoginActivity : AppCompatActivity() {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e)
 
             }
         }
@@ -80,11 +79,9 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
                     var result = task.result
                     // check if user is a new user
                     if (result?.additionalUserInfo?.isNewUser == true){
-                        Log.i("newUser", "new user signed in?")
                         // direct user to a set up page,
                         toSetUpAccount()
                     }else{
@@ -92,11 +89,7 @@ class LoginActivity : AppCompatActivity() {
                         updateUI(user)
                     }
 
-
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    // ...
                     Toast.makeText(this, "Authentication Failure", Toast.LENGTH_SHORT).show()
                     updateUI(null)
                 }
@@ -105,7 +98,6 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUI(currentUser: FirebaseUser?) {
         //go to main activity if signed in
         if(currentUser==null){
-            Log.w(TAG, "User is null")
             return
         }
         startActivity(Intent(this, MainActivity::class.java))
@@ -133,14 +125,12 @@ class LoginActivity : AppCompatActivity() {
 //                if(task.isSuccessful){
 //                    goToMainActivity()
 //                }else{
-//                    Log.i(TAG, "signing in failed", task.exception)
 //                    Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
 //                }
 //            }
 //        }
 
 //    private fun goToMainActivity() {
-//        Log.i(TAG, "going to main activity")
 //        val intent = Intent(this, MainActivity::class.java)
 //        startActivity(intent)
 //        finish()

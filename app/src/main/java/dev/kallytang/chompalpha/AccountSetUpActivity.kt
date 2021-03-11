@@ -52,7 +52,6 @@ class AccountSetUpActivity : AppCompatActivity() {
                 db.collection("users").document(currUser).update(
                     "my_pantry", pantry_ref
                 ).addOnFailureListener { exception ->
-                    Log.i(TAG, "can't add it to the user? $exception")
                 }
 
             }
@@ -60,9 +59,11 @@ class AccountSetUpActivity : AppCompatActivity() {
             pantry_ref.update(
                 "storage_locations", storageLocationNames
             ).addOnSuccessListener {
-                (applicationContext as MyApplication).queryStorageLocations()
+                (applicationContext as MyApplication).getQueryStorageLocations()
+            }.addOnCompleteListener {
+                goToMain()
             }
-            goToMain()
+
         }
     }
     // function to direct user to main activity

@@ -21,7 +21,6 @@ import dev.kallytang.chompalpha.databinding.ActivityMainBinding
 import dev.kallytang.chompalpha.models.Item
 import dev.kallytang.chompalpha.models.Unit
 import dev.kallytang.chompalpha.models.User
-import kotlinx.android.synthetic.main.dialog_text_input.*
 
 class MainActivity : AppCompatActivity() , FilterItems, AddNewStorageName{
     private companion object{
@@ -96,11 +95,11 @@ class MainActivity : AppCompatActivity() , FilterItems, AddNewStorageName{
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.logout_tab->{
-                Log.i(TAG, "Logged out")
                 auth.signOut()
                 val logoutIntent = Intent(this, LoginActivity::class.java)
                 logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(logoutIntent)
+                finish()
 
             }
             R.id.add_storage_location ->{
@@ -142,12 +141,8 @@ class MainActivity : AppCompatActivity() , FilterItems, AddNewStorageName{
 
 
     private fun getUnits(){
-//        var myApp = MyApplication()
         db.collection("units").get().addOnSuccessListener { snapshot ->
-            Log.i("units", snapshot.toObjects(Unit::class.java).toString())
             (applicationContext as MyApplication).unitList = snapshot.toObjects(Unit::class.java)
-
-            Log.i("unitsList2", (applicationContext as MyApplication).unitList.toString())
         }
     }
 
@@ -156,7 +151,6 @@ class MainActivity : AppCompatActivity() , FilterItems, AddNewStorageName{
             (applicationContext as MyApplication).pantryRef?.collection("my_pantry")
                 ?.get()?.addOnSuccessListener { snap ->
                 val items:MutableList<Item> = snap.toObjects(Item::class.java)
-                Log.i("itemsF", items.toString())
                 itemsAdapter.clear()
                 itemsAdapter.addAll(items as ArrayList<Item>)
                 itemsListCopy.clear()
@@ -167,11 +161,9 @@ class MainActivity : AppCompatActivity() , FilterItems, AddNewStorageName{
         }else{
             db.collection("users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener{ doc ->
                 val user = doc.toObject(User::class.java)
-                Log.i("itemsF", user.toString())
                 if (user != null) {
                     user.myPantry?.collection("my_pantry")?.get()?.addOnSuccessListener { snap ->
                         val items:MutableList<Item> = snap.toObjects(Item::class.java)
-                        Log.i("itemsF", items.toString())
                         itemsAdapter.clear()
                         itemsAdapter.addAll(items as ArrayList<Item>)
                         itemsListCopy.clear()
@@ -189,7 +181,6 @@ class MainActivity : AppCompatActivity() , FilterItems, AddNewStorageName{
     }
 
     override fun filterItems(locationName: String){
-        Log.i("itemsClicked", locationName)
         if(locationName == "All"){
             itemsAdapter.clear()
             itemsAdapter.addAll(itemsListCopy as ArrayList<Item>)
@@ -210,6 +201,11 @@ class MainActivity : AppCompatActivity() , FilterItems, AddNewStorageName{
     override fun addNewStorageName(name: String) {
         storageAdapter.add(name)
         (applicationContext as MyApplication).storageLocationList?.add(name)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        itemsAdapter.notifyDataSetChanged()
     }
 }
 

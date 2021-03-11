@@ -26,12 +26,12 @@
         <activity android:name=".ManageHouseholdActivity"></activity>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".EditItemActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar"/>
         <activity android:name=".CameraActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar"/>
         <activity
             android:name=".AddFoodItemActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+            android:theme="@style/AppThemeNoActionBar" />
         <activity android:name=".AccountSetUpActivity" />
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".MainActivity" />

@@ -79,8 +79,6 @@ class AddFoodItemActivity : AppCompatActivity() {
 
         // for when user confirms date, convert date into a timestamp
         materialDatePicker.addOnPositiveButtonClickListener { date ->
-            Log.i("date", materialDatePicker.headerText)
-            Log.i("date", date.toString())
             binding.etDateExpiry.setText(materialDatePicker.headerText)
             binding.etDateExpiry.isEnabled = true
         }
@@ -115,7 +113,6 @@ class AddFoodItemActivity : AppCompatActivity() {
 
 
         unitSpinnerAdapter = UnitSpinnerAdapter(this, R.layout.spinner_row, unitList)
-//        Log.i("unitsList",unitsList.toString())
         binding.addUnitSpinner.adapter = unitSpinnerAdapter
         binding.addUnitSpinner.setSelection(indexUnit)
 
@@ -228,6 +225,7 @@ class AddFoodItemActivity : AppCompatActivity() {
             if (error == true) {
                 return@setOnClickListener
             } else {
+                binding.progressBar.visibility = View.VISIBLE
                 binding.btnAddNewItem.isEnabled = false
                 // get value from the spinner
                 val formatter = SimpleDateFormat(stringPatternEditText, Locale.getDefault())
@@ -268,9 +266,7 @@ class AddFoodItemActivity : AppCompatActivity() {
                             startActivity(Intent(this, MainActivity::class.java))
                             finish()
                         }.addOnFailureListener{ e->
-                            Log.i("addItem", e.toString())
                         }.addOnSuccessListener {
-                            Log.i("addItem", it.toString())
                         }
 
                 } else {
@@ -293,6 +289,7 @@ class AddFoodItemActivity : AppCompatActivity() {
                     val pantryReference = (applicationContext as MyApplication).pantryRef
                     pantryReference?.collection("my_pantry")?.add(item)
                     binding.btnAddNewItem.isEnabled = false
+                    binding.progressBar.visibility = View.GONE
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
@@ -323,10 +320,6 @@ class AddFoodItemActivity : AppCompatActivity() {
         }
         if (requestCode == PHOTO_CODE && resultCode == RESULT_OK) {
             photoFile = data?.data!!
-
-            if (photoFile != null) {
-                Log.i("photoData", "photouri, ${photoFile!!.javaClass.name}")
-            }
             if (photoFile != null) {
                 binding.ivNewFoodImage.visibility = View.VISIBLE
                 Glide.with(this).load(photoFile).into(binding.ivNewFoodImage)

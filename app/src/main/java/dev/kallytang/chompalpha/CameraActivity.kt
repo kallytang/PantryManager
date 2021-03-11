@@ -102,7 +102,7 @@ class CameraActivity : AppCompatActivity() {
         imageCapture.takePicture(
             outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
-                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+//                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                     Toast.makeText(baseContext, "Error, could take the photo, try again.", Toast.LENGTH_SHORT).show()
                 }
 
@@ -110,7 +110,7 @@ class CameraActivity : AppCompatActivity() {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, msg)
+//                    Log.d(TAG, msg)
                     if(destination != FROM_ADD_FOOD_CODE){
                         val intent = Intent(this@CameraActivity, EditItemActivity::class.java)
                         intent.putExtra("photo", savedUri)
@@ -148,7 +148,7 @@ class CameraActivity : AppCompatActivity() {
                     this, cameraSelector, preview
                 )
             } catch (ex: Exception) {
-                Log.e(TAG, "Use case binding failed", ex)
+//                Log.e(TAG, "Use case binding failed", ex)
             }
 
             //returns a Executor that runs on main thread

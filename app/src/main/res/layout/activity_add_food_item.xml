@@ -12,17 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <Button
-            android:id="@+id/btn_add_new_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
-            android:text="@string/add"
-            app:layout_constraintBottom_toBottomOf="@+id/fab_camera"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_camera"
             android:layout_width="wrap_content"
@@ -32,7 +21,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
             android:backgroundTint="@color/black"
-            android:src="@drawable/ic_cameratemp"
+            android:src="@drawable/ic_camera"
             app:backgroundTint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -48,12 +37,12 @@
             android:backgroundTint="@color/light_gray"
             android:clickable="true"
             android:padding="5dp"
-            app:backgroundTint="@color/black"
+            app:backgroundTint="@color/light_gray"
             app:fabSize="mini"
             app:layout_constraintBottom_toTopOf="@+id/fab_camera"
             app:layout_constraintEnd_toEndOf="@+id/fab_camera"
             app:layout_constraintStart_toStartOf="@+id/fab_camera"
-            app:srcCompat="@drawable/ic_imageuploadfromflaticon"
+            app:srcCompat="@drawable/ic_imagepicker"
             app:tint="@color/black">
 
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
@@ -417,6 +406,27 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_add_new_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_add_new_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:text="@string/add"
+            app:layout_constraintBottom_toBottomOf="@+id/fab_camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

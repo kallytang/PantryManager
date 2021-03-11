@@ -186,8 +186,6 @@ class EditItemActivity : AppCompatActivity()  {
         // create date picker
         // TODO add date to calendar picker
         materialDatePicker.addOnPositiveButtonClickListener { date ->
-            Log.i("date", materialDatePicker.headerText)
-            Log.i("date", date.toString())
             binding.etDateExpiry.setText(materialDatePicker.headerText)
             binding.etDateExpiry.isEnabled = true
         }
@@ -230,14 +228,7 @@ class EditItemActivity : AppCompatActivity()  {
             intent.putExtra("identifier", 30)
             startActivityForResult(intent, EditItemActivity.REQUEST_CODE)
         }
-//        TODO animate the mini fab
-//        binding.fabCamera.setOnLongClickListener {
-//            binding.fabCamera.isExpanded
-//
-//            // move the image fab button up
-//
-//            return@setOnLongClickListener true
-//        }
+
 
         binding.fabGetFromGallery.setOnClickListener {
 
@@ -312,7 +303,6 @@ class EditItemActivity : AppCompatActivity()  {
                     }
                     if(item.units?.unitName != unitChosen.unitName){
                         item.units = unitChosen
-                        Log.i(TAG, item.units.toString())
                         changesMade = true
                     }
                     if(imageDeleted){
@@ -322,7 +312,6 @@ class EditItemActivity : AppCompatActivity()  {
                         if(!item?.imageUrl.isNullOrEmpty()){
                             photoRef = storage.getReferenceFromUrl(item?.imageUrl.toString())
                             photoRef.delete().addOnSuccessListener {
-                                Log.i("deleteITem","image delete")
                             }
                         }
                         item.imageUrl = ""
@@ -331,41 +320,17 @@ class EditItemActivity : AppCompatActivity()  {
                     }
 
                     if(changesMade == true){
-
+                        binding.progressBar.visibility = View.VISIBLE
                         var userID = auth.currentUser?.uid.toString()
                         if(photoFile != null){
-                            Log.i("editItem2", photoFile!!.javaClass.name)
-                            var pantryRef = (applicationContext as MyApplication).pantryRef
-
-
-
+                            updateItemWithPhoto(userID, item)
                         }else {
                             // if there's no photofile uploaded
-                            if ((applicationContext as MyApplication).pantryRef == null) {
-                                db.collection("users").document(userID)
-                                    .get().addOnSuccessListener { snapshot ->
-                                    var user = snapshot.toObject(User::class.java)
-                                    var pantryRef = user?.myPantry
-                                    pantryRef?.collection("my_pantry")
-                                        ?.document(item.documentId.toString())
-                                        ?.update(item.toMap())?.addOnFailureListener { e ->
-                                            Log.i(TAG, e.toString())
-                                        }
-                                }
-
-                            } else {
-                                var pantryRef = (applicationContext as MyApplication).pantryRef
-                                pantryRef?.collection("my_pantry")
-                                    ?.document(item.documentId.toString())
-                                    ?.update(item.toMap())?.addOnFailureListener { e ->
-                                        Log.i(TAG, "reg " + e.toString())
-                                    }
-                            }
+                            updateItem(userID, item)
                         }
                     }
                 }
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+
             }
 
         }
@@ -407,7 +372,6 @@ class EditItemActivity : AppCompatActivity()  {
             if (photoFile != null) {
                 newPhoto = true
                 EditItemActivity.changesMade = true
-                Log.i("photoData", "photouri, ${photoFile!!.javaClass.name}")
                 binding.ivFoodPhoto.visibility = View.VISIBLE
                 Glide.with(this).load(photoFile).into(binding.ivFoodPhoto)
 
@@ -422,5 +386,48 @@ class EditItemActivity : AppCompatActivity()  {
         }
     }
 
+    private fun updateItemWithPhoto(userID:String, item: Item){
+        val photoRef =
+            storageRef.child("images/$userID/${System.currentTimeMillis()}_photo.jpg")
+        photoRef.putFile(photoFile!!)
+            .continueWithTask { photoUploadTask ->
+                photoRef.downloadUrl
+
+            }.continueWith { downloadUrl ->
+                item.imageUrl = downloadUrl.result.toString()
+                updateItem(userID, item)
+
+            }
+    }
+    private  fun updateItem(userID:String, item: Item){
+        // if reference is stored in application context
+        if ((applicationContext as MyApplication).pantryRef == null) {
+            db.collection("users").document(userID)
+                .get().addOnSuccessListener { snapshot ->
+                    var user = snapshot.toObject(User::class.java)
+                    var pantryRef = user?.myPantry
+                    pantryRef?.collection("my_pantry")
+                        ?.document(item.documentId.toString())
+                        ?.update(item.toMap())?.addOnFailureListener { e ->
+                        }?.addOnCompleteListener {
+                            binding.progressBar.visibility = View.GONE
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        }
+                }
+
+        } else {
+            var pantryRef = (applicationContext as MyApplication).pantryRef
+            pantryRef?.collection("my_pantry")
+                ?.document(item.documentId.toString())
+                ?.update(item.toMap())?.addOnFailureListener { e ->
+                }?.addOnCompleteListener {
+                    binding.progressBar.visibility = View.GONE
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
+        }
+
+    }
 
 }

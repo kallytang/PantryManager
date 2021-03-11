@@ -65,6 +65,7 @@ class AddStorageLocationDialogue(private val addStorageName : AddNewStorageName)
                 rootView.et_add_new_storage_name.setBackgroundResource(R.drawable.text_input_layout_red)
                 rootView.et_add_new_storage_name.setHintTextColor(Color.RED)
                 rootView.et_add_new_storage_name.setText("Please Enter a Storage Name")
+                rootView.tv_error_message.visibility = View.VISIBLE
                 rootView.btn_add_name.isEnabled = true
             }else{
 //                pantryRef.collection("my_pantry").document().update()
@@ -74,6 +75,7 @@ class AddStorageLocationDialogue(private val addStorageName : AddNewStorageName)
                     rootView.et_add_new_storage_name.setBackgroundResource(R.drawable.text_input_layout_red)
                     rootView.et_add_new_storage_name.setHintTextColor(Color.RED)
                     rootView.tv_error_message.setText("${stringInput} already exists, try again")
+                    rootView.tv_error_message.visibility = View.VISIBLE
                     rootView.btn_add_name.isEnabled = true
                 }else{
                     // add new storage location to the database
