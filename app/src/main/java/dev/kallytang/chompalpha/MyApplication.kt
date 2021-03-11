@@ -86,6 +86,7 @@ class MyApplication : Application() {
                         val location: Map<String, String> =
                             pantryDoc.get("storage_locations") as Map<String, String>
                         listLocation = ArrayList(location.values)
+                        listLocation.sort()
                         storageLocationList?.clear()
                         storageLocationList?.addAll(listLocation)
 
