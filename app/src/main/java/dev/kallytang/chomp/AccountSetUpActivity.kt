@@ -62,7 +62,6 @@ class AccountSetUpActivity : AppCompatActivity() {
                         "storage_locations" to storageLocationNames
                     )).addOnSuccessListener { task ->
                     // when pantries document is created, add it to user as a reference
-                    (applicationContext as MyApplication).getQueryStorageLocations()
                     (applicationContext as MyApplication).updatePantryReference(pantry_ref)
 
                     goToMain()
