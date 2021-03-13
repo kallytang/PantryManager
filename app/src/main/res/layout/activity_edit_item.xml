@@ -92,42 +92,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <RelativeLayout
-                    android:id="@+id/image_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/iv_food_photo"
-                        android:layout_width="300dp"
-                        android:layout_height="300dp"
-                        android:layout_alignParentStart="false"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="false"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="10dp"
-                        android:scaleType="centerCrop"
-                        android:visibility="gone"
-                        tools:srcCompat="@tools:sample/avatars" />
-
-                    <ImageView
-                        android:id="@+id/iv_remove_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignTop="@id/iv_food_photo"
-                        android:layout_alignEnd="@+id/iv_food_photo"
-                        android:layout_alignParentTop="false"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/ic_close" />
-
-                </RelativeLayout>
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_form"
                     android:layout_width="match_parent"
@@ -139,6 +103,39 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/image_container">
 
+                    <RelativeLayout
+                        android:id="@+id/image_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/iv_food_photo"
+                            android:layout_width="300dp"
+                            android:layout_height="300dp"
+                            android:layout_alignParentStart="false"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="false"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="10dp"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone"
+                            tools:srcCompat="@tools:sample/avatars" />
+
+                        <ImageView
+                            android:id="@+id/iv_remove_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@id/iv_food_photo"
+                            android:layout_alignEnd="@+id/iv_food_photo"
+                            android:layout_alignParentTop="false"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/ic_close" />
+
+                    </RelativeLayout>
+
                     <TextView
                         android:id="@+id/tv_item_title"
                         android:layout_width="wrap_content"
@@ -148,7 +145,7 @@
                         android:textColor="@color/black"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="@+id/tv_info_item_name"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/image_container" />
 
 
                     <TextView
