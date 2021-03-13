@@ -98,7 +98,6 @@ class CameraActivity : AppCompatActivity() {
         imageCapture.takePicture(
             outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
-//                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                     Toast.makeText(baseContext, "Error, could take the photo, try again.", Toast.LENGTH_SHORT).show()
                 }
 

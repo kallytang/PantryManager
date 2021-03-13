@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -71,10 +70,8 @@ class AddFoodItemActivity : AppCompatActivity() {
             (applicationContext as MyApplication).queryStorageLocations()
             getStorageLocations()
 
-            Log.i("currUser", "It's empty")
         }else{
             (applicationContext as MyApplication).storageLocationList?.let { storageList.addAll(it) }
-            Log.i("currUser", "Adding it")
             storageSpinnerAdapter = StorageSpinnerAdapter(this, R.layout.spinner_row, storageList)
             binding.addLocationSpinner.adapter = storageSpinnerAdapter
             storageSpinnerAdapter.notifyDataSetChanged()
