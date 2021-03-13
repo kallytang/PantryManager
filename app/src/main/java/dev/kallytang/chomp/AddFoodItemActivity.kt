@@ -312,11 +312,17 @@ class AddFoodItemActivity : AppCompatActivity() {
     }
 
     private fun openPhotos() {
-        val imageSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
-        imageSelectionIntent.type = "image/*"
-        if (imageSelectionIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(imageSelectionIntent, PHOTO_CODE)
-        }
+//        val imageSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
+////        imageSelectionIntent.type = "image/*"
+////
+//
+//        if (imageSelectionIntent.resolveActivity(packageManager) != null) {
+//            startActivityForResult(imageSelectionIntent, PHOTO_CODE)
+//        }
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PHOTO_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -353,7 +359,9 @@ class AddFoodItemActivity : AppCompatActivity() {
                         listLocation.sort()
                         storageList.clear()
                         storageList.addAll(listLocation)
-                        storageSpinnerAdapter = StorageSpinnerAdapter(this, R.layout.spinner_row, storageList)
+                        storageSpinnerAdapter = StorageSpinnerAdapter(this,
+                            R.layout.spinner_row,
+                            storageList)
                         binding.addLocationSpinner.adapter = storageSpinnerAdapter
                         storageSpinnerAdapter.notifyDataSetChanged()
                     }

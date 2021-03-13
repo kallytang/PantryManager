@@ -385,11 +385,17 @@ class EditItemActivity : AppCompatActivity() {
     }
 
     private fun openPhotos() {
-        val imageSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
-        imageSelectionIntent.type = "image/*"
-        if (imageSelectionIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(imageSelectionIntent, EditItemActivity.PHOTO_CODE)
-        }
+//        val imageSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
+//        imageSelectionIntent.type = "image/*"
+//        if (imageSelectionIntent.resolveActivity(packageManager) != null) {
+//            startActivityForResult(imageSelectionIntent, EditItemActivity.PHOTO_CODE)
+//        }
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+            PHOTO_CODE)
+
     }
 
     private fun updateItemWithPhoto(userID: String, item: Item) {
