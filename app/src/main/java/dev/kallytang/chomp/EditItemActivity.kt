@@ -165,7 +165,7 @@ class EditItemActivity : AppCompatActivity() {
         }
         binding.ivRemoveImage.setOnClickListener {
             binding.ivRemoveImage.visibility = View.INVISIBLE
-            binding.ivFoodPhoto.visibility = View.INVISIBLE
+            binding.ivFoodPhoto.visibility = View.GONE
             // set photoFile to null since image was closed
             photoFile = null
             imageDeleted = true
@@ -367,7 +367,7 @@ class EditItemActivity : AppCompatActivity() {
                     EditItemActivity.changesMade = true
                     binding.ivFoodPhoto.visibility = View.VISIBLE
                     Glide.with(this).load(photoFile).into(binding.ivFoodPhoto)
-
+                    binding.ivRemoveImage.visibility = View.VISIBLE
                 }
             }
         }
@@ -379,6 +379,7 @@ class EditItemActivity : AppCompatActivity() {
                 EditItemActivity.changesMade = true
                 binding.ivFoodPhoto.visibility = View.VISIBLE
                 Glide.with(this).load(photoFile).into(binding.ivFoodPhoto)
+                binding.ivRemoveImage.visibility = View.VISIBLE
 
             }
         }
