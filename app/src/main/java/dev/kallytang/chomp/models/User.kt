@@ -1,8 +1,7 @@
-package dev.kallytang.chompalpha.models
+package dev.kallytang.chomp.models
 
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.PropertyName
-import java.sql.Ref
 
 data class User(
     var username: String = "",

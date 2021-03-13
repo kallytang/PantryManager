@@ -1,4 +1,4 @@
-package dev.kallytang.chompalpha
+package dev.kallytang.chomp
 
 import org.junit.Test
 

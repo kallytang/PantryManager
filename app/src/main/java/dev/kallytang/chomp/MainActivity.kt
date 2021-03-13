@@ -1,26 +1,23 @@
-package dev.kallytang.chompalpha
+package dev.kallytang.chomp
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 import com.google.firebase.firestore.ktx.firestore
-import dev.kallytang.chompalpha.adapters.ItemsAdapter
-import dev.kallytang.chompalpha.adapters.StorageLocationAdapter
-import dev.kallytang.chompalpha.databinding.ActivityMainBinding
-import dev.kallytang.chompalpha.models.Item
-import dev.kallytang.chompalpha.models.Unit
-import dev.kallytang.chompalpha.models.User
+import dev.kallytang.chomp.adapters.ItemsAdapter
+import dev.kallytang.chomp.adapters.StorageLocationAdapter
+import dev.kallytang.chomp.databinding.ActivityMainBinding
+import dev.kallytang.chomp.models.Item
+import dev.kallytang.chomp.models.Unit
+import dev.kallytang.chomp.models.User
 
 class MainActivity : AppCompatActivity() , FilterItems, AddNewStorageName{
     private companion object{
@@ -43,7 +40,7 @@ class MainActivity : AppCompatActivity() , FilterItems, AddNewStorageName{
         auth = Firebase.auth
 
         if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
-            (applicationContext as MyApplication).queryStorageLocations()
+            (applicationContext as MyApplication).getQueryStorageLocations()
         }
 
         binding.swipeRefreshMain.setOnRefreshListener {

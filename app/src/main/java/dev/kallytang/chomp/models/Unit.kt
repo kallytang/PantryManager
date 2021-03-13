@@ -1,6 +1,5 @@
-package dev.kallytang.chompalpha.models
+package dev.kallytang.chomp.models
 
-import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties

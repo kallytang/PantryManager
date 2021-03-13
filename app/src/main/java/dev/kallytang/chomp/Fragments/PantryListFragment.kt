@@ -1,4 +1,4 @@
-package dev.kallytang.chompalpha.Fragments
+package dev.kallytang.chomp.Fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,11 +11,11 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import dev.kallytang.chompalpha.AddFoodItemActivity
-import dev.kallytang.chompalpha.MyApplication
-import dev.kallytang.chompalpha.R
-import dev.kallytang.chompalpha.models.Unit
-import dev.kallytang.chompalpha.models.User
+import dev.kallytang.chomp.AddFoodItemActivity
+import dev.kallytang.chomp.MyApplication
+import dev.kallytang.chomp.R
+import dev.kallytang.chomp.models.Unit
+import dev.kallytang.chomp.models.User
 import kotlinx.android.synthetic.main.fragment_pantry_list.*
 
 // TODO: Rename parameter arguments, choose names that match

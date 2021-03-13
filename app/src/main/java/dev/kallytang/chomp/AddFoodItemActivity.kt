@@ -1,4 +1,4 @@
-package dev.kallytang.chompalpha
+package dev.kallytang.chomp
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,15 +19,14 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import dev.kallytang.chompalpha.adapters.StorageSpinnerAdapter
-import dev.kallytang.chompalpha.adapters.UnitSpinnerAdapter
-import dev.kallytang.chompalpha.databinding.ActivityAddFoodItemBinding
-import dev.kallytang.chompalpha.models.Item
-import dev.kallytang.chompalpha.models.Unit
-import dev.kallytang.chompalpha.models.User
+import dev.kallytang.chomp.adapters.StorageSpinnerAdapter
+import dev.kallytang.chomp.adapters.UnitSpinnerAdapter
+import dev.kallytang.chomp.databinding.ActivityAddFoodItemBinding
+import dev.kallytang.chomp.models.Item
+import dev.kallytang.chomp.models.Unit
+import dev.kallytang.chomp.models.User
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class AddFoodItemActivity : AppCompatActivity() {
@@ -41,7 +40,7 @@ class AddFoodItemActivity : AppCompatActivity() {
     private lateinit var unitList: ArrayList<Unit>
     private lateinit var unitSpinnerAdapter: UnitSpinnerAdapter
     private lateinit var unitChosen: Unit
-    private lateinit var storageNames: ArrayList<String>
+    private lateinit var storageList: ArrayList<String>
     private lateinit var storageSpinnerAdapter: StorageSpinnerAdapter
     private var photoFile: Uri? = null
     private lateinit var binding: ActivityAddFoodItemBinding
@@ -64,6 +63,24 @@ class AddFoodItemActivity : AppCompatActivity() {
         setContentView(view)
         storageRef = FirebaseStorage.getInstance().getReference();
         auth = Firebase.auth
+
+
+        //set up storage location
+        storageList = ArrayList()
+        if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
+            (applicationContext as MyApplication).queryStorageLocations()
+            getStorageLocations()
+
+            Log.i("currUser", "It's empty")
+        }else{
+            (applicationContext as MyApplication).storageLocationList?.let { storageList.addAll(it) }
+            Log.i("currUser", "Adding it")
+            storageSpinnerAdapter = StorageSpinnerAdapter(this, R.layout.spinner_row, storageList)
+            binding.addLocationSpinner.adapter = storageSpinnerAdapter
+            storageSpinnerAdapter.notifyDataSetChanged()
+        }
+//        storageSpinnerAdapter = StorageSpinnerAdapter(this, R.layout.spinner_row, storageList)
+//        binding.addLocationSpinner.adapter = storageSpinnerAdapter
 
 
         // set up calendar dialog
@@ -89,15 +106,10 @@ class AddFoodItemActivity : AppCompatActivity() {
             binding.etDateExpiry.isEnabled = true
         }
 
-        //set up storage location
-        storageNames = ArrayList()
-//        if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
-//            storageNames.addAll((applicationContext as MyApplication).getQueryStorageLocations())
-//        }
 
-        (applicationContext as MyApplication).storageLocationList?.let { storageNames.addAll(it) }
-        storageSpinnerAdapter = StorageSpinnerAdapter(this, R.layout.spinner_row, storageNames)
-        binding.addLocationSpinner.adapter = storageSpinnerAdapter
+
+
+
 
         // set up units spinner
         unitList = ArrayList()
@@ -260,12 +272,12 @@ class AddFoodItemActivity : AppCompatActivity() {
                             )
                             val pantryReference = (applicationContext as MyApplication).pantryRef
                             pantryReference?.collection("my_pantry")?.add(item)
-                        }.addOnCompleteListener{
+                        }.addOnCompleteListener {
 
                             binding.btnAddNewItem.isEnabled = false
                             startActivity(Intent(this, MainActivity::class.java))
                             finish()
-                        }.addOnFailureListener{ e->
+                        }.addOnFailureListener { e ->
                         }.addOnSuccessListener {
                         }
 
@@ -328,6 +340,26 @@ class AddFoodItemActivity : AppCompatActivity() {
         }
     }
 
+    private fun getStorageLocations() {
 
+        db.collection("users").document(auth.currentUser?.uid.toString()).get()
+            .addOnSuccessListener { snapshot ->
+                var user = snapshot.toObject(User::class.java)
+                if (user != null) {
+                    user.myPantry?.get()?.addOnSuccessListener { pantryDoc ->
+                        val location: Map<String, String> =
+                            pantryDoc.get("storage_locations") as Map<String, String>
+                        val listLocation = ArrayList(location.values)
+                        listLocation.sort()
+                        storageList.clear()
+                        storageList.addAll(listLocation)
+                        storageSpinnerAdapter = StorageSpinnerAdapter(this, R.layout.spinner_row, storageList)
+                        binding.addLocationSpinner.adapter = storageSpinnerAdapter
+                        storageSpinnerAdapter.notifyDataSetChanged()
+                    }
+                }
+
+            }
+    }
 }
 

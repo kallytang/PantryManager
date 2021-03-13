@@ -1,4 +1,4 @@
-package dev.kallytang.chompalpha.adapters
+package dev.kallytang.chomp.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -14,11 +14,11 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import dev.kallytang.chompalpha.EditItemActivity
-import dev.kallytang.chompalpha.R
-import dev.kallytang.chompalpha.models.Item
-import dev.kallytang.chompalpha.models.Unit
-import dev.kallytang.chompalpha.models.User
+import dev.kallytang.chomp.EditItemActivity
+import dev.kallytang.chomp.R
+import dev.kallytang.chomp.models.Item
+import dev.kallytang.chomp.models.Unit
+import dev.kallytang.chomp.models.User
 import kotlinx.android.synthetic.main.item_food_list.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,7 +37,6 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
             itemView.iv_red_dot.visibility = View.INVISIBLE
             // check expiry date
             //convert the expiry date to a local date time
-
 
 
             val simpleDateFormatter = SimpleDateFormat(stringPatternEditText, Locale.getDefault())
@@ -60,7 +59,7 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
                     itemView.iv_red_dot.visibility = View.VISIBLE
                     itemView.iv_red_dot.setImageResource(R.drawable.ic_red_dot)
                     itemView.tv_status_of_food.setTextColor(Color.RED)
-                    itemView.tv_status_of_food.text = "Food Expired"
+                    itemView.tv_status_of_food.text = "Food Expired ${dateFormatted}"
                 }else if(days > 0 && days < 4){
                     itemView.tv_status_of_food.visibility = View.VISIBLE
                     itemView.iv_red_dot.visibility = View.VISIBLE
@@ -69,7 +68,7 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
                     itemView.tv_status_of_food.text = "Going Bad Soon(${days.toInt()} day(s))"
 
                 }else{
-                    itemView.tv_status_of_food.visibility = View.INVISIBLE
+                    itemView.tv_status_of_food.visibility = View.GONE
                     itemView.iv_red_dot.visibility = View.INVISIBLE
                 }
             }

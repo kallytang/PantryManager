@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Chomp</string>
-    <string name="welcome">Welcome!</string>
     <string name="create_an_account">Create an Account</string>
     <string name="email">Email</string>
     <string name="username">Username</string>
@@ -50,4 +49,8 @@
     <string name="next">Next</string>
     <string name="take_photo_of_food_item">take photo of food item</string>
     <string name="get_image_from_gallery">get image from gallery</string>
+    <string name="welcome">Welcome!</string>
+    <string name="one_moment_to_set_up_your_account">One moment to set up your account...</string>
+    <string name="the_pantry_app_n_keep_track_of_what_you_have">The pantry app.\n Keep track of what you have.</string>
+    <string name="chomp">Chomp</string>
 </resources>

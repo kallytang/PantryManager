@@ -1,4 +1,4 @@
-package dev.kallytang.chompalpha
+package dev.kallytang.chomp
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

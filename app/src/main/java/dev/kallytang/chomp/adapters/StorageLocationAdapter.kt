@@ -1,12 +1,12 @@
-package dev.kallytang.chompalpha.adapters
+package dev.kallytang.chomp.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import dev.kallytang.chompalpha.FilterItems
-import dev.kallytang.chompalpha.R
+import dev.kallytang.chomp.FilterItems
+import dev.kallytang.chomp.R
 import kotlinx.android.synthetic.main.item_storage_name.view.*
 
 

@@ -1,4 +1,4 @@
-package dev.kallytang.chompalpha
+package dev.kallytang.chomp
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -20,16 +20,15 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import dev.kallytang.chompalpha.adapters.StorageSpinnerAdapter
-import dev.kallytang.chompalpha.adapters.UnitSpinnerAdapter
-import dev.kallytang.chompalpha.databinding.ActivityEditItemBinding
-import dev.kallytang.chompalpha.models.Item
-import dev.kallytang.chompalpha.models.Unit
-import dev.kallytang.chompalpha.models.User
+import dev.kallytang.chomp.adapters.StorageSpinnerAdapter
+import dev.kallytang.chomp.adapters.UnitSpinnerAdapter
+import dev.kallytang.chomp.databinding.ActivityEditItemBinding
+import dev.kallytang.chomp.models.Item
+import dev.kallytang.chomp.models.Unit
+import dev.kallytang.chomp.models.User
 import kotlinx.android.synthetic.main.activity_edit_item.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class EditItemActivity : AppCompatActivity() {
     private val db = Firebase.firestore

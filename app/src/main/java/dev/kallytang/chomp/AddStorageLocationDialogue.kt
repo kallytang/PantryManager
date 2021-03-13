@@ -1,17 +1,10 @@
- package dev.kallytang.chompalpha
+ package dev.kallytang.chomp
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +13,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import dev.kallytang.chompalpha.models.User
+import dev.kallytang.chomp.models.User
 import kotlinx.android.synthetic.main.dialog_add_storage_location.view.*
 
 class AddStorageLocationDialogue(private val addStorageName : AddNewStorageName) : DialogFragment() {

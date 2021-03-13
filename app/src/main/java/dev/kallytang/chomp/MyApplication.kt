@@ -1,7 +1,6 @@
-package dev.kallytang.chompalpha
+package dev.kallytang.chomp
 
 import android.app.Application
-import android.util.Log
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -9,11 +8,10 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import dev.kallytang.chompalpha.models.Item
-import dev.kallytang.chompalpha.models.Unit
-import dev.kallytang.chompalpha.models.User
+import dev.kallytang.chomp.models.Item
+import dev.kallytang.chomp.models.Unit
+import dev.kallytang.chomp.models.User
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MyApplication : Application() {
     private lateinit var auth: FirebaseAuth
@@ -95,5 +93,8 @@ class MyApplication : Application() {
 
     }
 
+    fun updatePantryReference(ref: DocumentReference){
+        pantryRef = ref
+    }
 }
 

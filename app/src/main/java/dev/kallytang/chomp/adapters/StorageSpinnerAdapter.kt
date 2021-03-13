@@ -1,4 +1,4 @@
-package dev.kallytang.chompalpha.adapters
+package dev.kallytang.chomp.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import dev.kallytang.chompalpha.R
+import dev.kallytang.chomp.R
 
 class StorageSpinnerAdapter(var contextSpinner: Context, var resources: Int, val storageList: ArrayList<String>):ArrayAdapter<String>(contextSpinner, resources, storageList) {
     override fun getItemId(position: Int): Long {

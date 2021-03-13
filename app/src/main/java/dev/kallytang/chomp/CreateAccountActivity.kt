@@ -1,4 +1,4 @@
-package dev.kallytang.chompalpha
+package dev.kallytang.chomp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
