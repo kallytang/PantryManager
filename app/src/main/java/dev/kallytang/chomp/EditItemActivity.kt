@@ -44,7 +44,6 @@ class EditItemActivity : AppCompatActivity() {
     private lateinit var timeStampOld: Timestamp
     private lateinit var locationChosen: String
 
-    private var newPhoto = false
     private lateinit var unitChosen: Unit
     private var photoFile: Uri? = null
     private var imageDeleted = false
@@ -164,12 +163,11 @@ class EditItemActivity : AppCompatActivity() {
 
         }
         binding.ivRemoveImage.setOnClickListener {
-            binding.ivRemoveImage.visibility = View.INVISIBLE
+            binding.ivRemoveImage.visibility = View.GONE
             binding.ivFoodPhoto.visibility = View.GONE
             // set photoFile to null since image was closed
             photoFile = null
             imageDeleted = true
-
         }
 
         //expiration date picking
@@ -363,7 +361,6 @@ class EditItemActivity : AppCompatActivity() {
             if (data != null) {
                 photoFile = data.extras?.get("photo") as Uri
                 if (photoFile != null) {
-                    newPhoto = true
                     EditItemActivity.changesMade = true
                     binding.ivFoodPhoto.visibility = View.VISIBLE
                     Glide.with(this).load(photoFile).into(binding.ivFoodPhoto)
@@ -375,7 +372,6 @@ class EditItemActivity : AppCompatActivity() {
             photoFile = data?.data!!
 
             if (photoFile != null) {
-                newPhoto = true
                 EditItemActivity.changesMade = true
                 binding.ivFoodPhoto.visibility = View.VISIBLE
                 Glide.with(this).load(photoFile).into(binding.ivFoodPhoto)

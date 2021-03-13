@@ -107,7 +107,12 @@ class AddFoodItemActivity : AppCompatActivity() {
         }
 
 
-
+        binding.removeImage.setOnClickListener(){
+            binding.removeImage.visibility = View.GONE
+            binding.ivNewFoodImage.visibility = View.GONE
+            // set photoFile to null since image was closed
+            photoFile = null
+        }
 
 
 
@@ -333,6 +338,7 @@ class AddFoodItemActivity : AppCompatActivity() {
                 if (photoFile != null) {
                     binding.ivNewFoodImage.visibility = View.VISIBLE
                     Glide.with(this).load(photoFile).into(binding.ivNewFoodImage)
+                    binding.removeImage.visibility = View.VISIBLE
                 }
             }
         }
@@ -341,6 +347,7 @@ class AddFoodItemActivity : AppCompatActivity() {
             if (photoFile != null) {
                 binding.ivNewFoodImage.visibility = View.VISIBLE
                 Glide.with(this).load(photoFile).into(binding.ivNewFoodImage)
+                binding.removeImage.visibility = View.VISIBLE
             }
 
         }
