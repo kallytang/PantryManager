@@ -105,7 +105,6 @@ class CameraActivity : AppCompatActivity() {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-//                    Log.d(TAG, msg)
                     if(destination != FROM_ADD_FOOD_CODE){
                         val intent = Intent(this@CameraActivity, EditItemActivity::class.java)
                         intent.putExtra("photo", savedUri)
@@ -143,7 +142,6 @@ class CameraActivity : AppCompatActivity() {
                     this, cameraSelector, preview
                 )
             } catch (ex: Exception) {
-//                Log.e(TAG, "Use case binding failed", ex)
             }
 
             //returns a Executor that runs on main thread

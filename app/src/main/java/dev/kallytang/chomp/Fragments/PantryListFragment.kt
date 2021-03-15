@@ -73,7 +73,6 @@ class PantryListFragment : Fragment() {
                             (applicationContext as MyApplication).storageLocationList?.clear()
                             (applicationContext as MyApplication).storageLocationList?.addAll(listLocation)
                             storageLocationList = listLocation
-//                            Log.i("location", (applicationContext as MyApplication).storageLocationList.toString())
                             (applicationContext as MyApplication).pantryRef = pantryRef
 
                         }

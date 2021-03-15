@@ -30,10 +30,10 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
     private lateinit var auth: FirebaseAuth
     private val stringPatternEditText = "MMM d, yyyy"
 
-    inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView(item: Item) {
             auth = Firebase.auth
-            itemView.tv_title_item.text =  item.name
+            itemView.tv_title_item.text = item.name
             itemView.iv_red_dot.visibility = View.INVISIBLE
             // check expiry date
             //convert the expiry date to a local date time
@@ -48,7 +48,7 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
 
             var timeDiff = date?.time?.minus(currDate.time)
             //calculate the time difference
-            var days:Double? = null
+            var days: Double? = null
             if (timeDiff != null) {
                 days = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS).toDouble()
             }
@@ -56,48 +56,48 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
 
             //check if item is expired or gone bad
             if (days != null) {
-                if(days <= 0){
+                if (days <= 0) {
                     itemView.tv_status_of_food.visibility = View.VISIBLE
                     itemView.iv_red_dot.visibility = View.VISIBLE
                     itemView.iv_red_dot.setImageResource(R.drawable.ic_red_dot)
                     itemView.tv_status_of_food.setTextColor(Color.RED)
                     itemView.tv_status_of_food.text = "Food Expired ${dateFormatted}"
-                }else if(days > 0 && days < 4){
+                } else if (days > 0 && days < 4) {
                     itemView.tv_status_of_food.visibility = View.VISIBLE
                     itemView.iv_red_dot.visibility = View.VISIBLE
                     itemView.iv_red_dot.setImageResource(R.drawable.ic_yellow_dot)
                     itemView.tv_status_of_food.setTextColor(Color.RED)
                     itemView.tv_status_of_food.text = "Going Bad Soon(${days.toInt()} day(s))"
 
-                }else{
+                } else {
                     itemView.tv_status_of_food.visibility = View.GONE
                     itemView.iv_red_dot.visibility = View.INVISIBLE
                 }
             }
             var unitName = item.units?.unitName.toString()
-            if(unitName == "none"){
+            if (unitName == "none") {
                 itemView.tv_quantity.text = "Qty: ${item.quantity}"
-            }else{
+            } else {
                 itemView.tv_quantity.text = "Qty: ${item.quantity} ${item.units?.abbreviation}"
             }
 
 
             //check if item is expired
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 val intent = Intent(context, EditItemActivity::class.java)
                 intent.putExtra("item", item)
                 var unit: Unit? = item.units
                 context.startActivity(intent)
 
             }
-            itemView.iv_more_info.setOnClickListener{
-               if( itemView.item_delete_btn.visibility != View.VISIBLE){
-                   itemView.item_delete_btn.visibility = View.VISIBLE
-               }else{
-                   itemView.item_delete_btn.visibility = View.GONE
-               }
+            itemView.iv_more_info.setOnClickListener {
+                if (itemView.item_delete_btn.visibility != View.VISIBLE) {
+                    itemView.item_delete_btn.visibility = View.VISIBLE
+                } else {
+                    itemView.item_delete_btn.visibility = View.GONE
+                }
             }
-            itemView.item_delete_btn.setOnClickListener{
+            itemView.item_delete_btn.setOnClickListener {
                 deleteFromDatabase(item)
                 removeAt(layoutPosition)
                 itemView.item_delete_btn.visibility = View.GONE
@@ -117,43 +117,48 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
     override fun getItemCount(): Int {
         return items.size
     }
-    fun clear(){
+
+    fun clear() {
         items.clear()
 
     }
+
     fun addAll(list: ArrayList<Item>) {
         items.addAll(list)
         notifyDataSetChanged()
     }
-    fun removeAt(position: Int){
+
+    fun removeAt(position: Int) {
         items.removeAt(position);
         notifyItemRemoved(position)
         notifyDataSetChanged()
 
     }
-    fun deleteFromDatabase(item: Item){
+
+    fun deleteFromDatabase(item: Item) {
         lateinit var photoRef: StorageReference
         var storage = Firebase.storage
         // delete image if it exists
-        if(!item.imageUrl.isNullOrEmpty()){
+        if (!item.imageUrl.isNullOrEmpty()) {
             photoRef = storage.getReferenceFromUrl(item.imageUrl.toString())
             photoRef.delete().addOnSuccessListener {
             }
         }
 
-        db.collection("users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener { snapshot ->
-            var user = snapshot.toObject(User::class.java)
-            var pantryRef = user?.myPantry
-            pantryRef?.collection("my_pantry")?.document(item.documentId.toString())
-                ?.delete()?.addOnSuccessListener { Log.d("deleteItem",
-                    "DocumentSnapshot successfully deleted!") }
-                ?.addOnFailureListener { e -> Log.w("deleteItem", "Error deleting document", e) }
+        db.collection("users").document(auth.currentUser?.uid.toString()).get()
+            .addOnSuccessListener { snapshot ->
+                var user = snapshot.toObject(User::class.java)
+                var pantryRef = user?.myPantry
+                pantryRef?.collection("my_pantry")?.document(item.documentId.toString())
+                    ?.delete()?.addOnSuccessListener {
+                    }
+                    ?.addOnFailureListener { e ->
+                    }
 
-        }
+            }
 
 
     }
-
 
 
 }

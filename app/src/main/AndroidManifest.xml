@@ -25,7 +25,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="dev.kallytang.chomp.ManageHouseholdActivity"></activity>
+        <activity android:name="dev.kallytang.chomp.ManageHouseholdActivity" />
         <activity android:name="dev.kallytang.chomp.ProfileActivity" />
         <activity android:name="dev.kallytang.chomp.EditItemActivity"
             android:theme="@style/AppThemeNoActionBar"/>

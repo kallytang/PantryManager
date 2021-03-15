@@ -77,7 +77,7 @@ class AddStorageLocationDialogue(private val addStorageName : AddNewStorageName)
                     rootView.tv_error_message.setTextColor(context!!.getColor(R.color.green))
                     rootView.tv_error_message.setText("${stringInput} added")
                     rootView.et_add_new_storage_name.setBackgroundResource(R.drawable.text_input_layout)
-                    rootView.et_add_new_storage_name.setHintTextColor(Color.BLACK)
+                    rootView.et_add_new_storage_name.setHintTextColor(Color.GRAY)
                     rootView.et_add_new_storage_name.setHint(R.string.e_g_cupboard)
                     addStorageName.addNewStorageName(stringInput)
                     rootView.btn_add_name.isEnabled = true
