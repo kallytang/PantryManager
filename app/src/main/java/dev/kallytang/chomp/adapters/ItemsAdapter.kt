@@ -72,15 +72,15 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
                     itemView.iv_red_dot.visibility = View.INVISIBLE
                 }
             }
+            var unitName = item.units?.unitName.toString()
+            if(unitName == "none"){
+                Log.i("errorMESSAGE", item.units!!.unitName.toString())
+                itemView.tv_quantity.text = "Qty: ${item.quantity}"
+            }else{
+                itemView.tv_quantity.text = "Qty: ${item.quantity} ${item.units?.abbreviation}"
+            }
 
-            //check if item will go bad in a week
 
-
-
-
-
-            //check if item is going bad in a week
-            itemView.tv_quantity.text = "Qty: ${item.quantity}"
             //check if item is expired
             itemView.setOnClickListener{
                 val intent = Intent(context, EditItemActivity::class.java)

@@ -6,10 +6,13 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.AdapterView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.Timestamp
@@ -160,6 +163,8 @@ class EditItemActivity : AppCompatActivity() {
             val simpleDateFormatter = SimpleDateFormat(stringPatternEditText, Locale.getDefault())
             val dateForForm = simpleDateFormatter.format(timeStampOld.toDate())
             binding.etDateExpiry.text = dateForForm
+            binding.etQuantity.setText(item.quantity.toString(), TextView.BufferType.EDITABLE)
+            binding.etBrand.setText(item.brand,  TextView.BufferType.EDITABLE)
 
         }
         binding.ivRemoveImage.setOnClickListener {
@@ -169,6 +174,7 @@ class EditItemActivity : AppCompatActivity() {
             photoFile = null
             imageDeleted = true
         }
+
 
         //expiration date picking
         binding.etDateExpiry.setOnClickListener {
@@ -206,6 +212,7 @@ class EditItemActivity : AppCompatActivity() {
                 binding.tvInfoItemName.setText(binding.etItemName.text.toString())
                 binding.tvInfoItemName.visibility = View.VISIBLE
                 binding.editNamePencil.visibility = View.VISIBLE
+
             }
 
         }
@@ -248,9 +255,11 @@ class EditItemActivity : AppCompatActivity() {
 
         // for handling updates to task item
         binding.btnUpdate.setOnClickListener {
-
             binding.btnUpdate.isEnabled = false
-            val itemNameInput = binding.tvInfoItemName.text.toString()
+            var itemNameInput = binding.tvInfoItemName.text.toString()
+            if(binding.etItemName.visibility == View.VISIBLE){
+                itemNameInput = binding.etItemName.text.toString()
+            }
             var itemBrandUnput = binding.etBrand.text.toString()
             if (itemBrandUnput.isEmpty()) {
                 itemBrandUnput = ""
@@ -275,9 +284,8 @@ class EditItemActivity : AppCompatActivity() {
                 binding.btnUpdate.isEnabled = true
                 return@setOnClickListener
             } else {
-
+                binding.progressBar.visibility = View.VISIBLE
                 val date: Date = formatter.parse(expirationDateString)
-
                 if (item != null) {
                     if (item.expiryDate.toString() != Timestamp(date).toString()) {
                         item.expiryDate = Timestamp(date)
@@ -330,6 +338,11 @@ class EditItemActivity : AppCompatActivity() {
                             // if there's no photofile uploaded
                             updateItem(userID, item)
                         }
+                    }else{
+                        binding.progressBar.visibility = View.GONE
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+
                     }
                 }
 
@@ -382,11 +395,6 @@ class EditItemActivity : AppCompatActivity() {
     }
 
     private fun openPhotos() {
-//        val imageSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
-//        imageSelectionIntent.type = "image/*"
-//        if (imageSelectionIntent.resolveActivity(packageManager) != null) {
-//            startActivityForResult(imageSelectionIntent, EditItemActivity.PHOTO_CODE)
-//        }
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
@@ -410,6 +418,7 @@ class EditItemActivity : AppCompatActivity() {
     }
 
     private fun updateItem(userID: String, item: Item) {
+        binding.btnUpdate.isEnabled = true
         // if reference is stored in application context
         if ((applicationContext as MyApplication).pantryRef == null) {
             db.collection("users").document(userID)
@@ -420,11 +429,12 @@ class EditItemActivity : AppCompatActivity() {
                         ?.document(item.documentId.toString())
                         ?.update(item.toMap())?.addOnFailureListener { e ->
                         }?.addOnCompleteListener {
-                            binding.progressBar.visibility = View.GONE
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finish()
+
                         }
                 }
+            binding.progressBar.visibility = View.GONE
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
 
         } else {
             var pantryRef = (applicationContext as MyApplication).pantryRef
@@ -432,10 +442,11 @@ class EditItemActivity : AppCompatActivity() {
                 ?.document(item.documentId.toString())
                 ?.update(item.toMap())?.addOnFailureListener { e ->
                 }?.addOnCompleteListener {
-                    binding.progressBar.visibility = View.GONE
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+
                 }
+            binding.progressBar.visibility = View.GONE
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
 
     }

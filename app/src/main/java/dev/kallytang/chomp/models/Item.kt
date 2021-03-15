@@ -29,7 +29,8 @@ data class Item(
             "location" to location,
             "expiry_date" to expiryDate,
             "notes" to notes,
-            "image_url" to imageUrl
+            "image_url" to imageUrl,
+            "quantity" to quantity
         )
     }
 

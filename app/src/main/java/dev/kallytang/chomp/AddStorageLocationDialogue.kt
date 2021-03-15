@@ -76,7 +76,7 @@ class AddStorageLocationDialogue(private val addStorageName : AddNewStorageName)
                     pantryRef.set(map, SetOptions.merge())
                     Toast.makeText(context, "Successfully added ${stringInput} to storage list", Toast.LENGTH_SHORT).show()
                     rootView.et_add_new_storage_name.text.clear()
-                    rootView.tv_error_message.visibility = View.INVISIBLE
+                    rootView.tv_error_message.visibility = View.GONE
                     rootView.et_add_new_storage_name.setBackgroundResource(R.drawable.text_input_layout)
                     rootView.et_add_new_storage_name.setHintTextColor(Color.BLACK)
                     rootView.et_add_new_storage_name.setHint(R.string.e_g_cupboard)

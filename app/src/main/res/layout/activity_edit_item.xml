@@ -59,6 +59,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:id="@+id/tv_edit_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Edit Item"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_slab_variable_font_wght"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="206dp"
+                tools:layout_editor_absoluteY="18dp" />
 
             <ImageView
                 android:id="@+id/iv_exit_edit_task"
@@ -222,7 +234,6 @@
                         android:fontFamily="@font/roboto_regular"
                         android:inputType="number"
                         android:paddingBottom="5dp"
-                        android:text="@string/_1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_quantity" />
 
