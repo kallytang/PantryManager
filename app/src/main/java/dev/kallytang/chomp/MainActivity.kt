@@ -132,7 +132,6 @@ class MainActivity : AppCompatActivity(), FilterItems, AddNewStorageName {
                             storageAdapter.notifyDataSetChanged()
                         }
                     }
-
                 }
         } else {
             storageList.clear()

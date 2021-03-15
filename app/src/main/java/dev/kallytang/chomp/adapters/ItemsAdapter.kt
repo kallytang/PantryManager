@@ -44,6 +44,7 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
             val date = simpleDateFormatter.parse(dateFormatted)
             val currDateFormatted = simpleDateFormatter.format(Date())
             val currDate = simpleDateFormatter.parse(currDateFormatted)
+            itemView.item_delete_btn.visibility = View.GONE
 
             var timeDiff = date?.time?.minus(currDate.time)
             //calculate the time difference
@@ -51,6 +52,7 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
             if (timeDiff != null) {
                 days = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS).toDouble()
             }
+
 
             //check if item is expired or gone bad
             if (days != null) {
@@ -74,7 +76,6 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
             }
             var unitName = item.units?.unitName.toString()
             if(unitName == "none"){
-                Log.i("errorMESSAGE", item.units!!.unitName.toString())
                 itemView.tv_quantity.text = "Qty: ${item.quantity}"
             }else{
                 itemView.tv_quantity.text = "Qty: ${item.quantity} ${item.units?.abbreviation}"
@@ -99,7 +100,7 @@ class ItemsAdapter(val context: Context, val items: ArrayList<Item>) :
             itemView.item_delete_btn.setOnClickListener{
                 deleteFromDatabase(item)
                 removeAt(layoutPosition)
-
+                itemView.item_delete_btn.visibility = View.GONE
             }
         }
     }

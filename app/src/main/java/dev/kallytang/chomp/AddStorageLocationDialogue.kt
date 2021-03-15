@@ -56,13 +56,11 @@ class AddStorageLocationDialogue(private val addStorageName : AddNewStorageName)
             //check if entry is empty
             if(rootView.et_add_new_storage_name.text.toString().trim().isNullOrBlank()){
                 rootView.et_add_new_storage_name.setBackgroundResource(R.drawable.text_input_layout_red)
+                rootView.tv_error_message.visibility = View.GONE
                 rootView.et_add_new_storage_name.setHintTextColor(Color.RED)
-                rootView.et_add_new_storage_name.setText("Please Enter a Storage Name")
-                rootView.tv_error_message.visibility = View.VISIBLE
+                rootView.et_add_new_storage_name.setHint("Please Enter a Storage Name")
                 rootView.btn_add_name.isEnabled = true
             }else{
-//                pantryRef.collection("my_pantry").document().update()
-                //check if pantry list is available
                 var stringInput = rootView.et_add_new_storage_name.text.toString().trim()
                 if(stringInput in locationList){
                     rootView.et_add_new_storage_name.setBackgroundResource(R.drawable.text_input_layout_red)
@@ -74,9 +72,10 @@ class AddStorageLocationDialogue(private val addStorageName : AddNewStorageName)
                     // add new storage location to the database
                     var map = mapOf(STORAGE_STRING to mapOf(stringInput.toLowerCase() to stringInput))
                     pantryRef.set(map, SetOptions.merge())
-                    Toast.makeText(context, "Successfully added ${stringInput} to storage list", Toast.LENGTH_SHORT).show()
                     rootView.et_add_new_storage_name.text.clear()
-                    rootView.tv_error_message.visibility = View.GONE
+                    rootView.tv_error_message.visibility = View.VISIBLE
+                    rootView.tv_error_message.setTextColor(context!!.getColor(R.color.green))
+                    rootView.tv_error_message.setText("${stringInput} added")
                     rootView.et_add_new_storage_name.setBackgroundResource(R.drawable.text_input_layout)
                     rootView.et_add_new_storage_name.setHintTextColor(Color.BLACK)
                     rootView.et_add_new_storage_name.setHint(R.string.e_g_cupboard)
