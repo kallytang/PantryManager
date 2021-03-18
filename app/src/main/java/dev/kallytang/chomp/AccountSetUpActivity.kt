@@ -35,7 +35,6 @@ class AccountSetUpActivity : AppCompatActivity() {
 
 
             var userInfo = hashMapOf(
-                "username" to auth.currentUser.toString(),
                 "display_name" to auth.currentUser?.displayName.toString(),
                 "email" to auth.currentUser?.email.toString(),
                 "my_pantry" to pantry_ref
