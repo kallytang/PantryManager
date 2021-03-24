@@ -17,7 +17,7 @@
 
     <application
         android:versionCode = "1"
-        android:versionName = "1.0.0"
+        android:versionName = "1.0.1"
         android:name="dev.kallytang.chomp.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
