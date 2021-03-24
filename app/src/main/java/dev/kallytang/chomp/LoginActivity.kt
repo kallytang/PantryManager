@@ -1,10 +1,9 @@
 package dev.kallytang.chomp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -18,10 +17,11 @@ import kotlinx.android.synthetic.main.login_activity.*
 
 
 class LoginActivity : AppCompatActivity() {
-    private companion object{
+    private companion object {
         private const val TAG: String = "LoginActivity"
         private const val RC_GOOGLE_SIGN_IN = 1134
     }
+
     private lateinit var auth: FirebaseAuth
     val db = Firebase.firestore
 
@@ -71,6 +71,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -79,10 +80,22 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     var result = task.result
                     // check if user is a new user
-                    if (result?.additionalUserInfo?.isNewUser == true){
+                    if (result?.additionalUserInfo?.isNewUser == true) {
+                        //set up the default storage names and add to global variable
+                        val storageLocationNames = arrayListOf<String>(
+                            "Freezer",
+                            "Fridge",
+                            "Cabinet",
+                            "Cupboard",
+                            "Other"
+                        )
+                        // add user list to pantries document
+                        storageLocationNames.sort()
                         // direct user to a set up page,
+                        (applicationContext as MyApplication).addInitialStorageLocations(
+                            storageLocationNames)
                         toSetUpAccount()
-                    }else{
+                    } else {
                         val user = auth.currentUser
                         updateUI(user)
                     }
@@ -93,15 +106,17 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
+
     private fun updateUI(currentUser: FirebaseUser?) {
         //go to main activity if signed in
-        if(currentUser==null){
+        if (currentUser == null) {
             return
         }
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
-    private fun toSetUpAccount(){
+
+    private fun toSetUpAccount() {
         val intent = Intent(this, AccountSetUpActivity::class.java)
         startActivity(intent)
         finish()

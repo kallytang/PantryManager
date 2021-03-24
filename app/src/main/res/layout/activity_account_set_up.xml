@@ -24,7 +24,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="50dp"
         android:text="@string/one_moment_to_set_up_your_account"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"

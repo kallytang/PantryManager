@@ -12,6 +12,7 @@ import dev.kallytang.chomp.models.Item
 import dev.kallytang.chomp.models.Unit
 import dev.kallytang.chomp.models.User
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MyApplication : Application() {
     private lateinit var auth: FirebaseAuth
@@ -95,6 +96,10 @@ class MyApplication : Application() {
 
     fun updatePantryReference(ref: DocumentReference){
         pantryRef = ref
+    }
+    fun addInitialStorageLocations(list:ArrayList<String>){
+        storageLocationList = arrayListOf()
+        storageLocationList!!.addAll(list)
     }
 }
 

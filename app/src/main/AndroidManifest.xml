@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:versionCode = "1"
+        android:versionCode = "3"
         android:versionName = "1.0.1"
         android:name="dev.kallytang.chomp.MyApplication"
         android:allowBackup="true"
