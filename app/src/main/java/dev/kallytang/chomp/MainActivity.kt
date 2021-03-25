@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity(), FilterItems, AddNewStorageName {
         auth = Firebase.auth
 
         if ((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()) {
+            getStorageLocations()
             (applicationContext as MyApplication).getQueryStorageLocations()
         }
 
@@ -211,6 +212,8 @@ class MainActivity : AppCompatActivity(), FilterItems, AddNewStorageName {
 
     override fun onResume() {
         super.onResume()
+        getStorageLocations()
+        getItems()
         itemsAdapter.notifyDataSetChanged()
     }
 }

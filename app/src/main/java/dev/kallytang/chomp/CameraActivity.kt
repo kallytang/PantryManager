@@ -104,7 +104,7 @@ class CameraActivity : AppCompatActivity() {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     if(destination != FROM_ADD_FOOD_CODE){
                         val intent = Intent(this@CameraActivity, EditItemActivity::class.java)
                         intent.putExtra("photo", savedUri)

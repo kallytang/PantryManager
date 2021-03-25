@@ -15,8 +15,8 @@ data class Unit(
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
-           "unit_name" to unitName,
-            "abbreviation" to abbreviation
+           "unit_name" to unitName.toString(),
+            "abbreviation" to abbreviation.toString()
         )
     }
 }

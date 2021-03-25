@@ -34,8 +34,6 @@ class AccountSetUpActivity : AppCompatActivity() {
         val storageLocationNames = hashMapOf(
             "freezer" to "Freezer",
             "fridge" to "Fridge",
-            "cabinet" to "Cabinet",
-            "cupboard" to "Cupboard",
             "other" to "Other"
         )
 //         add user list to pantries document
@@ -73,7 +71,7 @@ class AccountSetUpActivity : AppCompatActivity() {
 
                     Handler(Looper.getMainLooper()).postDelayed({
                         goToMain()
-                    }, 3000)
+                    }, 5000)
 
 
                 }

@@ -67,8 +67,11 @@ class AddFoodItemActivity : AppCompatActivity() {
         //set up storage location
         storageList = ArrayList()
         if((applicationContext as MyApplication).storageLocationList.isNullOrEmpty()){
-            (applicationContext as MyApplication).queryStorageLocations()
+            (applicationContext as MyApplication).getQueryStorageLocations()
             getStorageLocations()
+            storageSpinnerAdapter = StorageSpinnerAdapter(this, R.layout.spinner_row, storageList)
+            binding.addLocationSpinner.adapter = storageSpinnerAdapter
+            storageSpinnerAdapter.notifyDataSetChanged()
 
         }else{
             (applicationContext as MyApplication).storageLocationList?.let { storageList.addAll(it) }
@@ -126,12 +129,11 @@ class AddFoodItemActivity : AppCompatActivity() {
         }
 
 
+
         unitSpinnerAdapter = UnitSpinnerAdapter(this, R.layout.spinner_row, unitList)
         binding.addUnitSpinner.adapter = unitSpinnerAdapter
         binding.addUnitSpinner.setSelection(indexUnit)
 
-
-        var unitChoice: Unit
         binding.addUnitSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -273,7 +275,7 @@ class AddFoodItemActivity : AppCompatActivity() {
                                 ""
                             )
                             val pantryReference = (applicationContext as MyApplication).pantryRef
-                            pantryReference?.collection("my_pantry")?.add(item)
+                            pantryReference?.collection("my_pantry")?.document()?.set(item.toMap())
                         }.addOnCompleteListener {
 
                             binding.btnAddNewItem.isEnabled = false
@@ -301,7 +303,7 @@ class AddFoodItemActivity : AppCompatActivity() {
 
                     )
                     val pantryReference = (applicationContext as MyApplication).pantryRef
-                    pantryReference?.collection("my_pantry")?.add(item)
+                    pantryReference?.collection("my_pantry")?.document()?.set(item.toMap())
                     binding.btnAddNewItem.isEnabled = false
                     binding.progressBar.visibility = View.GONE
                     startActivity(Intent(this, MainActivity::class.java))

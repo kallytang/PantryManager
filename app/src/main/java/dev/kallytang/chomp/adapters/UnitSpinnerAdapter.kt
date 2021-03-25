@@ -33,13 +33,13 @@ class UnitSpinnerAdapter(var contextSpinner: Context, var resources: Int, val un
             )
             tvUnitName = viewItem.findViewById(R.id.tv_spinner_item_name)
             if (unitItem != null) {
-                tvUnitName.setText(unitItem.abbreviation)
+                tvUnitName.setText(unitItem.abbreviation.toString())
             }
             return viewItem
         }else{
             tvUnitName = convertView.findViewById(R.id.tv_spinner_item_name)
             if (unitItem != null) {
-                tvUnitName.setText(unitItem.abbreviation)
+                tvUnitName.setText(unitItem.abbreviation.toString())
             }
             return  convertView
         }

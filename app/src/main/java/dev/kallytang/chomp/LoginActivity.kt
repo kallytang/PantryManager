@@ -85,8 +85,6 @@ class LoginActivity : AppCompatActivity() {
                         val storageLocationNames = arrayListOf<String>(
                             "Freezer",
                             "Fridge",
-                            "Cabinet",
-                            "Cupboard",
                             "Other"
                         )
                         // add user list to pantries document
