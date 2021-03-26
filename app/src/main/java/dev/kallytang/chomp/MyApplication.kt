@@ -101,5 +101,14 @@ class MyApplication : Application() {
         storageLocationList = arrayListOf()
         storageLocationList!!.addAll(list)
     }
+    fun getPantryRef(){
+        db.collection("users").document(auth.currentUser?.uid.toString()).get()
+            .addOnSuccessListener { doc ->
+                currUser = doc.toObject(User::class.java)
+                // get reference to pantry
+                pantryRef = currUser?.myPantry
+
+            }
+    }
 }
 

@@ -68,10 +68,9 @@ class AccountSetUpActivity : AppCompatActivity() {
                     )).addOnSuccessListener { task ->
                     // when pantries document is created, add it to user as a reference
                     (applicationContext as MyApplication).updatePantryReference(pantry_ref)
-
                     Handler(Looper.getMainLooper()).postDelayed({
                         goToMain()
-                    }, 5000)
+                    }, 3000)
 
 
                 }

@@ -83,6 +83,12 @@ class MainActivity : AppCompatActivity(), FilterItems, AddNewStorageName {
             startActivity(intent)
         }
 
+        binding.addStorageButton.setOnClickListener{
+
+            val dialogue = AddStorageLocationDialogue(this)
+            dialogue.show(supportFragmentManager, "Add storageLocation")
+        }
+
 
     }
 
@@ -103,10 +109,7 @@ class MainActivity : AppCompatActivity(), FilterItems, AddNewStorageName {
                 finish()
 
             }
-            R.id.add_storage_location -> {
-                var dialogue = AddStorageLocationDialogue(this)
-                dialogue.show(supportFragmentManager, "Add storageLocation")
-            }
+
         }
 
         return super.onOptionsItemSelected(item)
@@ -208,6 +211,9 @@ class MainActivity : AppCompatActivity(), FilterItems, AddNewStorageName {
     override fun addNewStorageName(name: String) {
         storageAdapter.add(name)
         (applicationContext as MyApplication).storageLocationList?.add(name)
+        (applicationContext as MyApplication).storageLocationList?.sort()
+
+
     }
 
     override fun onResume() {

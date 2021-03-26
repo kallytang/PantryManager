@@ -41,7 +41,9 @@ class AddStorageLocationDialogue(private val addStorageName : AddNewStorageName)
                         locationList = arrayListOf()
                         locationList.addAll(location.keys)
 
+
                 }
+
         }
 
         rootView.btn_cancel.setOnClickListener{
@@ -61,8 +63,9 @@ class AddStorageLocationDialogue(private val addStorageName : AddNewStorageName)
                 rootView.et_add_new_storage_name.setHint("Please Enter a Storage Name")
                 rootView.btn_add_name.isEnabled = true
             }else{
-                var stringInput = rootView.et_add_new_storage_name.text.toString().trim()
-                if(stringInput in locationList){
+                val stringInput = rootView.et_add_new_storage_name.text.toString().trim()
+                val copyString = stringInput.toLowerCase()
+                if(copyString in locationList){
                     rootView.et_add_new_storage_name.setBackgroundResource(R.drawable.text_input_layout_red)
                     rootView.et_add_new_storage_name.setHintTextColor(Color.RED)
                     rootView.tv_error_message.setText("${stringInput} already exists, try again")
@@ -70,17 +73,19 @@ class AddStorageLocationDialogue(private val addStorageName : AddNewStorageName)
                     rootView.btn_add_name.isEnabled = true
                 }else{
                     // add new storage location to the database
-                    var map = mapOf(STORAGE_STRING to mapOf(stringInput.toLowerCase() to stringInput))
+                    val map = mapOf(STORAGE_STRING to mapOf(stringInput.toLowerCase() to stringInput))
                     pantryRef.set(map, SetOptions.merge())
                     rootView.et_add_new_storage_name.text.clear()
                     rootView.tv_error_message.visibility = View.VISIBLE
                     rootView.tv_error_message.setTextColor(context!!.getColor(R.color.green))
                     rootView.tv_error_message.setText("${stringInput} added")
+
                     rootView.et_add_new_storage_name.setBackgroundResource(R.drawable.text_input_layout)
                     rootView.et_add_new_storage_name.setHintTextColor(Color.GRAY)
                     rootView.et_add_new_storage_name.setHint(R.string.e_g_cupboard)
                     addStorageName.addNewStorageName(stringInput)
                     rootView.btn_add_name.isEnabled = true
+                    dismiss()
                 }
             }
         }

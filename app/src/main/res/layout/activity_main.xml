@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:context="dev.kallytang.chomp.MainActivity">
 
 
@@ -30,73 +29,86 @@
 
         <RelativeLayout
             android:id="@+id/lists_holder"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <RelativeLayout
-                android:id="@+id/pantry_list_layout"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="0dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rv_tiles"
                 android:layout_width="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent">
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+
+                android:layout_marginTop="0dp"
+                android:background="@drawable/recyclerview_background">
+
+                <ImageButton
+                    android:id="@+id/add_storage_button"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_marginStart="21dp"
+                    android:background="@drawable/circle_button"
+                    android:contentDescription="Add New Storage Location"
+                    android:padding="10dp"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="@+id/rv_list_tabs"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/rv_list_tabs"
+                    app:srcCompat="@drawable/ic_add_symbol">
+
+                </ImageButton>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:background="@drawable/recyclerview_background"
                     android:id="@+id/rv_list_tabs"
-                    android:layout_alignParentEnd="false"
-                    android:layout_alignParentStart="true"
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
                     android:layout_alignParentTop="true"
-                    android:layout_height="120dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_width="match_parent"
-                    android:padding="5dp">
+                    android:layout_alignParentEnd="false"
+                    android:layout_toEndOf="@+id/add_storage_button"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:clipToPadding="false"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="0dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/add_storage_button"
+                    app:layout_constraintTop_toTopOf="parent">
 
                 </androidx.recyclerview.widget.RecyclerView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/swipe_Refresh_Main"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/rv_list_tabs"
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_Refresh_Main"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@+id/rv_tiles"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_pantry_items"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginEnd="0dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
                     android:layout_marginStart="0dp"
+                    android:clipToPadding="false"
+                    android:paddingBottom="150dp"
                     android:layout_marginTop="0dp"
-                    android:layout_width="match_parent">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_pantry_items"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="0dp"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginTop="0dp"
-                        android:layout_width="match_parent" />
-                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-            </RelativeLayout>
-
+                    android:layout_marginEnd="0dp" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

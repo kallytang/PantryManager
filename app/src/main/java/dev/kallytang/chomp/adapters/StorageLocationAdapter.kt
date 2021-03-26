@@ -46,7 +46,15 @@ class StorageLocationAdapter(val context: Context, var locationList:ArrayList<St
     }
 
     fun add(newStorageName: String) {
+        val str = locationList[curr_position]
         locationList.add(newStorageName)
+        locationList.removeAt(0)
+
+        locationList.sort()
+        locationList.add(0, "All")
+        curr_position = locationList.indexOf(str)
+
+        notifyDataSetChanged()
 
     }
 

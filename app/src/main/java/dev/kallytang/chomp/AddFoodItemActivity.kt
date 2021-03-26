@@ -57,6 +57,11 @@ class AddFoodItemActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //check if reference is in application context
+        if((applicationContext as MyApplication).pantryRef == null){
+            (applicationContext as MyApplication).getPantryRef()
+        }
         binding = ActivityAddFoodItemBinding.inflate(layoutInflater)
         var view = binding.root
         setContentView(view)
@@ -275,14 +280,11 @@ class AddFoodItemActivity : AppCompatActivity() {
                                 ""
                             )
                             val pantryReference = (applicationContext as MyApplication).pantryRef
-                            pantryReference?.collection("my_pantry")?.document()?.set(item.toMap())
+                            pantryReference?.collection("my_pantry")?.add(item)
                         }.addOnCompleteListener {
-
                             binding.btnAddNewItem.isEnabled = false
                             startActivity(Intent(this, MainActivity::class.java))
                             finish()
-                        }.addOnFailureListener { e ->
-                        }.addOnSuccessListener {
                         }
 
                 } else {
@@ -303,11 +305,13 @@ class AddFoodItemActivity : AppCompatActivity() {
 
                     )
                     val pantryReference = (applicationContext as MyApplication).pantryRef
-                    pantryReference?.collection("my_pantry")?.document()?.set(item.toMap())
                     binding.btnAddNewItem.isEnabled = false
                     binding.progressBar.visibility = View.GONE
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    pantryReference?.collection("my_pantry")?.add(item)?.addOnCompleteListener {
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
+
                 }
 
             }
@@ -316,13 +320,6 @@ class AddFoodItemActivity : AppCompatActivity() {
     }
 
     private fun openPhotos() {
-//        val imageSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
-////        imageSelectionIntent.type = "image/*"
-////
-//
-//        if (imageSelectionIntent.resolveActivity(packageManager) != null) {
-//            startActivityForResult(imageSelectionIntent, PHOTO_CODE)
-//        }
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT

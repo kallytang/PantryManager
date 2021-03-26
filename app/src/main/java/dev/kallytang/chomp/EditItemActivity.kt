@@ -75,6 +75,11 @@ class EditItemActivity : AppCompatActivity() {
         setContentView(view)
         val intent: Intent = intent
         val item: Item? = intent.getParcelableExtra("item")
+
+        //check if reference is in application context
+        if((applicationContext as MyApplication).pantryRef == null){
+            (applicationContext as MyApplication).getPantryRef()
+        }
         //set up unitlist adapter
         unitList = ArrayList()
         (applicationContext as MyApplication).unitList?.let { unitList.addAll(it) }

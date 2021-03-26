@@ -152,8 +152,7 @@
                     android:background="@drawable/text_input_layout"
                     android:ems="10"
                     android:fontFamily="@font/roboto_regular"
-                    android:hint="Green Giant"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapSentences"
                     android:paddingBottom="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -169,7 +168,7 @@
                     android:background="@drawable/text_input_layout"
                     android:ems="10"
                     android:hint="@string/apples"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapSentences"
                     android:paddingBottom="5dp"
                     app:layout_constraintEnd_toEndOf="@id/cl_form"
                     app:layout_constraintStart_toStartOf="parent"
@@ -177,7 +176,7 @@
 
                 <EditText
                     android:id="@+id/et_quantity"
-                    android:layout_width="215dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="5dp"
@@ -206,16 +205,15 @@
 
                 <Spinner
                     android:id="@+id/add_unit_spinner"
-                    android:layout_width="116dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginEnd="15dp"
-                    android:textColor = "@color/black"
                     android:background="@drawable/text_input_layout"
                     android:paddingBottom="5dp"
+                    android:textColor="@color/black"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="@+id/et_quantity"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_brand"
                     app:layout_constraintStart_toEndOf="@+id/et_quantity" />
 
                 <Spinner
@@ -235,6 +233,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/roboto_regular"
                     android:text="@string/storage_location"
                     android:textColor="@color/black"
@@ -262,13 +261,14 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginBottom="150dp"
+
                     android:autofillHints=""
                     android:background="@drawable/text_input_layout"
                     android:ems="10"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="start|top"
                     android:hint="i.e. for soup"
-                    android:inputType="textMultiLine"
+                    android:inputType="textMultiLine|textCapSentences"
                     android:paddingTop="2dp"
                     android:paddingBottom="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"

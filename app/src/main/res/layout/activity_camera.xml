@@ -59,7 +59,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/circle_button" />
+            android:background="@drawable/camera_circle_button" />
     </RelativeLayout>
 
 
