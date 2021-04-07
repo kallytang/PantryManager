@@ -1,14 +1,10 @@
 # PantryManager
-
-
-## Gif Walkthrough 
-
-<img src="https://github.com/kallytang/PantryManager/blob/version1/general_gif.gif" width=250><br>
-<img src="https://github.com/kallytang/PantryManager/blob/version1/updateItem.gif" width=250><br>
+Play Store:
+https://play.google.com/store/apps/details?id=dev.kallytang.chomp
 
 ## Description 
-Prototype of Android App, a pantry manager app that allows users to keep track of perishable food items and their expiration date. Project is still in progress. 
-Taught self how to build an application with Kotlin, as well as learned how to build and design a NoSQL database in Firestore and exploring Material Design design components and styling of layouts. 
+A pantry manager app that allows users to keep track of perishable food items and their expiration date. Project is still in progress. 
+Learned how to build an application with Kotlin, as well as learned how to build and design a NoSQL database in Firestore and exploring Material Design design components and styling of layouts. 
 
 Collaborating with a designer, Monica Cunich to create application. 
 
